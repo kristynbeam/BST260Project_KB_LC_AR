@@ -1,0 +1,36 @@
+---
+title: "KB_Project"
+author: "Kristyn Beam"
+date: "11/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+aus_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_flu_08_17.csv")
+head(aus_dat)
+View(aus_dat)
+colnames(aus_dat)
+
+rename(aus_dat, week = Week.Ending..Friday.)
+rename(aus_dat, age_group = Age..group)
+
+aus_dat <- aus_dat %>% 
+  rename(week = Week.Ending..Friday., age_group = Age..group, indig = Indigenous.status, flu_type = Type.Subtype)
+
+aus_dat <- aus_dat %>% 
+  select(week, State, age_group, Sex, indig, flu_type)
+head(aus_dat)
+```
+
+
+```{r}
+
+```
+
