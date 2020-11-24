@@ -13,6 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(dplyr)
+library(lubridate)
+```
+
+```{r}
 aus_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_flu_08_17.csv")
 head(aus_dat)
 View(aus_dat)
@@ -26,11 +30,21 @@ aus_dat <- aus_dat %>%
 
 aus_dat <- aus_dat %>% 
   select(week, State, age_group, Sex, indig, flu_type)
+
+#Changing to date and character vectors
+aus_dat$week <- mdy(aus_dat$week)
+aus_dat$flu_type <- as.character(aus_dat$flu_type)
+aus_dat$State <- as.character(aus_dat$State)
+aus_dat$Sex <- as.character(aus_dat$Sex)
+
 head(aus_dat)
 ```
 
 
 ```{r}
+aus_dat_case <- aus_dat %>% 
+  group_by(week, State, age_group, Sex, flu_type) %>% 
+  summarize(n_cases = n())
 
 ```
 
