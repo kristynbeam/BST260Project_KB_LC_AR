@@ -98,3 +98,31 @@ p4+geom_line(aes(color=State)) +
 
 ```
 
+
+```{r}
+#Read in policy data
+pol_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/coronanet_release.csv")
+head(pol_dat)
+
+#Filtered policy data to just Australia
+pol_dat_aus <- pol_dat %>% 
+  filter(ISO_A2 == "AU" & ISO_A3 == "AUS") %>% 
+  arrange(date_start)
+
+#Read in uid lookup dataset
+countries <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/UID_ISO_FIPS_LookUp_Table.csv")
+head(countries)
+countries <- countries %>% 
+  rename(ISO_A2 = iso2, ISO_A3 = iso3)
+
+countries %>% 
+  filter(ISO_A3 == "AUS")
+
+#Filtered australia policy data to include columns of significance
+pol_dat_aus <- pol_dat_aus %>% 
+  select(description, date_announced, date_start, date_end, country, ISO_A2, ISO_A3, domestic_policy, province, type, type_sub_cat, type_text, target_country, target_province, target_who_what, compliance, enforcer) %>% 
+  group_by(date_announced) %>% 
+  arrange(province)
+
+```
+
