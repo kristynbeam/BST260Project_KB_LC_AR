@@ -52,16 +52,43 @@ aus_dat_case <- aus_dat %>%
 aus_data <- read.csv( "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/Australian_data_clean.csv")
 not_all_na <- function(x) any(!is.na(x))
 aus_data<-aus_data%>%select_if(not_all_na)%>% rename("Disease"="X")
+
+
+
 #Rate per 100,000
 head(aus_data)
 
 aus_data_cases<- aus_data %>% select("Disease":"Aust_n")%>% rename("ACT"="ACT_n", "NSW"="NSW_n", "NT"="NT_n", "Qld"="Qld_n", "SA"="SA_n", "Tas"= "Tas_n", "Vic"= "Vic_n", "WA"= "WA_n", "Australia"= "Aust_n")%>% arrange("Month") %>% gather(State, Cases, c("ACT":"Australia"))
 
 
-aus_data_rates<-aus_data %>% select("Disease"|"Month"|"ACT_rate":"Aust_rate")%>% rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"= "Vic_rate", "WA"= "WA_rate", "Australia"= "Aust_rate")%>% arrange("Month") %>% gather(State, Rates, c("ACT":"Australia")) 
+aus_data_rates<-aus_data %>% select("Disease"|"Date"|"ACT_rate":"Aust_rate")%>% rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"= "Vic_rate", "WA"= "WA_rate", "Australia"= "Aust_rate")%>% arrange("Month") %>% gather(State, Rates, c("ACT":"Australia")) 
 
 aus_total<-left_join(aus_data_cases, aus_data_rates)
 
+aus_total$Date<-mdy(aus_total$Date)
+aus_total$Cases<-as.numeric(aus_total$Cases)
+aus_total$Rates<-as.numeric(aus_total$Rates)
+head(aus_total)
+```
+
+```{r}
+library (ggplot2)
+
+aus_total_covid<-aus_total %>% filter (Disease=="COVID-19")
+
+p<-ggplot(data=aus_total_covid, aes(Date, Cases))
+p+geom_line(aes(color=State))
+
+p2<-ggplot(data=aus_total_covid, aes(Date, Rates))
+p2+geom_line(aes(color=State))
+
+aus_total_influenza<-aus_total %>% filter (Disease=="Influenza (laboratory confirmed)")
+
+p3<-ggplot(data=aus_total_influenza, aes(Date, Cases))
+p3+geom_line(aes(color=State))
+
+p4<-ggplot(data=aus_total_influenza, aes(Date, Rates))
+p4+geom_line(aes(color=State))
 
 ```
 
