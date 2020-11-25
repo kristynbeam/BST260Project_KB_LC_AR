@@ -77,18 +77,22 @@ library (ggplot2)
 aus_total_covid<-aus_total %>% filter (Disease=="COVID-19")
 
 p<-ggplot(data=aus_total_covid, aes(Date, Cases))
-p+geom_line(aes(color=State))
+p+geom_line(aes(color=State)) +
+  ggtitle("Covid Cases by Region")
 
 p2<-ggplot(data=aus_total_covid, aes(Date, Rates))
-p2+geom_line(aes(color=State))
+p2+geom_line(aes(color=State)) +
+  ggtitle("Covid Rates by Region")
 
 aus_total_influenza<-aus_total %>% filter (Disease=="Influenza (laboratory confirmed)")
 
 p3<-ggplot(data=aus_total_influenza, aes(Date, Cases))
-p3+geom_line(aes(color=State))
+p3+geom_line(aes(color=State)) +
+  ggtitle("Influenza Cases by Region")
 
 p4<-ggplot(data=aus_total_influenza, aes(Date, Rates))
-p4+geom_line(aes(color=State))
+p4+geom_line(aes(color=State)) +
+  ggtitle("Influenza Rate by Region")
 
 ```
 
