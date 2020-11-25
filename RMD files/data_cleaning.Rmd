@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(lubridate)
+library(ggplot2)
 ```
 
 ```{r}
@@ -120,9 +121,11 @@ countries %>%
 
 #Filtered australia policy data to include columns of significance
 pol_dat_aus <- pol_dat_aus %>% 
-  select(description, date_announced, date_start, date_end, country, ISO_A2, ISO_A3, domestic_policy, province, type, type_sub_cat, type_text, target_country, target_province, target_who_what, compliance, enforcer) %>% 
+  select(description, date_announced, date_start, date_end, country, ISO_A2, ISO_A3, domestic_policy, province, type, type_sub_cat, type_text, target_country, target_province, target_who_what, index_high_est, index_med_est, index_low_est, index_country_rank, compliance, enforcer) %>% 
   group_by(date_announced) %>% 
   arrange(province)
+
+#A higher policy activity score indicates more restrictions at an earlier date. 
 
 ```
 
