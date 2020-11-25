@@ -51,6 +51,17 @@ aus_dat_case <- aus_dat %>%
 ```{r}
 aus_data <- read.csv( "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/Australian_data_clean.csv")
 not_all_na <- function(x) any(!is.na(x))
-aus_data<-aus_data%>%select_if(not_all_na)
+aus_data<-aus_data%>%select_if(not_all_na)%>% rename("Disease"="X")
+#Rate per 100,000
+head(aus_data)
+
+aus_data_cases<- aus_data %>% select("Disease":"Aust_n")%>% rename("ACT"="ACT_n", "NSW"="NSW_n", "NT"="NT_n", "Qld"="Qld_n", "SA"="SA_n", "Tas"= "Tas_n", "Vic"= "Vic_n", "WA"= "WA_n", "Australia"= "Aust_n")%>% arrange("Month") %>% gather(State, Cases, c("ACT":"Australia"))
+
+
+aus_data_rates<-aus_data %>% select("Disease"|"Month"|"ACT_rate":"Aust_rate")%>% rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"= "Vic_rate", "WA"= "WA_rate", "Australia"= "Aust_rate")%>% arrange("Month") %>% gather(State, Rates, c("ACT":"Australia")) 
+
+aus_total<-left_join(aus_data_cases, aus_data_rates)
+
+
 ```
 
