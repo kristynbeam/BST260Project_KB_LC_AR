@@ -48,3 +48,9 @@ aus_dat_case <- aus_dat %>%
 
 ```
 
+```{r}
+aus_data <- read.csv( "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/Australian_data_clean.csv")
+not_all_na <- function(x) any(!is.na(x))
+aus_data<-aus_data%>%select_if(not_all_na)
+```
+
