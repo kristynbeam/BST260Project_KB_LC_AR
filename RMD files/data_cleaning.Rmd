@@ -53,8 +53,6 @@ aus_data <- read.csv( "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_dat
 not_all_na <- function(x) any(!is.na(x))
 aus_data<-aus_data%>%select_if(not_all_na)%>% rename("Disease"="X")
 
-
-
 #Rate per 100,000
 head(aus_data)
 
@@ -78,21 +76,25 @@ aus_total_covid<-aus_total %>% filter (Disease=="COVID-19")
 
 p<-ggplot(data=aus_total_covid, aes(Date, Cases))
 p+geom_line(aes(color=State)) +
-  ggtitle("Covid Cases by Region")
+  ggtitle("Covid Cases by Region") +
+  ylim(0, 70000)
 
 p2<-ggplot(data=aus_total_covid, aes(Date, Rates))
 p2+geom_line(aes(color=State)) +
-  ggtitle("Covid Rates by Region")
+  ggtitle("Covid Rates by Region") +
+  ylim(0, 450)
 
 aus_total_influenza<-aus_total %>% filter (Disease=="Influenza (laboratory confirmed)")
 
 p3<-ggplot(data=aus_total_influenza, aes(Date, Cases))
 p3+geom_line(aes(color=State)) +
-  ggtitle("Influenza Cases by Region")
+  ggtitle("Influenza Cases by Region") +
+  ylim(0, 70500)
 
 p4<-ggplot(data=aus_total_influenza, aes(Date, Rates))
 p4+geom_line(aes(color=State)) +
-  ggtitle("Influenza Rate by Region")
+  ggtitle("Influenza Rate by Region") +
+  ylim(0, 450)
 
 ```
 
