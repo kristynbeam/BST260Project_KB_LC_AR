@@ -25,7 +25,7 @@ aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project
 # Identify earliest date available: 2017-09-15
 min(aus_dat$week)
 
-#Identify latest date available: 2018-01-05
+# Identify latest date available: 2018-01-05
 max(aus_dat$week)
 
 aus_dat <- aus_dat %>% 
@@ -99,10 +99,10 @@ aus_total_covid <- aus_total %>%
   filter(Disease == "COVID-19")
 
 # Create test COVID-19 plots
-p <- ggplot(data = aus_total_covid, 
+p1 <- ggplot(data = aus_total_covid, 
             aes(x = Date, 
                 y = Cases))
-p + geom_line(aes(color = State)) +
+p1 + geom_line(aes(color = State)) +
   ggtitle("Covid Cases by Region") +
   ylim(0, 70000)
 
@@ -120,7 +120,7 @@ aus_total_influenza <- aus_total %>%
 # Identify earliest date available: 2018-11-30
 min(aus_total_influenza$Date)
 
-#Identify latest date available: 2020-10-31
+# Identify latest date available: 2020-10-31
 max(aus_total_influenza$Date)
 
 # Create test influenza plots
@@ -189,15 +189,19 @@ head(pol_dat_aus)
 # "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
 # Test graph
-aus_total_covid %>%
-  filter(State == "NSW" & Date >= "2020-01-01") %>%
-  ggplot(aes(x = Date, y = Rates)) +
-  geom_line(alpha = 0.5) +
+aus_total %>%
+  filter(State == "NSW" & Date >= "2020-01-01" & Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+  ggplot(aes(x = Date, 
+             y = Rates)) +
+  geom_line(aes(color = Disease), 
+            alpha = 0.5) +
   # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
-  geom_vline(alpha = 0.5, xintercept = as.numeric(as.Date("2020-03-16")), color = "blue") +
+  geom_vline(alpha = 0.5, 
+             xintercept = as.numeric(as.Date("2020-03-16")), 
+             color = "blue") +
   labs(x = "Date",
        y = "Rate") +
-  ggtitle("Covid rates in NSW") +
+  ggtitle("Covid rates in NSW over time") +
   scale_x_date(date_breaks = "1 month", 
                date_labels = "%b")
 ```
