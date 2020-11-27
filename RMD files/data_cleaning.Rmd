@@ -15,10 +15,11 @@ library(tidyverse)
 library(dplyr)
 library(lubridate)
 library(ggplot2)
+library(readr)
 ```
 
 ```{r}
-aus_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_flu_08_17.csv")
+aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
 head(aus_dat)
 View(aus_dat)
 colnames(aus_dat)
@@ -41,7 +42,6 @@ aus_dat$Sex <- as.character(aus_dat$Sex)
 head(aus_dat)
 ```
 
-
 ```{r}
 aus_dat_case <- aus_dat %>% 
   group_by(week, State, age_group, Sex, flu_type) %>% 
@@ -50,7 +50,7 @@ aus_dat_case <- aus_dat %>%
 ```
 
 ```{r}
-aus_data <- read.csv( "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/Australian_data_clean.csv")
+aus_data <- read.csv( "https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
 not_all_na <- function(x) any(!is.na(x))
 aus_data<-aus_data%>%select_if(not_all_na)%>% rename("Disease"="X")
 
@@ -71,8 +71,6 @@ head(aus_total)
 ```
 
 ```{r}
-library (ggplot2)
-
 aus_total_covid<-aus_total %>% filter (Disease=="COVID-19")
 
 p<-ggplot(data=aus_total_covid, aes(Date, Cases))
@@ -101,31 +99,81 @@ p4+geom_line(aes(color=State)) +
 
 
 ```{r}
-#Read in policy data
-pol_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/coronanet_release.csv")
-head(pol_dat)
+# #Read in policy data
+# pol_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/coronanet_release.csv")
+# head(pol_dat)
+# 
+# #Filtered policy data to just Australia
+# pol_dat_aus <- pol_dat %>% 
+#   filter(ISO_A2 == "AU" & ISO_A3 == "AUS") %>% 
+#   arrange(date_start)
+# 
+# #Read in uid lookup dataset
+# countries <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/UID_ISO_FIPS_LookUp_Table.csv")
+# head(countries)
+# countries <- countries %>% 
+#   rename(ISO_A2 = iso2, ISO_A3 = iso3)
+# 
+# countries %>% 
+#   filter(ISO_A3 == "AUS")
+# 
+# #Filtered australia policy data to include columns of significance
+# pol_dat_aus <- pol_dat_aus %>% 
+#   select(description, date_announced, date_start, date_end, country, ISO_A2, ISO_A3, domestic_policy, province, type, type_sub_cat, type_text, target_country, target_province, target_who_what, index_high_est, index_med_est, index_low_est, index_country_rank, compliance, enforcer) %>% 
+#   group_by(date_announced) %>% 
+#   arrange(province)
+# 
+# #A higher policy activity score indicates more restrictions at an earlier date. 
 
-#Filtered policy data to just Australia
-pol_dat_aus <- pol_dat %>% 
-  filter(ISO_A2 == "AU" & ISO_A3 == "AUS") %>% 
-  arrange(date_start)
+```
 
-#Read in uid lookup dataset
-countries <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/UID_ISO_FIPS_LookUp_Table.csv")
-head(countries)
-countries <- countries %>% 
-  rename(ISO_A2 = iso2, ISO_A3 = iso3)
+```{r}
+# Read in Australian policy data by pulling most up-to-date version from Github
+pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
 
-countries %>% 
-  filter(ISO_A3 == "AUS")
+pol_dat_aus <- pol_dat_aus %>%
+  # Arrange pol_dat_aus by date policy goes into effect and sub-national unit
+  arrange(province, date_start)
 
-#Filtered australia policy data to include columns of significance
-pol_dat_aus <- pol_dat_aus %>% 
-  select(description, date_announced, date_start, date_end, country, ISO_A2, ISO_A3, domestic_policy, province, type, type_sub_cat, type_text, target_country, target_province, target_who_what, index_high_est, index_med_est, index_low_est, index_country_rank, compliance, enforcer) %>% 
-  group_by(date_announced) %>% 
-  arrange(province)
+pol_dat_aus$type <- as.factor(pol_dat_aus$type)
+pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
 
-#A higher policy activity score indicates more restrictions at an earlier date. 
+# View pol_dat_aus
+head(pol_dat_aus)
+```
 
+```{r}
+# https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0
+# "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
+
+# Test graph
+aus_total_covid %>%
+  filter(State == "NSW" & Date >= "2020-01-01") %>%
+  ggplot(aes(x = Date, y = Rates)) +
+  geom_line(alpha = 0.5) +
+  # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
+  geom_vline(alpha = 0.5, xintercept = as.numeric(as.Date("2020-03-16")), color = "blue") +
+  labs(x = "Date",
+       y = "Rate") +
+  ggtitle("Covid rates in NSW") +
+  scale_x_date(date_breaks = "1 month", 
+               date_labels = "%b")
+```
+
+
+```{r}
+# Read in Johns Hopkins UID lookup table
+uid_lookup_table = read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv")
+
+# Filter uid_lookup_table to only include relevant observations
+uid_lookup_table <- uid_lookup_table %>% 
+   filter(`Country_Region` == "Australia" & !is.na(`Province_State`))
+
+# View uid_lookup_table
+head(uid_lookup_table)
+
+# # Merge pol_dat_aus with uid_lookup_table (run this code for producing maps dataset)
+# pol_dat_aus <- pol_dat_aus %>%
+#    left_join(uid_lookup_table, by = c("province" = "Province_State"))
 ```
 
