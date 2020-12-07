@@ -41,23 +41,22 @@ ui <- fluidPage(
 server <- function(input, output) {
 
     output$linePlot <- renderPlot({
-        aus_total %>%
-            filter(State == input$province & Date >= "2020-01-01" & Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+        aus_total_covid %>% 
+            filter(State == input$province) %>% 
             ggplot(aes(Date, Rates)) +
-            geom_line(aes(color = Disease), 
-                      alpha = 0.5) +
-            # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
+            geom_line(color = "blue") +
+            ggtitle(paste("Infectious Disease Rates in", input$province)) +
+            #ylim(0, 40) +
+            theme_minimal() +
+            geom_line(data = aus_total %>% 
+                          filter(Disease == input$disease & State == input$province), 
+                      aes(Date, Rates), color = "red")
+        #Need to figure out how to put the vertical line based on the policy selected
             #geom_vline(alpha = 0.5, 
              #          xintercept = as.numeric(as.Date("2020-03-16")), 
-              #         color = "blue") +
-            labs(x = "Date",
-                 y = "Rate") +
-            ggtitle("Covid rates in NSW over time") +
-            scale_x_date(date_breaks = "1 month", 
-                         date_labels = "%b")
+              #         color = "blue")
+      
 
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
     })
 }
 

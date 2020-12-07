@@ -106,6 +106,8 @@ p1 + geom_line(aes(color = State)) +
   ggtitle("Covid Cases by Region") +
   ylim(0, 70000)
 
+p1
+
 p2 <- ggplot(data = aus_total_covid, 
              aes(x = Date, 
                  y = Rates))
@@ -221,5 +223,9 @@ head(uid_lookup_table)
 # # Merge pol_dat_aus with uid_lookup_table (run this code for producing maps dataset)
 # pol_dat_aus <- pol_dat_aus %>%
 #    left_join(uid_lookup_table, by = c("province" = "Province_State"))
+```
+
+```{r}
+
 ```
 
