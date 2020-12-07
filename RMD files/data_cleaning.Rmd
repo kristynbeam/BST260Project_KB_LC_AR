@@ -1,6 +1,6 @@
 ---
-title: "KB_Project"
-author: "Kristyn Beam"
+title: "BST260_Project"
+author: "Kristyn Beam and Alex Rashedi and Luis Castelo Branco"
 date: "11/24/2020"
 output: html_document
 ---
