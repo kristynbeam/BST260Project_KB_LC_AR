@@ -90,6 +90,20 @@ aus_total$Rates <- as.numeric(aus_total$Rates)
 
 # View aus_total
 head(aus_total)
+
+
+#Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
+aus_total_high <- aus_total %>% 
+  filter(Rates >= 0.2, Disease != "COVID-19")
+
+#How many diseases are we left with in this case? n = 42
+aus_total_high %>% 
+  group_by(Disease) %>% 
+  summarize()
+
+aus_total_high %>% 
+  ggplot(aes(Date, Rates, color = Disease)) +
+  geom_line()
 ```
 
 ```{r}
