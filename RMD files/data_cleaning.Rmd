@@ -177,7 +177,7 @@ pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/m
 
 pol_dat_aus <- pol_dat_aus %>%
   # Arrange pol_dat_aus by date policy goes into effect and sub-national unit
-  arrange(province, date_start)
+  arrange(province, date_start) 
 
 pol_dat_aus$type <- as.factor(pol_dat_aus$type)
 pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
@@ -185,6 +185,55 @@ pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
 # View pol_dat_aus
 head(pol_dat_aus)
 ```
+
+```{r}
+   country_names <- recode(pol_dat_aus$province, "Australian Capital Territory" = "ACT", "New South Wales" = "NSW", "Northern Territory" = "NT", "Queensland" = "Qld", "South Australia" = "SA",  "Tasmania" = "Tas", "Victoria" = "Vic", "Western Australia" = "WA")
+
+pol_dat_aus$province <- country_names
+
+#create smaller DF for each province
+pol_ACT <- pol_dat_aus %>% 
+  filter(province == "ACT") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_NSW <- pol_dat_aus %>% 
+  filter(province == "NSW") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_NT <- pol_dat_aus %>% 
+  filter(province == "NT") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_Qld <- pol_dat_aus %>% 
+  filter(province == "Qld") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_SA <- pol_dat_aus %>% 
+  filter(province == "SA") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_Tas <- pol_dat_aus %>% 
+  filter(province == "Tas") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_Vic <- pol_dat_aus %>% 
+  filter(province == "Vic") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+
+pol_WA <- pol_dat_aus %>% 
+  filter(province == "WA") %>% 
+  group_by(type) %>% 
+  select(province, type, date_announced, date_start)
+```
+
+
 
 ```{r}
 # https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0

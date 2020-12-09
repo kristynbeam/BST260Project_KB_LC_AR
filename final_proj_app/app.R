@@ -19,14 +19,14 @@ ui <- fluidPage(
                         label = "Select a Province:",
                         choices = aus_total$State,
                         selected = "NSW"), #end of province selection
+            selectInput("disease",
+                        label = "Select a Disease:",
+                        choices = aus_total$Disease,
+                        selected = "Influenza (laboratory confirmed)"), #end of Disease selection
            selectInput("policy", 
                        label = "Select a Policy:",
                        choices = pol_dat_aus$type,
-                       selected = "Quarantine"), #end of Policy selection
-           selectInput("disease",
-                      label = "Select a Disease:",
-                      choices = aus_total$Disease,
-                      selected = "Influenza (laboratory confirmed)") #end of Disease selection
+                       selected = "Quarantine") #end of Policy selection
             
         ), #end sidebarPanel
 
@@ -50,11 +50,11 @@ server <- function(input, output) {
             theme_minimal() +
             geom_line(data = aus_total %>% 
                           filter(Disease == input$disease & State == input$province), 
-                      aes(Date, Rates), color = "red")
-        #Need to figure out how to put the vertical line based on the policy selected
-            #geom_vline(alpha = 0.5, 
-             #          xintercept = as.numeric(as.Date("2020-03-16")), 
-              #         color = "blue")
+                      aes(Date, Rates), color = "red") #+
+            #geom_vline(data = pol_dat_aus %>% 
+             #            filter(province = input$province),
+              #         xintercept = as.numeric(as.Date("2020-03-16")
+        
       
 
     })
