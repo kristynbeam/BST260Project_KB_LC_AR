@@ -317,7 +317,7 @@ aus_total_influenza_diff<-left_join(aus_total_influenza_diff, density)
 
 head(aus_total_influenza_diff)
 
-#linear regressions to see if population or populaiton density were associated with the drop in cases
+#linear regressions to see if population or population density were associated with the drop in cases
 
 linearMod <- lm(drop ~ density , data=aus_total_influenza_diff) 
 confint.lm(linearMod)
