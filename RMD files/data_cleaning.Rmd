@@ -55,11 +55,10 @@ aus_dat_case <- aus_dat %>%
 # Read in Australian disease data
 aus_data <- read.csv( "https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
 
-# Add description of function here
+# removing all NA values
 not_all_na <- function(x) any(!is.na(x))
 
 aus_data <- aus_data %>%
-  # Add description here
   select_if(not_all_na) %>% 
   # Rename variable
   rename("Disease"="X")
@@ -275,6 +274,44 @@ head(uid_lookup_table)
 ```
 
 ```{r}
+#Creating a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) compared to year 2 (Nov19 to Oct/20)
+aus_total_influenza$Date <- ymd(aus_total_influenza$Date)
+
+head(aus_total_influenza)
+
+aus_total_influenza_year1<- aus_total_influenza %>% filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=sum(Cases))
+aus_total_influenza_year2<- aus_total_influenza %>% filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=sum(Cases))
+aus_total_influenza_diff<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%mutate(drop=(year1-year2)/year1)
+
+```
+
+
+```{r}
+#web scraping for a dataset that containd the Population and Population density for the provinces
+library(rvest)
+url <- "https://www.worldatlas.com/articles/which-australian-states-territories-have-the-highest-density-of-population.html"
+h   <- read_html(url)
+density<- h %>% html_nodes("table") %>% .[1]
+density <- density %>% html_table %>% .[[1]] 
+
+density<- density%>%rename("State"= "State / Territory")%>%rename("density"="Density (persons per km2)") %>% mutate(State=recode(State,"Australian Capital Territory"="ACT", "New South Wales"="NSW", "Northern Territory"="NT", "Queensland"="Qld", "South Australia"="SA", "Tasmania"="Tas", "Victoria"="Vic", "Western Australia"="WA"))
+
+density$Population<-as.numeric(gsub(",","",density$Population))
+
+#joining the datasets
+aus_total_influenza_diff<-left_join(aus_total_influenza_diff, density)
+
+head(aus_total_influenza_diff)
+
+#linear regressions to see if population or populaiton density were associated with the drop in cases
+
+linearMod <- lm(drop ~ density , data=aus_total_influenza_diff) 
+confint.lm(linearMod)
+summary(linearMod)
+
+linearMod2 <- lm(drop ~ Population , data=aus_total_influenza_diff) 
+confint.lm(linearMod2)
+summary(linearMod2)
 
 ```
 
