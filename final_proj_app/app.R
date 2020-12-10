@@ -7,11 +7,10 @@ library(ggplot2)
 library(readr)
 library(directlabels)
 
-
 # Bring in data
-aus_total <- read.csv("project_data_files/aus_total.csv")
-aus_total_high <- read.csv("project_data_files/aus_total_high.csv")
-pol_dat_aus <- read.csv("project_data_files/pol_dat_aus.csv")
+#aus_total <- read.csv("aus_total.csv")
+#aus_total_high <- read.csv("aus_total_high.csv")
+#pol_dat_aus <- read.csv("pol_dat_aus.csv")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -28,7 +27,7 @@ ui <- fluidPage(
         sidebarPanel(
           selectInput("province",
                       label = "Select a province:",
-                      choices = aus_total$State,
+                      choices = aus_total_high$State,
                       selected = "Australian Capital Territory"), #end of province selection
           selectInput("disease",
                       label = "Select a disease:",
@@ -67,8 +66,10 @@ server <- function(input, output) {
       policies <- pol_dat_aus %>%
         filter(province == input$province & type == input$policy)
         
-        aus_total %>% 
-            filter(State == input$province & Date >= "2020-01-01" & Disease %in% c(input$disease, "COVID-19")) %>% 
+        aus_total_high %>% 
+            filter(State == input$province & 
+                     Date >= "2020-01-01" & 
+                     Disease %in% c(input$disease, "COVID-19")) %>% 
             ggplot(aes(x = Date, 
                        y = Rates)) +
             geom_line(color = Disease,
@@ -82,15 +83,15 @@ server <- function(input, output) {
             ggtitle(paste("Infectious Disease Rates per 100,000 in", 
                           input$province)) +
             scale_x_date(date_breaks = "1 month", 
-                         date_labels = "%b") 
+                         date_labels = "%b") +
         
             
-            #geom_dl(aes(label = "COVID-19"), method = "top.qp") +
+            geom_dl(aes(label = "COVID-19"), method = "top.qp") +
             #ylim(0, 40) +
-            #theme_minimal() +
-            #geom_line(data = aus_total_high %>% 
-                          #filter(Disease == input$disease & State == input$province), 
-                      #aes(Date, Rates), color = "red") 
+            theme_minimal() +
+            geom_line(data = aus_total_high %>% 
+                          filter(Disease == input$disease & State == input$province), 
+                      aes(Date, Rates), color = "red") 
             #geom_vline(data = pol_dat_aus %>% 
              #            filter(province = input$province),
               #         xintercept = as.numeric(as.Date("2020-03-16")

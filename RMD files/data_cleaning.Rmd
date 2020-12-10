@@ -108,8 +108,8 @@ aus_total_high %>%
   geom_line()
 
 # Save aus_total and aus_total_high so they can be brought into Shiny app
-write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus.total.csv")
-write.csv(aus_total_high, file = "aus_total_high.csv")
+write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total.csv")
+write.csv(aus_total_high, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total_high.csv")
 #write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
 #write.csv(aus_total_high, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
 ```
@@ -217,7 +217,8 @@ pol_dat_aus <- pol_dat_aus %>%
 head(pol_dat_aus)
 
 # Save pol_dat_aus so it can be brought into Shiny app
-write.csv(pol_dat_aus, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/pol_dat_aus.csv")
+write.csv(pol_dat_aus, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/pol_dat._aus.csv")
+#write.csv(pol_dat_aus, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/pol_dat_aus.csv")
 ```
 
 ```{r}
