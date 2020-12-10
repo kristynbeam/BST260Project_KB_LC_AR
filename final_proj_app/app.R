@@ -90,7 +90,7 @@ server <- function(input, output) {
                   xintercept = as.numeric(as.Date(pol_dat$date_start)),
                   color = "blue") +
         #geom_dl(aes(label = "COVID-19"), method = "top.qp") +
-        #theme_minimal() +
+        theme_minimal() +
         #geom_line(data = aus_total_high %>% 
         #         filter(Disease == input$disease & State == input$province), 
          #        aes(Date, Rates), color = "red") +
