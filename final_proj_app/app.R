@@ -72,7 +72,7 @@ server <- function(input, output) {
                      Disease %in% c(input$disease, "COVID-19")) %>% 
             ggplot(aes(x = Date, 
                        y = Rates)) +
-            geom_line(color = Disease,
+            geom_line(aes(color = Disease),
                       alpha = 0.5) +
            # geom_vline(data = pol_dat_aus %>% 
             #           alpha = 0.5, 
