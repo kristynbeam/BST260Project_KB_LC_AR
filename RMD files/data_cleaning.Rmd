@@ -20,7 +20,8 @@ library(readr)
 
 ```{r}
 # Read in data on weekly influenza counts by Australian region 
-aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
+#aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
+aus_dat <- read.csv("../project_data_files/aus_flu_08_17.csv")
 
 # Identify earliest date available: 2017-09-15
 min(aus_dat$week)
@@ -53,7 +54,8 @@ aus_dat_case <- aus_dat %>%
 
 ```{r}
 # Read in Australian disease data
-aus_data <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
+#aus_data <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
+aus_data <- read.csv("../project_data_files/Australian_data_clean.csv")
 
 # removing all NA values
 not_all_na <- function(x) any(!is.na(x))
@@ -111,13 +113,16 @@ aus_total_high %>%
 # write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total.csv")
 # write.csv(aus_total_high, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total_high.csv")
 # write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
-write.csv(aus_total_high, "aus_total_high.csv")
+write.csv(aus_total_high, "../project_data_files/aus_total_high.csv")
+head(aus_total_high)
 ```
 
 ```{r}
 # Create COVID-19 data frame
 aus_total_covid <- aus_total %>% 
   filter(Disease == "COVID-19")
+
+write.csv(aus_total_covid, "../project_data_files/aus_total_covid.csv")
 
 # Create test COVID-19 plots
 p1 <- ggplot(data = aus_total_covid, 
@@ -196,6 +201,7 @@ p4 + geom_line(aes(color = State)) +
 # Read in Australian policy data by pulling most up-to-date version from Github
 pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
 
+
 pol_dat_aus <- pol_dat_aus %>%
   # Group pol_dat_aus by province and policy type
   group_by(province, 
@@ -209,20 +215,20 @@ pol_dat_aus <- pol_dat_aus %>%
   # Filter to keep only policies that target Australia
   filter(target_country == "Australia")
 
-# pol_dat_aus$type <- as.factor(pol_dat_aus$type)
-# pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
-# pol_dat_aus$target_who_what <- as.factor(pol_dat_aus$target_who_what)
+pol_dat_aus$type <- as.factor(pol_dat_aus$type)
+pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
+pol_dat_aus$target_who_what <- as.factor(pol_dat_aus$target_who_what)
 
 # View pol_dat_aus
 head(pol_dat_aus)
-
+list.files()
 # Save pol_dat_aus so it can be brought into Shiny app
 # write.csv(pol_dat_aus, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/pol_dat._aus.csv")
-write.csv(pol_dat_aus, "pol_dat_aus.csv")
+write.csv(pol_dat_aus, "../project_data_files/pol_dat_aus.csv")
 ```
 
 ```{r}
-   country_names <- recode(pol_dat_aus$province, "Australian Capital Territory" = "ACT", "New South Wales" = "NSW", "Northern Territory" = "NT", "Queensland" = "Qld", "South Australia" = "SA",  "Tasmania" = "Tas", "Victoria" = "Vic", "Western Australia" = "WA")
+   country_names <- recode(pol_dat_aus$province, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia",  "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
 
 pol_dat_aus$province <- country_names
 
@@ -274,9 +280,13 @@ pol_WA <- pol_dat_aus %>%
 # https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0
 # "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
+class(aus_total_high$Date)
+
+
 # Test graph
-aus_total %>%
-  filter(State == "NSW" & Date >= "2020-01-01" & Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+aus_total_high %>%
+  filter(State == "New South Wales" & #Date >= "2020-01-01" & 
+           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
   ggplot(aes(x = Date, 
              y = Rates)) +
   geom_line(aes(color = Disease), 
@@ -350,4 +360,5 @@ head(aus_total_influenza_diff)
 # summary(linearMod2)
 
 ```
+
 

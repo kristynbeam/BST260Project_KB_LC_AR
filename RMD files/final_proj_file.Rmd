@@ -41,9 +41,205 @@ An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-02
 
 ### Data sources
 
+```{r}
+# Read in data on weekly influenza counts by Australian region 
+aus_dat <- read.csv("../project_data_files/aus_flu_08_17.csv")
+
+# Identify earliest date available: 2017-09-15
+min(aus_dat$week)
+
+# Identify latest date available: 2018-01-05
+max(aus_dat$week)
+
+aus_dat <- aus_dat %>% 
+  # Rename variables
+  rename(week = Week.Ending..Friday., age_group = Age..group, indig = Indigenous.status, flu_type = Type.Subtype, state = State, sex = Sex) %>% 
+  # Select variables
+  select(week, state, age_group, sex, indig, flu_type)
+
+# Convert variable types
+aus_dat$week <- mdy(aus_dat$week)
+# aus_dat$flu_type <- as.character(aus_dat$flu_type)
+# aus_dat$state <- as.character(aus_dat$state)
+# aus_dat$sex <- as.character(aus_dat$sex)
+
+# View aus_dat
+head(aus_dat)
+
+# Create count data frame using aus_dat
+aus_dat_case <- aus_dat %>% 
+  group_by(week, state, age_group, flu_type, sex) %>% 
+  summarize(n_cases = n())
+```
 
 
+```{r}
+# Read in Australian disease data
+aus_data <- read.csv("../project_data_files/Australian_data_clean.csv")
 
+# removing all NA values
+not_all_na <- function(x) any(!is.na(x))
+
+aus_data <- aus_data %>%
+  select_if(not_all_na) %>%
+  # Rename variable
+  rename("Disease"="X")
+
+head(aus_data)
+
+# Create case data frame and reshape to long format
+aus_data_cases <- aus_data %>% 
+  select("Disease":"Aust_n") %>% 
+  rename("ACT"="ACT_n", "NSW"="NSW_n", "NT"="NT_n", "Qld"="Qld_n", "SA"="SA_n", "Tas"= "Tas_n", "Vic"= "Vic_n", "WA"= "WA_n", "Australia"= "Aust_n") %>% 
+  arrange("Date") %>% 
+  gather(State, Cases, c("ACT":"Australia"))
+
+# Create rate data frame and reshape to long format
+aus_data_rates <- aus_data %>% 
+  select("Disease"|"Date"|"ACT_rate":"Aust_rate") %>% 
+  rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"="Vic_rate", "WA"="WA_rate", "Australia"="Aust_rate") %>% 
+  arrange("Date") %>% 
+  gather(State, Rates, c("ACT":"Australia")) 
+
+# Join cases and rates data frames
+aus_total <- left_join(aus_data_cases, aus_data_rates)
+
+# Convert variable types
+aus_total$Date <- mdy(aus_total$Date)
+aus_total$Cases <- as.numeric(aus_total$Cases)
+aus_total$Rates <- as.numeric(aus_total$Rates)
+
+# View aus_total
+head(aus_total)
+
+# Rename provinces
+aus_total$State <- recode(aus_total$State, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia", "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
+
+
+#Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
+aus_total_high <- aus_total %>% 
+  filter(Rates >= 0.2)
+
+#How many diseases are we left with in this case? n = 42
+aus_total_high %>% 
+  group_by(Disease) %>% 
+  summarize()
+
+aus_total_high %>% 
+  ggplot(aes(Date, Rates, color = Disease)) +
+  geom_line()
+
+head(aus_total_high)
+write.csv(aus_total_high, "../project_data_files/aus_total_high.csv")
+```
+
+```{r}
+# Create COVID-19 data frame
+aus_total_covid <- aus_total %>% 
+  filter(Disease == "COVID-19")
+
+write.csv(aus_total_covid, "../project_data_files/aus_total_covid.csv")
+
+# Create test COVID-19 plots
+p1 <- ggplot(data = aus_total_covid, 
+            aes(x = Date, 
+                y = Cases))
+p1 + geom_line(aes(color = State)) +
+  ggtitle("Covid Cases by Region") +
+  ylim(0, 70000)
+
+p2 <- ggplot(data = aus_total_covid, 
+             aes(x = Date, 
+                 y = Rates))
+p2 + geom_line(aes(color = State)) +
+  ggtitle("Covid Rates by Region") +
+  ylim(0, 450)
+
+# Create influenza data frame (monthly counts and rates by Australian region)
+aus_total_influenza <- aus_total %>% 
+  filter(Disease == "Influenza (laboratory confirmed)")
+
+# Identify earliest date available: 2018-11-30
+min(aus_total_influenza$Date)
+
+# Identify latest date available: 2020-10-31
+max(aus_total_influenza$Date)
+
+# Create test influenza plots
+p3 <- ggplot(data = aus_total_influenza, 
+             aes(x = Date, 
+                 y = Cases))
+p3 + geom_line(aes(color = State)) +
+  ggtitle("Influenza Cases by Region") +
+  ylim(0, 70500)
+
+p4 <- ggplot(data = aus_total_influenza, 
+             aes(x = Date, 
+                 y = Rates))
+p4 + geom_line(aes(color = State)) +
+  ggtitle("Influenza Rate by Region") +
+  ylim(0, 450)
+
+p1
+p2
+p3
+p4
+```
+
+
+```{r}
+# Read in Australian policy data by pulling most up-to-date version from Github
+pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
+
+pol_dat_aus <- pol_dat_aus %>%
+  # Group pol_dat_aus by province and policy type
+  group_by(province, 
+           type) %>%
+  # Arrange by date policy goes into effect
+  arrange(date_start) %>%
+  # Keep only first observation within each province-policy type group
+  slice() %>%
+  # Ungroup
+  ungroup() %>%
+  # Filter to keep only policies that target Australia
+  filter(target_country == "Australia")
+
+pol_dat_aus$type <- as.factor(pol_dat_aus$type)
+pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
+pol_dat_aus$target_who_what <- as.factor(pol_dat_aus$target_who_what)
+
+# View pol_dat_aus
+head(pol_dat_aus)
+
+# Save pol_dat_aus so it can be brought into Shiny app
+write.csv(pol_dat_aus, "../project_data_files/pol_dat_aus.csv")
+
+#Recode province names to match other dataframes
+country_names <- recode(pol_dat_aus$province, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia",  "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
+
+pol_dat_aus$province <- country_names
+```
+
+
+```{r}
+# Test graph
+aus_total_high %>%
+  filter(State == "New South Wales" & #Date >= "2020-01-01" & 
+           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+  ggplot(aes(x = Date, 
+             y = Rates)) +
+  geom_line(aes(color = Disease), 
+            alpha = 0.5) +
+  # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
+  geom_vline(alpha = 0.5, 
+             xintercept = as.numeric(as.Date("2020-03-16")), 
+             color = "blue") +
+  labs(x = "Date",
+       y = "Rate") +
+  ggtitle("Covid rates in NSW over time") +
+  scale_x_date(date_breaks = "1 month", 
+               date_labels = "%b")
+```
 
 ### Exploratory Analysis
 

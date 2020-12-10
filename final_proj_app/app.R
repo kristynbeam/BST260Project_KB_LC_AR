@@ -8,14 +8,20 @@ library(readr)
 library(directlabels)
 
 # Bring in data
-print(list.files())
-data = read.csv("../project_data_files/aus_total_high.csv")
 
-#aus_total <- read.csv("aus_total.csv")
-# aus_total_high <- read.csv("aus_total_high.csv")
-#pol_dat_aus <- read.csv("pol_dat_aus.csv")
-# aus_total_high<- full_join(aus_total_high, aus_total_covid)
-# Define UI for application that draws a histogram
+# We have to name a relative file path instead of an absolute one. It all depends on the directory we are working in. 
+#When they clone our github and run our code, they will be located in the "final_proj_app" to run the shinyapp
+#In order to get them into the correct folder to load the data files, we have to add the "../" before
+#the code in order to direct them to the correct folder.
+#As long as all of our data files are saved into the project_data_files folder, then this should work for the 
+#shiny app purposes.
+aus_total_high = read.csv("../project_data_files/aus_total_high.csv")
+pol_dat_aus = read.csv("../project_data_files/pol_dat_aus.csv")
+aus_total_covid = read.csv("../project_data_files/aus_total_covid.csv")
+
+#aus_total_high<- full_join(aus_total_high, aus_total_covid)
+
+# Define UI for application 
 ui <- fluidPage(
   
     # Change theme to darkly
@@ -25,7 +31,7 @@ ui <- fluidPage(
     titlePanel("Impact of Policy Restrictions on Rates of COVID-19 and other Infectious Diseases in Australian Provinces in 2020"),
     
     fluidRow(
-      # Sidebar with a slider input for number of bins 
+      
       sidebarLayout(
         sidebarPanel(
           selectInput("province",
@@ -66,45 +72,36 @@ server <- function(input, output) {
     output$linePlot <- renderPlot({
       
       # Define province and policy type
-      pol_dat_aus <- pol_dat_aus %>%
+      pol_dat <- pol_dat_aus %>%
         filter(province == input$province & type == input$policy)
-                aus_total_high %>% 
-            filter(State == input$province & 
-                     Date >= "2020-01-01" & 
-                     Disease %in% c(input$disease, "COVID-19")) %>% 
-            ggplot(aes(x = Date, 
-                       y = Rates)) +
-            geom_line(aes(color = Disease)) +
-            geom_line(aes(x = Date, 
-                          y = Rates, color = Disease),
-                      alpha = 0.5) +
-           geom_vline(alpha = 0.5,
-                    xintercept = as.numeric(as.Date(pol_dat_aus$date_start)),
-                   color = "blue") +
-            labs(x = "Date",
-                 y = "Rate") +
-            ggtitle(paste("Infectious Disease Rates per 100,000 in", 
-                          input$province)) +
-            scale_x_date(date_breaks = "1 month", 
-                         date_labels = "%b") +
-        
-            
-            geom_dl(aes(label = "COVID-19"), method = "top.qp") +
-            #ylim(0, 40) +
-            theme_minimal() +
-            geom_line(data = aus_total_high %>% 
-                          filter(Disease == input$disease & State == input$province), 
-                      aes(Date, Rates), color = "red") 
-            #geom_vline(data = pol_dat_aus %>% 
-             #            filter(province = input$province),
-              #         xintercept = as.numeric(as.Date("2020-03-16")
       
-
+      aus_total_high %>% 
+        filter(State == input$province & 
+                 Date >= "2020-01-01" & 
+                 Disease %in% input$disease) %>% 
+        ggplot(aes(Date, Rates, color = Disease)) +
+        geom_line(aes(color = Disease)) +
+        geom_vline(alpha = 0.5, 
+                  xintercept = as.numeric(as.Date(pol_dat$date_start)),
+                  color = "blue") +
+        geom_dl(aes(label = "COVID-19"), method = "top.qp") +
+        theme_minimal() +
+        geom_line(data = aus_total_high %>% 
+                 filter(Disease == input$disease & State == input$province), 
+                 aes(Date, Rates), color = "red") +
+        geom_vline(data = pol_dat_aus %>% 
+                   filter(province == input$province),
+                  xintercept = as.numeric(as.Date(pol_dat$date_start))) +
+        labs(x = "Date",
+             y = "Rate") +
+        ggtitle(paste("Infectious Disease Rates per 100,000 in", 
+                      input$province)) +
+        scale_x_date(date_breaks = "1 month", 
+                     date_labels = "%b") 
       
+    }) #end of plot
       
-    
-    })
-      output$table <- renderTable({
+    output$table <- renderTable({
         Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
         Country <- c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland", 
                      "Southern Territory", "Tasmania", "Victoria", "Western Australia")
