@@ -63,8 +63,6 @@ aus_data <- aus_data %>%
   # Rename variable
   rename("Disease"="X")
 
-# Calculate rate per 100,000
-#We should show how we calculated the rate per 100,000 here - I assume it was just cases/100,000
 head(aus_data)
 
 # Create case data frame and reshape to long format
@@ -84,9 +82,6 @@ aus_data_rates <- aus_data %>%
 # Join cases and rates data frames
 aus_total <- left_join(aus_data_cases, aus_data_rates)
 
-# Rename provinces
-aus_total <- recode(aus_total$State, "Australian Capital Territory" = "ACT", "New South Wales" = "NSW", "Northern Territory" = "NT", "Queensland" = "Qld", "South Australia" = "SA", "Tasmania" = "Tas", "Victoria" = "Vic", "Western Australia" = "WA")
-
 # Convert variable types
 aus_total$Date <- mdy(aus_total$Date)
 aus_total$Cases <- as.numeric(aus_total$Cases)
@@ -94,6 +89,10 @@ aus_total$Rates <- as.numeric(aus_total$Rates)
 
 # View aus_total
 head(aus_total)
+
+# Rename provinces
+aus_total$State <- recode(aus_total$State, "Australian Capital Territory" = "ACT", "New South Wales" = "NSW", "Northern Territory" = "NT", "Queensland" = "Qld", "South Australia" = "SA", "Tasmania" = "Tas", "Victoria" = "Vic", "Western Australia" = "WA")
+
 
 #Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
 aus_total_high <- aus_total %>% 
@@ -109,8 +108,9 @@ aus_total_high %>%
   geom_line()
 
 # Save aus_total and aus_total_high so they can be brought into Shiny app
-write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
-write.csv(aus_total_high, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
+write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus.total.csv")
+#write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
+#write.csv(aus_total_high, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
 ```
 
 ```{r}

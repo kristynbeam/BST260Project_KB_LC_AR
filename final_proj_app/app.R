@@ -7,10 +7,11 @@ library(ggplot2)
 library(readr)
 library(directlabels)
 
+
 # Bring in data
-aus_total <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
-aus_total_high <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
-pol_dat_aus <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/pol_dat_aus.csv")
+aus_total <- read.csv("project_data_files/aus_total.csv")
+aus_total_high <- read.csv("project_data_files/aus_total_high.csv")
+pol_dat_aus <- read.csv("project_data_files/pol_dat_aus.csv")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -72,7 +73,7 @@ server <- function(input, output) {
                        y = Rates)) +
             geom_line(color = Disease,
                       alpha = 0.5) +
-            geom_vline(data = pol_dat_aus %>%
+            geom_vline(data = pol_dat_aus %>% 
                        alpha = 0.5, 
                        xintercept = as.numeric(as.Date(pol_dat_aus$date_start)), 
                        color = "blue") +
