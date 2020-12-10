@@ -94,6 +94,7 @@ head(aus_total)
 aus_total$State <- recode(aus_total$State, "Australian Capital Territory" = "ACT", "New South Wales" = "NSW", "Northern Territory" = "NT", "Queensland" = "Qld", "South Australia" = "SA", "Tasmania" = "Tas", "Victoria" = "Vic", "Western Australia" = "WA")
 
 
+
 #Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
 aus_total_high <- aus_total %>% 
   filter(Rates >= 0.2, Disease != "COVID-19")
