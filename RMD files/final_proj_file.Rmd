@@ -18,10 +18,11 @@ library(ggplot2)
 library(readr)
 ```
 
-## Examining Policy Interventions on COVID-19 and other infectious disease incidence in Australia
+## Examining Policy Interventions on COVID-19 and Other Infectious Disease Incidence in Australia
 
 ### Overview and Motivation
 
+COVID-19 has rocked the globe in the year 2020. With it's emergence in late 2019, quick spread, and lack of medical treatments and interventions, nonpharmaceutical interventions have been the forefront of limiting spread, disease, and death. 
 
 
 
