@@ -53,13 +53,13 @@ aus_dat_case <- aus_dat %>%
 
 ```{r}
 # Read in Australian disease data
-aus_data <- read.csv( "https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
+aus_data <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
 
 # removing all NA values
 not_all_na <- function(x) any(!is.na(x))
 
 aus_data <- aus_data %>%
-  select_if(not_all_na) %>% 
+  select_if(not_all_na) %>%
   # Rename variable
   rename("Disease"="X")
 
@@ -76,12 +76,15 @@ aus_data_cases <- aus_data %>%
 # Create rate data frame and reshape to long format
 aus_data_rates <- aus_data %>% 
   select("Disease"|"Date"|"ACT_rate":"Aust_rate") %>% 
-  rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"= "Vic_rate", "WA"= "WA_rate", "Australia"= "Aust_rate") %>% 
+  rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"="Vic_rate", "WA"="WA_rate", "Australia"="Aust_rate") %>% 
   arrange("Date") %>% 
   gather(State, Rates, c("ACT":"Australia")) 
 
 # Join cases and rates data frames
 aus_total <- left_join(aus_data_cases, aus_data_rates)
+
+# Rename provinces
+aus_total <- recode(aus_total$State, "Australian Capital Territory" = "ACT", "New South Wales" = "NSW", "Northern Territory" = "NT", "Queensland" = "Qld", "South Australia" = "SA", "Tasmania" = "Tas", "Victoria" = "Vic", "Western Australia" = "WA")
 
 # Convert variable types
 aus_total$Date <- mdy(aus_total$Date)
@@ -90,7 +93,6 @@ aus_total$Rates <- as.numeric(aus_total$Rates)
 
 # View aus_total
 head(aus_total)
-
 
 #Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
 aus_total_high <- aus_total %>% 
@@ -104,6 +106,10 @@ aus_total_high %>%
 aus_total_high %>% 
   ggplot(aes(Date, Rates, color = Disease)) +
   geom_line()
+
+# Save aus_total and aus_total_high so they can be brought into Shiny app
+write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
+write.csv(aus_total_high, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
 ```
 
 ```{r}
@@ -189,14 +195,27 @@ p4 + geom_line(aes(color = State)) +
 pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
 
 pol_dat_aus <- pol_dat_aus %>%
-  # Arrange pol_dat_aus by date policy goes into effect and sub-national unit
-  arrange(province, date_start) 
+  # Group pol_dat_aus by province and policy type
+  group_by(province, 
+           type) %>%
+  # Arrange by date policy goes into effect
+  arrange(date_start) %>%
+  # Keep only first observation within each province-policy type group
+  slice() %>%
+  # Ungroup
+  ungroup() %>%
+  # Filter to keep only policies that target Australia
+  filter(target_country == "Australia")
 
-pol_dat_aus$type <- as.factor(pol_dat_aus$type)
-pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
+# pol_dat_aus$type <- as.factor(pol_dat_aus$type)
+# pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
+# pol_dat_aus$target_who_what <- as.factor(pol_dat_aus$target_who_what)
 
 # View pol_dat_aus
 head(pol_dat_aus)
+
+# Save pol_dat_aus so it can be brought into Shiny app
+write.csv(pol_dat_aus, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/pol_dat_aus.csv")
 ```
 
 ```{r}
@@ -304,7 +323,7 @@ aus_total_influenza_diff<- left_join(aus_total_influenza_year1, aus_total_influe
 #web scraping for a dataset that containd the Population and Population density for the provinces
 library(rvest)
 url <- "https://www.worldatlas.com/articles/which-australian-states-territories-have-the-highest-density-of-population.html"
-h   <- read_html(url)
+h <- read_html(url)
 density<- h %>% html_nodes("table") %>% .[1]
 density <- density %>% html_table %>% .[[1]] 
 
