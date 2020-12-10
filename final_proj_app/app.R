@@ -15,11 +15,11 @@ library(directlabels)
 #the code in order to direct them to the correct folder.
 #As long as all of our data files are saved into the project_data_files folder, then this should work for the 
 #shiny app purposes.
-#aus_total_high = read.csv("../project_data_files/aus_total_high.csv")
-#pol_dat_aus = read.csv("../project_data_files/pol_dat_aus.csv")
-# aus_total_covid = read.csv("../project_data_files/aus_total_covid.csv")
+aus_total_high = read.csv("../project_data_files/aus_total_high.csv")
+pol_dat_aus = read.csv("../project_data_files/pol_dat_aus.csv")
+aus_total_covid = read.csv("../project_data_files/aus_total_covid.csv")
 
-#aus_total_high<- full_join(aus_total_high, aus_total_covid)
+aus_total_high$Date <- as.Date(aus_total_high$Date)
 
 # Define UI for application 
 ui <- fluidPage(

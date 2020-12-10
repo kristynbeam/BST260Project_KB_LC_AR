@@ -28,19 +28,26 @@ The other main infectious disease tracked annually and globally is influenza whi
 
 ### Related work
 
-An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0) published recent in Nature examined how policy changes, specifically nonpharamaceutical interventions (NPIs) affected the incidence of COVID globally. 
+An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0) published recently in Nature examined how policy changes, specifically nonpharamaceutical interventions (NPIs) affected the incidence of COVID globally. 
 
 "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
+
+It appears that these NPIs have variable effects on COVID-19 incidence 
 
 
 ### Initial questions
 
-Our questions for this project were 
+Our questions for this project were whether non-pharmaceutical interventions meant to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. 
 
 
 ### Data sources
 
-We obtained our data from several data sources.
+We obtained our data from several data sources for completeness.
+
+1. Australian Infectious Disease Data
+2. Australian COVID data
+3. Non-pharmaceutical policy interventions data
+
 The Australian NHS website contains information for many infectious diseases as well as COVID-19 incidence tracking.
 Based on the article published in Nature, a 
 
