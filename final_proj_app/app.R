@@ -7,28 +7,35 @@ library(ggplot2)
 library(readr)
 library(directlabels)
 
+# Bring in data
+aus_total <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
+aus_total_high <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
+pol_dat_aus <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/pol_dat_aus.csv")
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  
+    # Change theme to darkly
+    theme = shinythemes::shinytheme("darkly"),
 
     # Application title
-    titlePanel("Impact of Policy Changes on COVID and other Infectious Diseases in Australia"),
+    titlePanel("Impact of Policy Restrictions on Rates of COVID-19 and other Infectious Diseases in Australian Provinces in 2020"),
     
     fluidRow(
       # Sidebar with a slider input for number of bins 
       sidebarLayout(
         sidebarPanel(
           selectInput("province",
-                      label = "Select a Province:",
+                      label = "Select a province:",
                       choices = aus_total$State,
-                      selected = "ACT"), #end of province selection
+                      selected = "Australian Capital Territory"), #end of province selection
           selectInput("disease",
-                      label = "Select a Disease (n = 42):",
+                      label = "Select a disease:",
                       choices = aus_total_high$Disease,
                       selected = "Hepatitis B (unspecified)"), #end of Disease selection
           selectInput("policy", 
-                      label = "Select a Policy:",
-                      choices = c("Quarantine", "Restrictions of Mass Gatherings", "Social Distancing", 
-                                  "Closure and Regulation of Schools", "Lockdown", "Hygiene"),
+                      label = "Select a policy restriction type:",
+                      choices = pol_dat_aus$type,
                       selected = "Quarantine") #end of Policy selection
           
         ), #end sidebarPanel
@@ -54,20 +61,43 @@ ui <- fluidPage(
 server <- function(input, output) {
 
     output$linePlot <- renderPlot({
-        aus_total_covid %>% 
-            filter(State == input$province) %>% 
-            ggplot(aes(Date, Rates)) +
-            geom_line(color = "blue") +
-            ggtitle(paste("Infectious Disease Rates per 100,000 in", input$province)) +
-            geom_dl(aes(label = "COVID-19"), method = "top.qp") +
+      
+      # Define province and policy type
+      policies <- pol_dat_aus %>%
+        filter(province == input$province & type == input$policy)
+        
+        aus_total %>% 
+            filter(State == input$province & Date >= "2020-01-01" & Disease %in% c(input$disease, "COVID-19")) %>% 
+            ggplot(aes(x = Date, 
+                       y = Rates)) +
+            geom_line(color = Disease,
+                      alpha = 0.5) +
+            geom_vline(data = pol_dat_aus %>%
+                       alpha = 0.5, 
+                       xintercept = as.numeric(as.Date(pol_dat_aus$date_start)), 
+                       color = "blue") +
+            labs(x = "Date",
+                 y = "Rate") +
+            ggtitle(paste("Infectious Disease Rates per 100,000 in", 
+                          input$province)) +
+            scale_x_date(date_breaks = "1 month", 
+                         date_labels = "%b") 
+        
+            
+            #geom_dl(aes(label = "COVID-19"), method = "top.qp") +
             #ylim(0, 40) +
-            theme_minimal() +
-            geom_line(data = aus_total_high %>% 
-                          filter(Disease == input$disease & State == input$province), 
-                      aes(Date, Rates), color = "red") 
+            #theme_minimal() +
+            #geom_line(data = aus_total_high %>% 
+                          #filter(Disease == input$disease & State == input$province), 
+                      #aes(Date, Rates), color = "red") 
             #geom_vline(data = pol_dat_aus %>% 
              #            filter(province = input$province),
               #         xintercept = as.numeric(as.Date("2020-03-16")
+      
+
+      
+      
+    
     })
       output$table <- renderTable({
         Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
