@@ -73,10 +73,10 @@ server <- function(input, output) {
                        y = Rates)) +
             geom_line(color = Disease,
                       alpha = 0.5) +
-            geom_vline(data = pol_dat_aus %>% 
-                       alpha = 0.5, 
-                       xintercept = as.numeric(as.Date(pol_dat_aus$date_start)), 
-                       color = "blue") +
+           # geom_vline(data = pol_dat_aus %>% 
+            #           alpha = 0.5, 
+             #          xintercept = as.numeric(as.Date(pol_dat_aus$date_start)), 
+              #         color = "blue") +
             labs(x = "Date",
                  y = "Rate") +
             ggtitle(paste("Infectious Disease Rates per 100,000 in", 

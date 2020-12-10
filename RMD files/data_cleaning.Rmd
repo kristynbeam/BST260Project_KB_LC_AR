@@ -109,6 +109,7 @@ aus_total_high %>%
 
 # Save aus_total and aus_total_high so they can be brought into Shiny app
 write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus.total.csv")
+write.csv(aus_total_high, file = "aus_total_high.csv")
 #write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
 #write.csv(aus_total_high, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total_high.csv")
 ```
