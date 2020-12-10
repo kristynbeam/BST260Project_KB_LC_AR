@@ -113,7 +113,7 @@ aus_total_high %>%
 # write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total.csv")
 # write.csv(aus_total_high, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total_high.csv")
 # write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
-write.csv(aus_total_high, "../project_data_files/aus_total_high.csv")
+write.csv(aus_total_high, "aus_total_high.csv")
 head(aus_total_high)
 ```
 
@@ -122,7 +122,7 @@ head(aus_total_high)
 aus_total_covid <- aus_total %>% 
   filter(Disease == "COVID-19")
 
-write.csv(aus_total_covid, "../project_data_files/aus_total_covid.csv")
+write.csv(aus_total_covid, "aus_total_covid.csv")
 
 # Create test COVID-19 plots
 p1 <- ggplot(data = aus_total_covid, 
@@ -209,7 +209,7 @@ pol_dat_aus <- pol_dat_aus %>%
   # Arrange by date policy goes into effect
   arrange(date_start) %>%
   # Keep only first observation within each province-policy type group
-  slice() %>%
+  slice(1) %>%
   # Ungroup
   ungroup() %>%
   # Filter to keep only policies that target Australia
@@ -224,54 +224,54 @@ head(pol_dat_aus)
 list.files()
 # Save pol_dat_aus so it can be brought into Shiny app
 # write.csv(pol_dat_aus, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/pol_dat._aus.csv")
-write.csv(pol_dat_aus, "../project_data_files/pol_dat_aus.csv")
+write.csv(pol_dat_aus, "pol_dat_aus.csv")
 ```
 
 ```{r}
-   country_names <- recode(pol_dat_aus$province, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia",  "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
+#   country_names <- recode(pol_dat_aus$province, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia",  "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
 
-pol_dat_aus$province <- country_names
+# pol_dat_aus$province <- country_names
 
 #create smaller DF for each province
-pol_ACT <- pol_dat_aus %>% 
-  filter(province == "ACT") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_NSW <- pol_dat_aus %>% 
-  filter(province == "NSW") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_NT <- pol_dat_aus %>% 
-  filter(province == "NT") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_Qld <- pol_dat_aus %>% 
-  filter(province == "Qld") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_SA <- pol_dat_aus %>% 
-  filter(province == "SA") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_Tas <- pol_dat_aus %>% 
-  filter(province == "Tas") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_Vic <- pol_dat_aus %>% 
-  filter(province == "Vic") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
-
-pol_WA <- pol_dat_aus %>% 
-  filter(province == "WA") %>% 
-  group_by(type) %>% 
-  select(province, type, date_announced, date_start)
+# pol_ACT <- pol_dat_aus %>% 
+#   filter(province == "ACT") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_NSW <- pol_dat_aus %>% 
+#   filter(province == "NSW") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_NT <- pol_dat_aus %>% 
+#   filter(province == "NT") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_Qld <- pol_dat_aus %>% 
+#   filter(province == "Qld") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_SA <- pol_dat_aus %>% 
+#   filter(province == "SA") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_Tas <- pol_dat_aus %>% 
+#   filter(province == "Tas") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_Vic <- pol_dat_aus %>% 
+#   filter(province == "Vic") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
+# 
+# pol_WA <- pol_dat_aus %>% 
+#   filter(province == "WA") %>% 
+#   group_by(type) %>% 
+#   select(province, type, date_announced, date_start)
 ```
 
 

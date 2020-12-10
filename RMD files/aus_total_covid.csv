@@ -1,0 +1,217 @@
+"","Disease","Date","State","Cases","Rates"
+"1","COVID-19",2020-10-31,"Australian Capital Territory",1,0.2
+"2","COVID-19",2020-09-30,"Australian Capital Territory",0,0
+"3","COVID-19",2020-08-31,"Australian Capital Territory",0,0
+"4","COVID-19",2020-07-31,"Australian Capital Territory",5,1.2
+"5","COVID-19",2020-06-30,"Australian Capital Territory",0,0
+"6","COVID-19",2020-05-31,"Australian Capital Territory",1,0.2
+"7","COVID-19",2020-04-30,"Australian Capital Territory",8,1.9
+"8","COVID-19",2020-03-31,"Australian Capital Territory",99,23.2
+"9","COVID-19",2020-02-29,"Australian Capital Territory",0,0
+"10","COVID-19",2020-01-31,"Australian Capital Territory",0,0
+"11","COVID-19",2019-12-31,"Australian Capital Territory",0,0
+"12","COVID-19",2019-11-30,"Australian Capital Territory",0,0
+"13","COVID-19",2019-10-31,"Australian Capital Territory",0,0
+"14","COVID-19",2019-09-30,"Australian Capital Territory",0,0
+"15","COVID-19",2019-08-31,"Australian Capital Territory",0,0
+"16","COVID-19",2019-07-31,"Australian Capital Territory",0,0
+"17","COVID-19",2019-06-30,"Australian Capital Territory",0,0
+"18","COVID-19",2019-05-31,"Australian Capital Territory",0,0
+"19","COVID-19",2019-04-30,"Australian Capital Territory",0,0
+"20","COVID-19",2019-03-31,"Australian Capital Territory",0,0
+"21","COVID-19",2019-02-28,"Australian Capital Territory",0,0
+"22","COVID-19",2019-01-31,"Australian Capital Territory",0,0
+"23","COVID-19",2018-12-31,"Australian Capital Territory",0,0
+"24","COVID-19",2018-11-30,"Australian Capital Territory",0,0
+"25","COVID-19",2020-10-31,"New South Wales",201,2.5
+"26","COVID-19",2020-09-30,"New South Wales",162,2
+"27","COVID-19",2020-08-31,"New South Wales",278,3.4
+"28","COVID-19",2020-07-31,"New South Wales",390,4.8
+"29","COVID-19",2020-06-30,"New South Wales",132,1.6
+"30","COVID-19",2020-05-31,"New South Wales",66,0.8
+"31","COVID-19",2020-04-30,"New South Wales",436,5.4
+"32","COVID-19",2020-03-31,"New South Wales",2766,34.2
+"33","COVID-19",2020-02-29,"New South Wales",49,0.6
+"34","COVID-19",2020-01-31,"New South Wales",4,0
+"35","COVID-19",2019-12-31,"New South Wales",0,0
+"36","COVID-19",2019-11-30,"New South Wales",0,0
+"37","COVID-19",2019-10-31,"New South Wales",0,0
+"38","COVID-19",2019-09-30,"New South Wales",0,0
+"39","COVID-19",2019-08-31,"New South Wales",0,0
+"40","COVID-19",2019-07-31,"New South Wales",0,0
+"41","COVID-19",2019-06-30,"New South Wales",0,0
+"42","COVID-19",2019-05-31,"New South Wales",0,0
+"43","COVID-19",2019-04-30,"New South Wales",0,0
+"44","COVID-19",2019-03-31,"New South Wales",0,0
+"45","COVID-19",2019-02-28,"New South Wales",0,0
+"46","COVID-19",2019-01-31,"New South Wales",0,0
+"47","COVID-19",2018-12-31,"New South Wales",0,0
+"48","COVID-19",2018-11-30,"New South Wales",0,0
+"49","COVID-19",2020-10-31,"Northern Territory",5,2
+"50","COVID-19",2020-09-30,"Northern Territory",0,0
+"51","COVID-19",2020-08-31,"Northern Territory",0,0
+"52","COVID-19",2020-07-31,"Northern Territory",3,1.2
+"53","COVID-19",2020-06-30,"Northern Territory",1,0.4
+"54","COVID-19",2020-05-31,"Northern Territory",0,0
+"55","COVID-19",2020-04-30,"Northern Territory",4,1.6
+"56","COVID-19",2020-03-31,"Northern Territory",25,10.2
+"57","COVID-19",2020-02-29,"Northern Territory",0,0
+"58","COVID-19",2020-01-31,"Northern Territory",0,0
+"59","COVID-19",2019-12-31,"Northern Territory",0,0
+"60","COVID-19",2019-11-30,"Northern Territory",0,0
+"61","COVID-19",2019-10-31,"Northern Territory",0,0
+"62","COVID-19",2019-09-30,"Northern Territory",0,0
+"63","COVID-19",2019-08-31,"Northern Territory",0,0
+"64","COVID-19",2019-07-31,"Northern Territory",0,0
+"65","COVID-19",2019-06-30,"Northern Territory",0,0
+"66","COVID-19",2019-05-31,"Northern Territory",0,0
+"67","COVID-19",2019-04-30,"Northern Territory",0,0
+"68","COVID-19",2019-03-31,"Northern Territory",0,0
+"69","COVID-19",2019-02-28,"Northern Territory",0,0
+"70","COVID-19",2019-01-31,"Northern Territory",0,0
+"71","COVID-19",2018-12-31,"Northern Territory",0,0
+"72","COVID-19",2018-11-30,"Northern Territory",0,0
+"73","COVID-19",2020-10-31,"Queensland",13,0.3
+"74","COVID-19",2020-09-30,"Queensland",25,0.5
+"75","COVID-19",2020-08-31,"Queensland",41,0.8
+"76","COVID-19",2020-07-31,"Queensland",16,0.3
+"77","COVID-19",2020-06-30,"Queensland",8,0.2
+"78","COVID-19",2020-05-31,"Queensland",9,0.2
+"79","COVID-19",2020-04-30,"Queensland",65,1.3
+"80","COVID-19",2020-03-31,"Queensland",979,19.2
+"81","COVID-19",2020-02-29,"Queensland",18,0.4
+"82","COVID-19",2020-01-31,"Queensland",2,0
+"83","COVID-19",2019-12-31,"Queensland",0,0
+"84","COVID-19",2019-11-30,"Queensland",0,0
+"85","COVID-19",2019-10-31,"Queensland",0,0
+"86","COVID-19",2019-09-30,"Queensland",0,0
+"87","COVID-19",2019-08-31,"Queensland",0,0
+"88","COVID-19",2019-07-31,"Queensland",0,0
+"89","COVID-19",2019-06-30,"Queensland",0,0
+"90","COVID-19",2019-05-31,"Queensland",0,0
+"91","COVID-19",2019-04-30,"Queensland",0,0
+"92","COVID-19",2019-03-31,"Queensland",0,0
+"93","COVID-19",2019-02-28,"Queensland",0,0
+"94","COVID-19",2019-01-31,"Queensland",0,0
+"95","COVID-19",2018-12-31,"Queensland",0,0
+"96","COVID-19",2018-11-30,"Queensland",0,0
+"97","COVID-19",2020-10-31,"South Australia",28,1.6
+"98","COVID-19",2020-09-30,"South Australia",10,0.6
+"99","COVID-19",2020-08-31,"South Australia",9,0.5
+"100","COVID-19",2020-07-31,"South Australia",11,0.6
+"101","COVID-19",2020-06-30,"South Australia",3,0.2
+"102","COVID-19",2020-05-31,"South Australia",1,0.1
+"103","COVID-19",2020-04-30,"South Australia",23,1.3
+"104","COVID-19",2020-03-31,"South Australia",410,23.4
+"105","COVID-19",2020-02-29,"South Australia",4,0.2
+"106","COVID-19",2020-01-31,"South Australia",2,0.1
+"107","COVID-19",2019-12-31,"South Australia",0,0
+"108","COVID-19",2019-11-30,"South Australia",0,0
+"109","COVID-19",2019-10-31,"South Australia",0,0
+"110","COVID-19",2019-09-30,"South Australia",0,0
+"111","COVID-19",2019-08-31,"South Australia",0,0
+"112","COVID-19",2019-07-31,"South Australia",0,0
+"113","COVID-19",2019-06-30,"South Australia",0,0
+"114","COVID-19",2019-05-31,"South Australia",0,0
+"115","COVID-19",2019-04-30,"South Australia",0,0
+"116","COVID-19",2019-03-31,"South Australia",0,0
+"117","COVID-19",2019-02-28,"South Australia",0,0
+"118","COVID-19",2019-01-31,"South Australia",0,0
+"119","COVID-19",2018-12-31,"South Australia",0,0
+"120","COVID-19",2018-11-30,"South Australia",0,0
+"121","COVID-19",2020-10-31,"Tasmania",0,0
+"122","COVID-19",2020-09-30,"Tasmania",0,0
+"123","COVID-19",2020-08-31,"Tasmania",1,0.2
+"124","COVID-19",2020-07-31,"Tasmania",1,0.2
+"125","COVID-19",2020-06-30,"Tasmania",0,0
+"126","COVID-19",2020-05-31,"Tasmania",1,0.2
+"127","COVID-19",2020-04-30,"Tasmania",143,26.7
+"128","COVID-19",2020-03-31,"Tasmania",87,16.3
+"129","COVID-19",2020-02-29,"Tasmania",2,0.4
+"130","COVID-19",2020-01-31,"Tasmania",0,0
+"131","COVID-19",2019-12-31,"Tasmania",0,0
+"132","COVID-19",2019-11-30,"Tasmania",0,0
+"133","COVID-19",2019-10-31,"Tasmania",0,0
+"134","COVID-19",2019-09-30,"Tasmania",0,0
+"135","COVID-19",2019-08-31,"Tasmania",0,0
+"136","COVID-19",2019-07-31,"Tasmania",0,0
+"137","COVID-19",2019-06-30,"Tasmania",0,0
+"138","COVID-19",2019-05-31,"Tasmania",0,0
+"139","COVID-19",2019-04-30,"Tasmania",0,0
+"140","COVID-19",2019-03-31,"Tasmania",0,0
+"141","COVID-19",2019-02-28,"Tasmania",0,0
+"142","COVID-19",2019-01-31,"Tasmania",0,0
+"143","COVID-19",2018-12-31,"Tasmania",0,0
+"144","COVID-19",2018-11-30,"Tasmania",0,0
+"145","COVID-19",2020-10-31,"Victoria",155,2.4
+"146","COVID-19",2020-09-30,"Victoria",900,13.6
+"147","COVID-19",2020-08-31,"Victoria",6952,105.4
+"148","COVID-19",2020-07-31,"Victoria",9727,147.5
+"149","COVID-19",2020-06-30,"Victoria",936,14.2
+"150","COVID-19",2020-05-31,"Victoria",256,3.9
+"151","COVID-19",2020-04-30,"Victoria",191,2.9
+"152","COVID-19",2020-03-31,"Victoria",1209,18.3
+"153","COVID-19",2020-02-29,"Victoria",15,0.2
+"154","COVID-19",2020-01-31,"Victoria",4,0.1
+"155","COVID-19",2019-12-31,"Victoria",0,0
+"156","COVID-19",2019-11-30,"Victoria",0,0
+"157","COVID-19",2019-10-31,"Victoria",0,0
+"158","COVID-19",2019-09-30,"Victoria",0,0
+"159","COVID-19",2019-08-31,"Victoria",0,0
+"160","COVID-19",2019-07-31,"Victoria",0,0
+"161","COVID-19",2019-06-30,"Victoria",0,0
+"162","COVID-19",2019-05-31,"Victoria",0,0
+"163","COVID-19",2019-04-30,"Victoria",0,0
+"164","COVID-19",2019-03-31,"Victoria",0,0
+"165","COVID-19",2019-02-28,"Victoria",0,0
+"166","COVID-19",2019-01-31,"Victoria",0,0
+"167","COVID-19",2018-12-31,"Victoria",0,0
+"168","COVID-19",2018-11-30,"Victoria",0,0
+"169","COVID-19",2020-10-31,"Western Australia",77,2.9
+"170","COVID-19",2020-09-30,"Western Australia",31,1.2
+"171","COVID-19",2020-08-31,"Western Australia",11,0.4
+"172","COVID-19",2020-07-31,"Western Australia",42,1.6
+"173","COVID-19",2020-06-30,"Western Australia",15,0.6
+"174","COVID-19",2020-05-31,"Western Australia",34,1.3
+"175","COVID-19",2020-04-30,"Western Australia",104,4
+"176","COVID-19",2020-03-31,"Western Australia",473,18
+"177","COVID-19",2020-02-29,"Western Australia",8,0.3
+"178","COVID-19",2020-01-31,"Western Australia",1,0
+"179","COVID-19",2019-12-31,"Western Australia",0,0
+"180","COVID-19",2019-11-30,"Western Australia",0,0
+"181","COVID-19",2019-10-31,"Western Australia",0,0
+"182","COVID-19",2019-09-30,"Western Australia",0,0
+"183","COVID-19",2019-08-31,"Western Australia",0,0
+"184","COVID-19",2019-07-31,"Western Australia",0,0
+"185","COVID-19",2019-06-30,"Western Australia",0,0
+"186","COVID-19",2019-05-31,"Western Australia",0,0
+"187","COVID-19",2019-04-30,"Western Australia",0,0
+"188","COVID-19",2019-03-31,"Western Australia",0,0
+"189","COVID-19",2019-02-28,"Western Australia",0,0
+"190","COVID-19",2019-01-31,"Western Australia",0,0
+"191","COVID-19",2018-12-31,"Western Australia",0,0
+"192","COVID-19",2018-11-30,"Western Australia",0,0
+"193","COVID-19",2020-10-31,"Australia",480,1.9
+"194","COVID-19",2020-09-30,"Australia",1128,4.4
+"195","COVID-19",2020-08-31,"Australia",7292,28.8
+"196","COVID-19",2020-07-31,"Australia",10195,40.2
+"197","COVID-19",2020-06-30,"Australia",1095,4.3
+"198","COVID-19",2020-05-31,"Australia",368,1.5
+"199","COVID-19",2020-04-30,"Australia",974,3.8
+"200","COVID-19",2020-03-31,"Australia",6048,23.9
+"201","COVID-19",2020-02-29,"Australia",96,0.4
+"202","COVID-19",2020-01-31,"Australia",13,0.1
+"203","COVID-19",2019-12-31,"Australia",0,0
+"204","COVID-19",2019-11-30,"Australia",0,0
+"205","COVID-19",2019-10-31,"Australia",0,0
+"206","COVID-19",2019-09-30,"Australia",0,0
+"207","COVID-19",2019-08-31,"Australia",0,0
+"208","COVID-19",2019-07-31,"Australia",0,0
+"209","COVID-19",2019-06-30,"Australia",0,0
+"210","COVID-19",2019-05-31,"Australia",0,0
+"211","COVID-19",2019-04-30,"Australia",0,0
+"212","COVID-19",2019-03-31,"Australia",0,0
+"213","COVID-19",2019-02-28,"Australia",0,0
+"214","COVID-19",2019-01-31,"Australia",0,0
+"215","COVID-19",2018-12-31,"Australia",0,0
+"216","COVID-19",2018-11-30,"Australia",0,0

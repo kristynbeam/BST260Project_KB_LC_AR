@@ -15,9 +15,9 @@ library(directlabels)
 #the code in order to direct them to the correct folder.
 #As long as all of our data files are saved into the project_data_files folder, then this should work for the 
 #shiny app purposes.
-aus_total_high = read.csv("../project_data_files/aus_total_high.csv")
-pol_dat_aus = read.csv("../project_data_files/pol_dat_aus.csv")
-aus_total_covid = read.csv("../project_data_files/aus_total_covid.csv")
+#aus_total_high = read.csv("../project_data_files/aus_total_high.csv")
+#pol_dat_aus = read.csv("../project_data_files/pol_dat_aus.csv")
+# aus_total_covid = read.csv("../project_data_files/aus_total_covid.csv")
 
 #aus_total_high<- full_join(aus_total_high, aus_total_covid)
 
@@ -45,7 +45,7 @@ ui <- fluidPage(
           selectInput("policy", 
                       label = "Select a policy restriction type:",
                       choices = pol_dat_aus$type,
-                      selected = "Quarantine") #end of Policy selection
+                      selected = "Restrictions of Mass Gatherings") #end of Policy selection
           
         ), #end sidebarPanel
         
@@ -71,6 +71,9 @@ server <- function(input, output) {
 
     output$linePlot <- renderPlot({
       
+      # Define diseases to include in line plot as COVID-19 and user-selected disease
+      diseases <- c("COVID-19", input$disease)
+      
       # Define province and policy type
       pol_dat <- pol_dat_aus %>%
         filter(province == input$province & type == input$policy)
@@ -78,20 +81,22 @@ server <- function(input, output) {
       aus_total_high %>% 
         filter(State == input$province & 
                  Date >= "2020-01-01" & 
-                 Disease %in% input$disease) %>% 
-        ggplot(aes(Date, Rates, color = Disease)) +
+                 Disease %in% diseases) %>% 
+        ggplot(aes(x = Date, 
+                   y = Rates, 
+                   color = Disease)) +
         geom_line(aes(color = Disease)) +
         geom_vline(alpha = 0.5, 
                   xintercept = as.numeric(as.Date(pol_dat$date_start)),
                   color = "blue") +
-        geom_dl(aes(label = "COVID-19"), method = "top.qp") +
-        theme_minimal() +
-        geom_line(data = aus_total_high %>% 
-                 filter(Disease == input$disease & State == input$province), 
-                 aes(Date, Rates), color = "red") +
-        geom_vline(data = pol_dat_aus %>% 
-                   filter(province == input$province),
-                  xintercept = as.numeric(as.Date(pol_dat$date_start))) +
+        #geom_dl(aes(label = "COVID-19"), method = "top.qp") +
+        #theme_minimal() +
+        #geom_line(data = aus_total_high %>% 
+        #         filter(Disease == input$disease & State == input$province), 
+         #        aes(Date, Rates), color = "red") +
+        #geom_vline(data = pol_dat_aus %>% 
+          #         filter(province == input$province),
+            #      xintercept = as.numeric(as.Date(pol_dat$date_start))) +
         labs(x = "Date",
              y = "Rate") +
         ggtitle(paste("Infectious Disease Rates per 100,000 in", 
