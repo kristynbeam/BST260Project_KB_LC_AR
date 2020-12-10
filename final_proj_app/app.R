@@ -12,9 +12,9 @@ print(list.files())
 data = read.csv("../project_data_files/aus_total_high.csv")
 
 #aus_total <- read.csv("aus_total.csv")
-#aus_total_high <- read.csv("aus_total_high.csv")
+# aus_total_high <- read.csv("aus_total_high.csv")
 #pol_dat_aus <- read.csv("pol_dat_aus.csv")
-aus_total_high<- full_join(aus_total_high, aus_total_covid)
+# aus_total_high<- full_join(aus_total_high, aus_total_covid)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
@@ -66,7 +66,7 @@ server <- function(input, output) {
     output$linePlot <- renderPlot({
       
       # Define province and policy type
-      policies <- pol_dat_aus %>%
+      pol_dat_aus <- pol_dat_aus %>%
         filter(province == input$province & type == input$policy)
                 aus_total_high %>% 
             filter(State == input$province & 
@@ -78,10 +78,9 @@ server <- function(input, output) {
             geom_line(aes(x = Date, 
                           y = Rates, color = Disease),
                       alpha = 0.5) +
-           # geom_vline(data = pol_dat_aus %>% 
-            #           alpha = 0.5, 
-             #          xintercept = as.numeric(as.Date(pol_dat_aus$date_start)), 
-              #         color = "blue") +
+           geom_vline(alpha = 0.5,
+                    xintercept = as.numeric(as.Date(pol_dat_aus$date_start)),
+                   color = "blue") +
             labs(x = "Date",
                  y = "Rate") +
             ggtitle(paste("Infectious Disease Rates per 100,000 in", 
