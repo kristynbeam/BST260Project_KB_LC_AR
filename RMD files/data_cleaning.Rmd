@@ -65,6 +65,7 @@ aus_data <- aus_data %>%
   rename("Disease"="X")
 
 # Calculate rate per 100,000
+#We should show how we calculated the rate per 100,000 here - I assume it was just cases/100,000
 head(aus_data)
 
 # Create case data frame and reshape to long format
