@@ -88,7 +88,7 @@ server <- function(input, output) {
         geom_line(aes(color = Disease)) +
         geom_vline(alpha = 0.5, 
                   xintercept = as.numeric(as.Date(pol_dat$date_start)),
-                  color = "blue") +
+                  color = "black") +
         #geom_dl(aes(label = "COVID-19"), method = "top.qp") +
         theme_minimal() +
         #geom_line(data = aus_total_high %>% 
