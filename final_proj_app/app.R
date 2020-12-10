@@ -11,7 +11,7 @@ library(directlabels)
 #aus_total <- read.csv("aus_total.csv")
 #aus_total_high <- read.csv("aus_total_high.csv")
 #pol_dat_aus <- read.csv("pol_dat_aus.csv")
-
+aus_total_high<- full_join(aus_total_high, aus_total_covid)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
@@ -65,14 +65,18 @@ server <- function(input, output) {
       # Define province and policy type
       policies <- pol_dat_aus %>%
         filter(province == input$province & type == input$policy)
-        
-        aus_total_high %>% 
+                aus_total_high %>% 
             filter(State == input$province & 
                      Date >= "2020-01-01" & 
                      Disease %in% c(input$disease, "COVID-19")) %>% 
             ggplot(aes(x = Date, 
                        y = Rates)) +
+<<<<<<< HEAD
             geom_line(aes(color = Disease),
+=======
+            geom_line(aes(x = Date, 
+                          y = Rates, color = Disease),
+>>>>>>> 57ef4f2f593bb95261180208f1b31cfeb5838570
                       alpha = 0.5) +
            # geom_vline(data = pol_dat_aus %>% 
             #           alpha = 0.5, 
