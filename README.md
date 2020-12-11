@@ -1,7 +1,7 @@
 # BST260Project_KB_LC_AR
 
-## Project Name: Examining Policy Interventions on COVID-19 and Other Infectious Disease Incidence in Australia 
-# Team members: Kristyn Beam, Luis Castelo Branco, Alex Rashedi
+# Project Name: Examining Policy Interventions on COVID-19 and Other Infectious Disease Incidence in Australia 
+## Team members: Kristyn Beam, Luis Castelo Branco, Alex Rashedi
 
 _Goal of the project_
 COVID-19 has rocked the globe in the year 2020. With it's emergence in late 2019, quick spread, and lack of medical treatments and interventions, nonpharmaceutical interventions have been the forefront of limiting spread, disease, and death. Given the fact that non-pharmaceutical interventions (NPIs) have been the main defense against spread of COVID-19, investigation into how NPIs have not only affected the spread of COVID-19, a respiratory disease, but also other infectious diseases spread by contact or respiratory droplets was the goal of our project. 
