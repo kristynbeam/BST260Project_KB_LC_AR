@@ -106,7 +106,7 @@ server <- function(input, output) {
                 #         filter(province == input$province),
                 #      xintercept = as.numeric(as.Date(pol_dat$date_start))) +
                 labs(x = "Date",
-                     y = "7-day average of Cases") +
+                     y = "7-day Average of Cases") +
                 ggtitle(paste("Infectious Disease 7-day average Cases in", 
                               input$province)) +
                 scale_x_date(date_breaks = "1 month", 
@@ -206,7 +206,7 @@ server <- function(input, output) {
                 #         filter(province == input$province),
                 #      xintercept = as.numeric(as.Date(pol_dat$date_start))) +
                 labs(x = "Date",
-                     y = "7-day average of Rates") +
+                     y = "Rates") +
                 ggtitle(paste("Infectious Disease Rates per 100,000 in", 
                               input$province)) +
                 scale_x_date(date_breaks = "1 month", 
@@ -215,13 +215,13 @@ server <- function(input, output) {
         }  
     }) #end of plot
     
-    output$table <- renderTable({
-        Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
-        Country <- c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland", 
-                     "Southern Territory", "Tasmania", "Victoria", "Western Australia")
-        table.df <- data.frame(Abbreviation, Country)
+    #output$table <- renderTable({
+     #   Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
+      #  Country <- c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland", 
+       #              "Southern Territory", "Tasmania", "Victoria", "Western Australia")
+        #table.df <- data.frame(Abbreviation, Country)
         
-    }) #end of table
+#    }) #end of table
     
     #output$regression <- renderTable({
     
