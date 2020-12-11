@@ -285,7 +285,7 @@ class(aus_total_high$Date)
 
 # Test graph
 aus_total_high %>%
-  filter(State == "New South Wales" & #Date >= "2020-01-01" & 
+  filter(State == "New South Wales" & Date >= "2020-01-01" & 
            Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
   ggplot(aes(x = Date, 
              y = Rates)) +
@@ -301,6 +301,51 @@ aus_total_high %>%
   scale_x_date(date_breaks = "1 month", 
                date_labels = "%b")
 ```
+
+```{r}
+#creating 7 day average of cases and rates
+library(zoo)
+aus_total_high<-aus_total_high %>%group_by (State) %>% arrange(Date) %>% 
+mutate (Cases_7dayavg = rollmean(Cases, k = 7, fill = NA))%>% mutate (Rates_7dayavg = rollmean(Rates, k = 7, fill = NA))
+
+# Test graph
+aus_total_high %>%
+  filter(State == "New South Wales" & Date >= "2020-01-01" & 
+           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+  ggplot(aes(x = Date, 
+             y = Cases_7dayavg)) +
+  geom_line(aes(color = Disease), 
+            alpha = 0.5) +
+  # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
+  geom_vline(alpha = 0.5, 
+             xintercept = as.numeric(as.Date("2020-03-16")), 
+             color = "blue") +
+  labs(x = "Date",
+       y = "Rate") +
+  ggtitle("Covid rates in NSW over time") +
+  scale_x_date(date_breaks = "1 month", 
+               date_labels = "%b")
+
+# Test graph
+aus_total_high %>%
+  filter(State == "New South Wales" & Date >= "2020-01-01" & 
+           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+  ggplot(aes(x = Date, 
+             y = Rates_7dayavg)) +
+  geom_line(aes(color = Disease), 
+            alpha = 0.5) +
+  # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
+  geom_vline(alpha = 0.5, 
+             xintercept = as.numeric(as.Date("2020-03-16")), 
+             color = "blue") +
+  labs(x = "Date",
+       y = "Rate") +
+  ggtitle("Covid rates in NSW over time") +
+  scale_x_date(date_breaks = "1 month", 
+               date_labels = "%b")
+
+```
+
 
 
 ```{r}
