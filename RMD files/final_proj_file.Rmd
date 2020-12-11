@@ -37,14 +37,11 @@ It appears that these NPIs have variable effects on COVID-19 incidence but may a
 
 ### Initial questions
 
-Our questions for this project were whether non-pharmaceutical interventions meant to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. 
+Our questions for this project were whether non-pharmaceutical interventions meant to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are 8 provinces in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs studied through the article cited above including: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools as a few examples. 
 
-There are 8 provinces in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs studied through the article cited above including: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools as a few examples. 
+Our initial thought process was to investigate how just influenza and COVID-19 changed over time as new policies were introduced into the difference provinces of Australia. As we explored data sources, we found that there were several infectious diseases that were tracked by Australia, all communicable, allowing us to look at differences between GI vs respiratory vs sexually transmitted diseases. As we explored the data we saw that we would be able to look at the changing incidence of diseases of all sources based on NPI implementation first through graphical representations and then through statistical analysis.
 
-We explored this question of changing incidence first visually through graphical representations of the disease cases and rates with a vertical line indicating when certin policies were implemented in each province in Australia.
-
-We examined if there was a statistically significant difference between the incidence of certain infectious diseases (influenza) pre NPI implementation and post NPI implementation.
-
+Our plan for statistical analysis was to look at the mean incidence rate of both COVID and influenza over the few months prior to NPI implemenatation and then look at the mean incidence rate over the months post NPI implementation. 
 
 ### Data sources
 
@@ -54,8 +51,18 @@ We obtained our data from several data sources for completeness.
 2. Australian COVID data, located [here](need a website here).
 3. Non-pharmaceutical policy interventions data. This data came from the [CoronaNet Research Project](https://www.coronanet-project.org/). This project's goal is to: "...compile a database on government responses to the coronavirus. Our main focus is to collect as much information as we can about the various fine-grained actions governments are taking to address the effects of the COVID-19 pandemic. To date, this dataset provides the most comprehensive and granular documentation of such government policies in the world, capturing data for 18 broad policy categories alongside many other dimensions, including the initiator, target and timing of a policy."
 
+We downloaded several of the pre-fabricated .csv files from several websites. Given that the CoronaNet Research Project is updated frequently, we used webscraping to download this data in order to have the most up to date information each time our analysis was done. 
+
+We cleaned all the infectious disease data to display cases, rates, a 7-day rolling average of cases and rates. We also recoded the names of the provinces in each dataframe to be in long-form rather than abbreviations to be consistent and display better in our shiny app. Finally we ensured that all vectors had the appropriate designation: date, factor, character, etc. 
 
 ### Exploratory Data Analysis
+
+We made exploratory line plots for our data to look at rates of COVID and other infectious diseases based on province to explore baseline rates for various diseases.
+
+We created a dataframe aus_total_high which only includes communicable diseases with a rate greater than 0.2/100,000. This removed extremely rare diseases, typically mosquito-borne, based on this exploratory analysis. 
+
+We also explored the first dates that policies were introduced in each province and produced some test graphs to explore how a vertical line displaying the start of these policies visually impacted infectious disease incidence.
+
 
 ```{r}
 # Read in data on weekly influenza counts by Australian region 
