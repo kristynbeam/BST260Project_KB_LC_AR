@@ -89,7 +89,7 @@ server <- function(input, output) {
         geom_vline(alpha = 0.5, 
                   xintercept = as.numeric(as.Date(pol_dat$date_start)),
                   color = "black") +
-        #geom_dl(aes(label = "COVID-19"), method = "top.qp") +
+        geom_dl(aes(label = "COVID-19"), method = "top.qp") +
         theme_minimal() +
         #geom_line(data = aus_total_high %>% 
         #         filter(Disease == input$disease & State == input$province), 
@@ -97,7 +97,7 @@ server <- function(input, output) {
         #geom_vline(data = pol_dat_aus %>% 
           #         filter(province == input$province),
             #      xintercept = as.numeric(as.Date(pol_dat$date_start))) +
-        labs(x = "Date",
+        labs(x = "Month in Year 2020",
              y = "Rate") +
         ggtitle(paste("Infectious Disease Rates per 100,000 in", 
                       input$province)) +
@@ -106,13 +106,13 @@ server <- function(input, output) {
       
     }) #end of plot
       
-    output$table <- renderTable({
-        Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
-        Country <- c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland", 
-                     "Southern Territory", "Tasmania", "Victoria", "Western Australia")
-        table.df <- data.frame(Abbreviation, Country)
+    #output$table <- renderTable({
+     #   Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
+      #  Country <- c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland", 
+               #      "Southern Territory", "Tasmania", "Victoria", "Western Australia")
+       # table.df <- data.frame(Abbreviation, Country)
         
-      }) #end of table
+    #  }) #end of table
       
       #output$regression <- renderTable({
         
