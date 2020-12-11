@@ -32,24 +32,30 @@ An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-02
 
 "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
-It appears that these NPIs have variable effects on COVID-19 incidence 
+It appears that these NPIs have variable effects on COVID-19 incidence but may also have affected other infectious disease incidence.
 
 
 ### Initial questions
 
 Our questions for this project were whether non-pharmaceutical interventions meant to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. 
 
+There are 8 provinces in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs studied through the article cited above including: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools as a few examples. 
+
+We explored this question of changing incidence first visually through graphical representations of the disease cases and rates with a vertical line indicating when certin policies were implemented in each province in Australia.
+
+We examined if there was a statistically significant difference between the incidence of certain infectious diseases (influenza) pre NPI implementation and post NPI implementation.
+
 
 ### Data sources
 
 We obtained our data from several data sources for completeness.
 
-1. Australian Infectious Disease Data
-2. Australian COVID data
-3. Non-pharmaceutical policy interventions data
+1. Australian Infectious Disease Data, located [here](https://www1.health.gov.au/internet/main/publishing.nsf/Content/cdnareport.htm). 
+2. Australian COVID data, located [here](need a website here).
+3. Non-pharmaceutical policy interventions data. This data came from the [CoronaNet Research Project](https://www.coronanet-project.org/). This project's goal is to: "...compile a database on government responses to the coronavirus. Our main focus is to collect as much information as we can about the various fine-grained actions governments are taking to address the effects of the COVID-19 pandemic. To date, this dataset provides the most comprehensive and granular documentation of such government policies in the world, capturing data for 18 broad policy categories alongside many other dimensions, including the initiator, target and timing of a policy."
 
-The Australian NHS website contains information for many infectious diseases as well as COVID-19 incidence tracking.
-Based on the article published in Nature, a 
+
+### Exploratory Data Analysis
 
 ```{r}
 # Read in data on weekly influenza counts by Australian region 
@@ -135,10 +141,6 @@ aus_total_high %>%
   group_by(Disease) %>% 
   summarize()
 
-aus_total_high %>% 
-  ggplot(aes(Date, Rates, color = Disease)) +
-  geom_line()
-
 head(aus_total_high)
 write.csv(aus_total_high, "../project_data_files/aus_total_high.csv")
 ```
@@ -189,11 +191,6 @@ p4 <- ggplot(data = aus_total_influenza,
 p4 + geom_line(aes(color = State)) +
   ggtitle("Influenza Rate by Region") +
   ylim(0, 450)
-
-p1
-p2
-p3
-p4
 ```
 
 
@@ -232,7 +229,7 @@ pol_dat_aus$province <- country_names
 
 
 ```{r}
-# Test graph
+# Test graph for shiny app
 aus_total_high %>%
   filter(State == "New South Wales" & #Date >= "2020-01-01" & 
            Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
@@ -251,10 +248,50 @@ aus_total_high %>%
                date_labels = "%b")
 ```
 
-### Exploratory Analysis
+
+### Statistical Analysis
+
+```{r}
+#Creating a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) compared to year 2 (Nov19 to Oct/20)
+aus_total_influenza$Date <- ymd(aus_total_influenza$Date)
+
+head(aus_total_influenza)
+
+aus_total_influenza_year1<- aus_total_influenza %>% filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=sum(Cases))
+aus_total_influenza_year2<- aus_total_influenza %>% filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=sum(Cases))
+aus_total_influenza_diff<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%mutate(drop=(year1-year2)/year1)
+
+```
 
 
+```{r}
+#web scraping for a dataset that containd the Population and Population density for the provinces
+library(rvest)
+url <- "https://www.worldatlas.com/articles/which-australian-states-territories-have-the-highest-density-of-population.html"
+h <- read_html(url)
+density<- h %>% html_nodes("table") %>% .[1]
+density <- density %>% html_table %>% .[[1]] 
 
+density<- density%>%rename("State"= "State / Territory")%>%rename("density"="Density (persons per km2)") %>% mutate(State=recode(State,"Australian Capital Territory"="ACT", "New South Wales"="NSW", "Northern Territory"="NT", "Queensland"="Qld", "South Australia"="SA", "Tasmania"="Tas", "Victoria"="Vic", "Western Australia"="WA"))
 
-### Final Analysis
+density$Population<-as.numeric(gsub(",","",density$Population))
+
+#joining the datasets
+aus_total_influenza_diff<-left_join(aus_total_influenza_diff, density)
+
+head(aus_total_influenza_diff)
+
+#linear regressions to see if population or population density were associated with the drop in cases
+
+# linearMod <- lm(drop ~ density , data=aus_total_influenza_diff) 
+# confint.lm(linearMod)
+# summary(linearMod)
+# 
+# linearMod2 <- lm(drop ~ Population , data=aus_total_influenza_diff) 
+# confint.lm(linearMod2)
+# summary(linearMod2)
+```
+
+### Final Conclusions
+
 
