@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, warning=FALSE}
 #Loading packages necessary for the analysis
 library(tidyverse)
 library(dplyr)
@@ -64,7 +64,7 @@ We created a dataframe aus_total_high which only includes communicable diseases 
 We also explored the first dates that policies were introduced in each province and produced some test graphs to explore how a vertical line displaying the start of these policies visually impacted infectious disease incidence.
 
 
-```{r}
+```{r echo=TRUE, warning=FALSE}
 # Read in data on weekly influenza counts by Australian region 
 aus_dat <- read.csv("../project_data_files/aus_flu_08_17.csv")
 
@@ -96,7 +96,7 @@ aus_dat_case <- aus_dat %>%
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 # Read in Australian disease data
 aus_data <- read.csv("../project_data_files/Australian_data_clean.csv")
 
@@ -152,7 +152,7 @@ head(aus_total_high)
 write.csv(aus_total_high, "../project_data_files/aus_total_high.csv")
 ```
 
-```{r}
+```{r, warning=FALSE}
 # Create COVID-19 data frame
 aus_total_covid <- aus_total %>% 
   filter(Disease == "COVID-19")
@@ -201,7 +201,7 @@ p4 + geom_line(aes(color = State)) +
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 # Read in Australian policy data by pulling most up-to-date version from Github
 pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
 
@@ -235,7 +235,7 @@ pol_dat_aus$province <- country_names
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 # Test graph for shiny app
 aus_total_high %>%
   filter(State == "New South Wales" & #Date >= "2020-01-01" & 
@@ -258,7 +258,7 @@ aus_total_high %>%
 
 ### Statistical Analysis
 
-```{r}
+```{r, warning=FALSE}
 #Creating a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) compared to year 2 (Nov19 to Oct/20)
 aus_total_influenza$Date <- ymd(aus_total_influenza$Date)
 
@@ -271,7 +271,7 @@ aus_total_influenza_diff<- left_join(aus_total_influenza_year1, aus_total_influe
 ```
 
 
-```{r}
+```{r, warning=FALSE}
 #web scraping for a dataset that containd the Population and Population density for the provinces
 library(rvest)
 url <- "https://www.worldatlas.com/articles/which-australian-states-territories-have-the-highest-density-of-population.html"

@@ -50,8 +50,10 @@ ui <- fluidPage(
                             label = "Select a policy restriction type:",
                             choices = pol_dat_aus$type,
                             selected = "Restrictions of Mass Gatherings"),
-                radioButtons(inputId="plot_type", label="Select variable to display",
-                             choices=c("Cases", "Rates", "7-day average of Cases", "7-day average of Rates")),#end of Policy selection
+                radioButtons(inputId="plot_type", 
+                             label="Select variable to display",
+                             choices=c("Cases", "Rates", "7-day average of Cases", "7-day average of Rates"),
+                             selected = "Cases"),#end of Policy selection
                 
             ), #end sidebarPanel
             
@@ -63,14 +65,17 @@ ui <- fluidPage(
         
         fluidRow(
             column(4,
-                   tableOutput("table"))#, #end column
-            #column(8,
-            #tableOutput("regression")) #end column (can put regression output here)
-        ) #end fluidRow
+                   
+            ),
+            column(8,
+                plotOutput("mapPlot")
+                )#, #end column
+                
+            ) #end fluidRow
         
         
     )
-)
+) # end UI
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -214,19 +219,22 @@ server <- function(input, output) {
             
         }  
     }) #end of plot
-    
-    #output$table <- renderTable({
-     #   Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
-      #  Country <- c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland", 
-       #              "Southern Territory", "Tasmania", "Victoria", "Western Australia")
-        #table.df <- data.frame(Abbreviation, Country)
-        
-#    }) #end of table
-    
+
     #output$regression <- renderTable({
     
     #}) #output of regression analysis
     
+    
+    
+    #Map plot
+    output$mapPlot <- renderPlot({
+        #Need to make sure we write our final dataset as a csv to the folder and then read it in at the top
+        merge_dat %>% 
+            group_by(input$province) %>% 
+            filter(Disease == input$disease) %>% 
+            ggplot(aes(fill = log(Rates))) + geom_sf() +
+            ggtitle(paste(input$disease), "Rate Across all Provinces in Australia")
+    })#end of map plot
     
 }
 

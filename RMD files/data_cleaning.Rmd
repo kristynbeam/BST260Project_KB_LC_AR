@@ -406,4 +406,35 @@ head(aus_total_influenza_diff)
 
 ```
 
+```{r}
+#map of australia
+
+x <- ozmap_data()
+ggplot(data = x) + geom_sf()
+
+#this is an "sf" data structure which can be tereated as a datafram,e but an additional column called a geometry. If we want to color the data by Cases or Rates, we would merge ozmap with our df that has the cases and rates information.
+
+#Example
+
+x <- ozmap_data()
+y <- data.frame(NAME = x$NAME,
+                flu_cases = rpois(nrow(x), 100))
+merged <- merge(x, y, by = "NAME")
+ggplot(data = merged, aes(fill = flu_cases)) + geom_sf()
+
+#Now trying to do this with out data, the Cases and Rates data
+
+#Created a merged data set between the map and aus_total_high
+merge_dat <- x %>% 
+  rename(State = NAME) %>% 
+  merge(aus_total_high, by = "State")
+#Need to write the merge file that we end up with to our folder so that it can run in the app
+
+#This is a plot of the rates of influenza by country. I did this on a log scale of rates because just basic rates was all one color.
+merge_dat %>% 
+  group_by(State) %>% 
+  filter(Disease == "Influenza (laboratory confirmed)") %>% 
+  ggplot(aes(fill = log(Rates))) + geom_sf()
+
+```
 
