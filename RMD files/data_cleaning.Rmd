@@ -20,8 +20,8 @@ library(readr)
 
 ```{r}
 # Read in data on weekly influenza counts by Australian region 
-#aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
-aus_dat <- read.csv("../project_data_files/aus_flu_08_17.csv")
+aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
+# aus_dat <- read.csv("../project_data_files/aus_flu_08_17.csv")
 
 # Identify earliest date available: 2017-09-15
 min(aus_dat$week)
@@ -97,7 +97,8 @@ aus_total$State <- recode(aus_total$State, "ACT" = "Australian Capital Territory
 
 #Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
 aus_total_high <- aus_total %>% 
-  filter(Rates >= 0.2)
+  filter(Rates >= 0.2,
+         State != "Australia")
 
 aus_total_high$Date <- as.Date(aus_total_high$Date)
 

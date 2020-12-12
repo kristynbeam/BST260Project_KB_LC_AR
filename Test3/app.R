@@ -29,14 +29,14 @@ ui <- fluidPage(
     theme = shinythemes::shinytheme("darkly"),
     
     # Application title
-    titlePanel("Impact of Policy Restrictions on COVID-19 and other Infectious Diseases in Australian States in 2020"),
+    titlePanel("Trends in COVID-19 and Other Infectious Diseases in Australian States/Territories from 2019-2020"),
     
     fluidRow(
         
         sidebarLayout(
             sidebarPanel(
                 selectInput("state",
-                            label = "Select a state for plot:",
+                            label = "Select a state/territory for plot:",
                             choices = aus_total_high$State,
                             selected = "Australian Capital Territory"), # end of state selection
                 selectInput("disease",
@@ -44,11 +44,11 @@ ui <- fluidPage(
                             choices = levels(factor(aus_total_high$Disease)),
                             selected = "Hepatitis B (unspecified)"), # end of disease selection
                 selectInput("policy", 
-                            label = "Select a policy restriction category for plot to display date of policy start:",
+                            label = "Select a policy restriction category for plot to display date of policy start (black line):",
                             choices = levels(factor(pol_dat_aus$type)),
                             selected = "Restrictions of Mass Gatherings"), # end of policy selection
                 selectInput("date", 
-                            label = "Select a date for map:",
+                            label = "Select a date for plot (green line) and map:",
                             choices = aus_total_high$Date,
                             selected = "2019-01-01"), # end of date selection
                 radioButtons(inputId="plot_type", 
@@ -102,12 +102,10 @@ server <- function(input, output) {
                            y = Cases_7dayavg, 
                            color = Disease)) +
                 geom_line(aes(color = Disease)) +
-                geom_vline(alpha = 0.5, 
-                           xintercept = as.numeric(as.Date(pol_dat$date_start)),
+                geom_vline(xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
-                geom_vline(alpha=0.5,
-                           xintercept = as.numeric(as.Date(input$date)),
-                            color="green")+
+                geom_vline(xintercept = as.numeric(as.Date(input$date)),
+                            color = "green") +
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases (7-day rolling average)") +
@@ -132,12 +130,10 @@ server <- function(input, output) {
                            y = Rates_7dayavg, 
                            color = Disease)) +
                 geom_line(aes(color = Disease)) +
-                geom_vline(alpha = 0.5, 
-                           xintercept = as.numeric(as.Date(pol_dat$date_start)),
+                geom_vline(xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
-                geom_vline(alpha=0.5,
-                           xintercept =as.numeric(as.Date(input$date)),
-                           color="green")+
+                geom_vline(xintercept = as.numeric(as.Date(input$date)),
+                           color = "green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases per million (7-day rolling average)") +
@@ -162,12 +158,10 @@ server <- function(input, output) {
                            y = Cases, 
                            color = Disease)) +
                 geom_line(aes(color = Disease)) +
-                geom_vline(alpha = 0.5, 
-                           xintercept = as.numeric(as.Date(pol_dat$date_start)),
+                geom_vline(xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
-                geom_vline(alpha=0.5,
-                           xintercept = as.numeric(as.Date(input$date)),
-                           color="green")+
+                geom_vline(xintercept = as.numeric(as.Date(input$date)),
+                           color = "green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases") +
@@ -192,12 +186,10 @@ server <- function(input, output) {
                            y = Rates, 
                            color = Disease)) +
                 geom_line(aes(color = Disease)) +
-                geom_vline(alpha = 0.5, 
-                           xintercept = as.numeric(as.Date(pol_dat$date_start)),
+                geom_vline(xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
-                geom_vline(alpha=0.5,
-                           xintercept = as.numeric(as.Date(input$date)),
-                           color="green")+
+                geom_vline(xintercept = as.numeric(as.Date(input$date)),
+                           color = "green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases per million") +
@@ -237,7 +229,8 @@ server <- function(input, output) {
                               input$disease,
                               "(7-day rolling average) on", 
                               input$date,
-                              "by Australian state"))
+                              "by Australian state/territory")) +
+                scale_fill_viridis_c(name = "New cases (7-day avg) (log scale)")
             
         } else if (input$plot_type == "New cases per million (7-day average)") {
             
@@ -251,7 +244,8 @@ server <- function(input, output) {
                               input$disease,
                               "per million (7-day rolling average) on", 
                               input$date,
-                              "by Australian state"))
+                              "by Australian state/territory")) +
+                scale_fill_viridis_c(name = "New cases per mil (7-day avg) (log scale)")
             
         } else if (input$plot_type == "New cases") {
             
@@ -265,7 +259,8 @@ server <- function(input, output) {
                               input$disease,
                               "on", 
                               input$date,
-                              "by Australian state"))
+                              "by Australian state/territory")) +
+                scale_fill_viridis_c(name = "New cases (log scale)")
             
         } else if (input$plot_type == "New cases per million") {
             
@@ -279,7 +274,8 @@ server <- function(input, output) {
                               input$disease,
                               "per million on", 
                               input$date,
-                              "by Australian state"))
+                              "by Australian state/territory")) +
+                scale_fill_viridis_c(name = "New cases per mil (log scale)")
             
         }  
     }) #end of map plot
