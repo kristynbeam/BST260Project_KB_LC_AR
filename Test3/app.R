@@ -37,7 +37,7 @@ ui <- fluidPage(
             sidebarPanel(
                 selectInput("state",
                             label = "Select a state/territory for plot:",
-                            choices = aus_total_high$State,
+                            choices = unique(aus_total_high$State),
                             selected = "Australian Capital Territory"), # end of state selection
                 selectInput("disease",
                             label = "Select a disease for plot and map:",
@@ -54,9 +54,7 @@ ui <- fluidPage(
                 radioButtons(inputId="plot_type", 
                              label="Select a variable for plot and map:",
                              choices=c("New cases", 
-                                       "New cases per million", 
-                                       "New cases (7-day average)", 
-                                       "New cases per million (7-day average)"),
+                                       "New cases per million"),
                              selected = "New cases"), # end of y-axis selection
                 
             ), #end sidebarPanel
@@ -86,63 +84,7 @@ server <- function(input, output) {
     
     output$linePlot <- renderPlot({
         
-        if (input$plot_type == "New cases (7-day average)") {
-            
-            # Define diseases to include in line plot as COVID-19 and user-selected disease
-            diseases <- c("COVID-19", 
-                          input$disease)
-            
-            # Define province and policy type
-            pol_dat <- pol_dat_aus %>%
-                filter(province == input$state & type == input$policy)
-            
-            aus_total_high %>% 
-                filter(State == input$state & Disease %in% diseases) %>% 
-                ggplot(aes(x = Date, 
-                           y = Cases_7dayavg, 
-                           color = Disease)) +
-                geom_line(aes(color = Disease)) +
-                geom_vline(xintercept = as.numeric(as.Date(pol_dat$date_start)),
-                           color = "black") +
-                geom_vline(xintercept = as.numeric(as.Date(input$date)),
-                            color = "green") +
-                theme_minimal() +
-                labs(x = "Date",
-                     y = "New cases (7-day rolling average)") +
-                ggtitle(paste("New confirmed cases (7-day rolling average) over time in", 
-                              input$state)) +
-                scale_x_date(date_breaks = "3 months", 
-                             date_labels = "%b") 
-            
-        } else if (input$plot_type == "New cases per million (7-day average)") {
-            
-            # Define diseases to include in line plot as COVID-19 and user-selected disease
-            diseases <- c("COVID-19", 
-                          input$disease)
-            
-            # Define province and policy type
-            pol_dat <- pol_dat_aus %>%
-                filter(province == input$state & type == input$policy)
-            
-            aus_total_high %>% 
-                filter(State == input$state & Disease %in% diseases) %>% 
-                ggplot(aes(x = Date, 
-                           y = Rates_7dayavg, 
-                           color = Disease)) +
-                geom_line(aes(color = Disease)) +
-                geom_vline(xintercept = as.numeric(as.Date(pol_dat$date_start)),
-                           color = "black") +
-                geom_vline(xintercept = as.numeric(as.Date(input$date)),
-                           color = "green")+
-                theme_minimal() +
-                labs(x = "Date",
-                     y = "New cases per million (7-day rolling average)") +
-                ggtitle(paste("New confirmed cases per million (7-day rolling average) over time in", 
-                              input$state)) +
-                scale_x_date(date_breaks = "3 months", 
-                             date_labels = "%b") 
-            
-        } else if (input$plot_type=="New cases") {
+             if (input$plot_type=="New cases") {
             
             # Define diseases to include in line plot as COVID-19 and user-selected disease
             diseases <- c("COVID-19", 
@@ -168,7 +110,7 @@ server <- function(input, output) {
                 ggtitle(paste("New confirmed cases over time in", 
                               input$state)) +
                 scale_x_date(date_breaks = "3 months", 
-                             date_labels = "%b")
+                             date_labels = "%b %y")
             
         } else if (input$plot_type=="New cases per million") {
             
@@ -196,7 +138,7 @@ server <- function(input, output) {
                 ggtitle(paste("New confirmed cases per million over time in", 
                               input$state)) +
                 scale_x_date(date_breaks = "3 months", 
-                             date_labels = "%b")
+                             date_labels = "%b %y")
             
         }  
     }) #end of plot
@@ -217,41 +159,7 @@ server <- function(input, output) {
     
     output$mapPlot <- renderPlot({
         
-        if (input$plot_type == "New cases (7-day average)") {
-            
-            merge_dat %>% 
-                group_by(input$state) %>% 
-                filter(Disease == input$disease,
-                       Date == input$date) %>% 
-                ggplot(aes(fill = Cases_7dayavg)) + 
-                geom_sf() +
-                ggtitle(paste("New confirmed cases of", 
-                              input$disease,
-                              "(7-day rolling average) on", 
-                              input$date,
-                              "by Australian state/territory")) +
-                scale_fill_viridis_c(name = "New cases (7-day avg) (sqrt scale)",
-                                     trans = "sqrt",
-                                     direction = -1)
-            
-        } else if (input$plot_type == "New cases per million (7-day average)") {
-            
-            merge_dat %>% 
-                group_by(input$state) %>% 
-                filter(Disease == input$disease,
-                       Date == input$date) %>% 
-                ggplot(aes(fill = Rates_7dayavg)) + 
-                geom_sf() +
-                ggtitle(paste("New confirmed cases of", 
-                              input$disease,
-                              "per million (7-day rolling average) on", 
-                              input$date,
-                              "by Australian state/territory")) +
-                scale_fill_viridis_c(name = "New cases per mil (7-day avg) (sqrt scale)",
-                                     trans = "sqrt",
-                                     direction = -1)
-            
-        } else if (input$plot_type == "New cases") {
+       if (input$plot_type == "New cases") {
             
             merge_dat %>% 
                 group_by(input$state) %>% 
