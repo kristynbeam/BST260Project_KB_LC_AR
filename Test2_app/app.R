@@ -232,6 +232,7 @@ server <- function(input, output) {
         merge_dat %>% 
             group_by(input$province) %>% 
             filter(Disease == input$disease) %>% 
+            #I am not sure how to get it to change based on the radiobutton we select for Cases, Rates, etc here
             ggplot(aes(fill = log(Rates))) + geom_sf() +
             ggtitle(paste(input$disease), "Rate Across all Provinces in Australia")
     })#end of map plot
