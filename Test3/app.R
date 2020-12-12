@@ -40,16 +40,16 @@ ui <- fluidPage(
                             selected = "Australian Capital Territory"), # end of state selection
                 selectInput("disease",
                             label = "Select a disease for plot and map:",
-                            choices = aus_total_high$Disease,
+                            choices = levels(factor(aus_total_high$Disease)),
                             selected = "Hepatitis B (unspecified)"), # end of disease selection
                 selectInput("policy", 
                             label = "Select a policy restriction category for plot to display date of policy start:",
-                            choices = pol_dat_aus$type,
+                            choices = levels(factor(pol_dat_aus$type)),
                             selected = "Restrictions of Mass Gatherings"), # end of policy selection
                 selectInput("date", 
                             label = "Select a date for map:",
                             choices = aus_total_high$Date,
-                            selected = "2020-01-01"), # end of date selection
+                            selected = "2019-01-01"), # end of date selection
                 radioButtons(inputId="plot_type", 
                              label="Select a variable for plot and map:",
                              choices=c("New cases", 
@@ -71,10 +71,10 @@ ui <- fluidPage(
                    
             ),
             column(8,
-                plotOutput("mapPlot")
-                )#, #end column
-                
-            ) #end fluidRow
+                   plotOutput("mapPlot")
+            )#, #end column
+            
+        ) #end fluidRow
         
         
     )
@@ -96,7 +96,7 @@ server <- function(input, output) {
                 filter(province == input$state & type == input$policy)
             
             aus_total_high %>% 
-                filter(State == input$state & Date >= "2020-01-01" & Disease %in% diseases) %>% 
+                filter(State == input$state & Disease %in% diseases) %>% 
                 ggplot(aes(x = Date, 
                            y = Cases_7dayavg, 
                            color = Disease)) +
@@ -104,12 +104,15 @@ server <- function(input, output) {
                 geom_vline(alpha = 0.5, 
                            xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
+                geom_vline(alpha=0.5,
+                           xintercept = as.numeric(as.Date(input$date)),
+                            color="green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases (7-day rolling average)") +
                 ggtitle(paste("New confirmed cases (7-day rolling average) over time in", 
                               input$state)) +
-                scale_x_date(date_breaks = "1 month", 
+                scale_x_date(date_breaks = "3 months", 
                              date_labels = "%b") 
             
         } else if (input$plot_type == "New cases per million (7-day average)") {
@@ -123,7 +126,7 @@ server <- function(input, output) {
                 filter(province == input$state & type == input$policy)
             
             aus_total_high %>% 
-                filter(State == input$state & Date >= "2020-01-01" & Disease %in% diseases) %>% 
+                filter(State == input$state & Disease %in% diseases) %>% 
                 ggplot(aes(x = Date, 
                            y = Rates_7dayavg, 
                            color = Disease)) +
@@ -131,12 +134,15 @@ server <- function(input, output) {
                 geom_vline(alpha = 0.5, 
                            xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
+                geom_vline(alpha=0.5,
+                           xintercept =as.numeric(as.Date(input$date)),
+                           color="green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases per million (7-day rolling average)") +
                 ggtitle(paste("New confirmed cases per million (7-day rolling average) over time in", 
                               input$state)) +
-                scale_x_date(date_breaks = "1 month", 
+                scale_x_date(date_breaks = "3 months", 
                              date_labels = "%b") 
             
         } else if (input$plot_type=="New cases") {
@@ -150,7 +156,7 @@ server <- function(input, output) {
                 filter(province == input$state & type == input$policy)
             
             aus_total_high %>% 
-                filter(State == input$state & Date >= "2020-01-01" & Disease %in% diseases) %>% 
+                filter(State == input$state & Disease %in% diseases) %>% 
                 ggplot(aes(x = Date, 
                            y = Cases, 
                            color = Disease)) +
@@ -158,12 +164,15 @@ server <- function(input, output) {
                 geom_vline(alpha = 0.5, 
                            xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
+                geom_vline(alpha=0.5,
+                           xintercept = as.numeric(as.Date(input$date)),
+                           color="green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases") +
                 ggtitle(paste("New confirmed cases over time in", 
                               input$state)) +
-                scale_x_date(date_breaks = "1 month", 
+                scale_x_date(date_breaks = "3 months", 
                              date_labels = "%b")
             
         } else if (input$plot_type=="New cases per million") {
@@ -177,7 +186,7 @@ server <- function(input, output) {
                 filter(province == input$state & type == input$policy)
             
             aus_total_high %>% 
-                filter(State == input$state & Date >= "2020-01-01" & Disease %in% diseases) %>% 
+                filter(State == input$state & Disease %in% diseases) %>% 
                 ggplot(aes(x = Date, 
                            y = Rates, 
                            color = Disease)) +
@@ -185,17 +194,20 @@ server <- function(input, output) {
                 geom_vline(alpha = 0.5, 
                            xintercept = as.numeric(as.Date(pol_dat$date_start)),
                            color = "black") +
+                geom_vline(alpha=0.5,
+                           xintercept = as.numeric(as.Date(input$date)),
+                           color="green")+
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases per million") +
                 ggtitle(paste("New confirmed cases per million over time in", 
                               input$state)) +
-                scale_x_date(date_breaks = "1 month", 
+                scale_x_date(date_breaks = "3 months", 
                              date_labels = "%b")
             
         }  
     }) #end of plot
-
+    
     
     
     
@@ -211,16 +223,6 @@ server <- function(input, output) {
     # Need to make sure we write our final dataset as a csv to the folder and then read it in at the top
     
     output$mapPlot <- renderPlot({
-
-        #Need to make sure we write our final dataset as a csv to the folder and then read it in at the top
-        merge_dat %>% 
-            group_by(input$province) %>% 
-            filter(Disease == input$disease) %>% 
-            #I am not sure how to get it to change based on the radiobutton we select for Cases, Rates, etc here
-            ggplot(aes(fill = log(Rates))) + geom_sf() +
-            ggtitle(paste(input$disease), "Rate Across all Provinces in Australia")
-    })#end of map plot
-
         
         if (input$plot_type == "New cases (7-day average)") {
             
@@ -263,7 +265,7 @@ server <- function(input, output) {
                               "on", 
                               input$date,
                               "by Australian state"))
-        
+            
         } else if (input$plot_type == "New cases per million") {
             
             merge_dat %>% 
@@ -277,12 +279,11 @@ server <- function(input, output) {
                               "per million on", 
                               input$date,
                               "by Australian state"))
-        
+            
         }  
-    } #end of map plot
-
+    }) #end of map plot
     
-
+}
 
 # Run the application 
 shinyApp(ui = ui, server = server)

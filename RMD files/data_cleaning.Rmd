@@ -16,7 +16,6 @@ library(dplyr)
 library(lubridate)
 library(ggplot2)
 library(readr)
-library(ozmaps)
 ```
 
 ```{r}
@@ -96,10 +95,22 @@ head(aus_total)
 # Rename provinces
 aus_total$State <- recode(aus_total$State, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia", "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
 
-
 #Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
 aus_total_high <- aus_total %>% 
   filter(Rates >= 0.2)
+
+aus_total_high$Date <- as.Date(aus_total_high$Date)
+
+aus_total_high <- aus_total_high %>% 
+    group_by(State) %>% 
+    arrange(Date) %>% 
+    mutate(Cases_7dayavg = rollmean(Cases, 
+                                    k = 7, 
+                                    fill = NA)) %>% 
+    mutate(Rates_7dayavg = rollmean(Rates, 
+                                    k = 7, 
+                                    fill = NA)) %>% 
+    ungroup()
 
 #How many diseases are we left with in this case? n = 42
 aus_total_high %>% 
@@ -110,10 +121,7 @@ aus_total_high %>%
   ggplot(aes(Date, Rates, color = Disease)) +
   geom_line()
 
-# Save aus_total and aus_total_high so they can be brought into Shiny app
-# write.csv(aus_total, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total.csv")
-# write.csv(aus_total_high, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/aus_total_high.csv")
-# write.csv(aus_total, file="https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_total.csv")
+# Save aus_total_high so it can be brought into Shiny app
 write.csv(aus_total_high, "aus_total_high.csv")
 head(aus_total_high)
 ```
@@ -123,6 +131,7 @@ head(aus_total_high)
 aus_total_covid <- aus_total %>% 
   filter(Disease == "COVID-19")
 
+# Save aus_total_covid so it can be brought into Shiny app
 write.csv(aus_total_covid, "aus_total_covid.csv")
 
 # Create test COVID-19 plots
@@ -223,8 +232,8 @@ pol_dat_aus$target_who_what <- as.factor(pol_dat_aus$target_who_what)
 # View pol_dat_aus
 head(pol_dat_aus)
 list.files()
+
 # Save pol_dat_aus so it can be brought into Shiny app
-# write.csv(pol_dat_aus, file = "~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/pol_dat._aus.csv")
 write.csv(pol_dat_aus, "pol_dat_aus.csv")
 ```
 
@@ -408,34 +417,33 @@ head(aus_total_influenza_diff)
 ```
 
 ```{r}
-#map of australia
-
+# Create map of Australia
+library(ozmaps)
 x <- ozmap_data()
 ggplot(data = x) + geom_sf()
 
-#this is an "sf" data structure which can be tereated as a datafram,e but an additional column called a geometry. If we want to color the data by Cases or Rates, we would merge ozmap with our df that has the cases and rates information.
+# This is an "sf" data structure which can be treated as a df but with an additional column called a geometry. If we want to color the data by Cases or Rates, we would merge this with our df that has the cases and rates information.
 
-#Example
+# Example
+# x <- ozmap_data()
+# y <- data.frame(NAME = x$NAME,
+#                 flu_cases = rpois(nrow(x), 100))
+# merged <- merge(x, y, by = "NAME")
+# ggplot(data = merged, aes(fill = flu_cases)) + geom_sf()
 
-x <- ozmap_data()
-y <- data.frame(NAME = x$NAME,
-                flu_cases = rpois(nrow(x), 100))
-merged <- merge(x, y, by = "NAME")
-ggplot(data = merged, aes(fill = flu_cases)) + geom_sf()
+# Do this with our data, Cases and Rates data
 
-#Now trying to do this with out data, the Cases and Rates data
-
-#Created a merged data set between the map and aus_total_high
+# Created a merged dataset between x and aus_total_high
 merge_dat <- x %>% 
   rename(State = NAME) %>% 
   merge(aus_total_high, by = "State")
-#Need to write the merge file that we end up with to our folder so that it can run in the app
+# Need to write the merge file that we end up with to our folder so that it can run in the app
 
-#This is a plot of the rates of influenza by country. I did this on a log scale of rates because just basic rates was all one color.
-merge_dat %>% 
-  group_by(State) %>% 
-  filter(Disease == "Influenza (laboratory confirmed)") %>% 
-  ggplot(aes(fill = log(Rates))) + geom_sf()
+# This is a plot of the rates of influenza by country. I did this on a log scale of rates because just basic rates was all one color.
+# merge_dat %>% 
+#   group_by(State) %>% 
+#   filter(Disease == "Influenza (laboratory confirmed)") %>% 
+#   ggplot(aes(fill = log(Rates))) + geom_sf()
 
 ```
 
