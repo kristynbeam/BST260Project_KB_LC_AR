@@ -223,14 +223,16 @@ server <- function(input, output) {
                 group_by(input$state) %>% 
                 filter(Disease == input$disease,
                        Date == input$date) %>% 
-                ggplot(aes(fill = log(Cases_7dayavg))) + 
+                ggplot(aes(fill = Cases_7dayavg)) + 
                 geom_sf() +
                 ggtitle(paste("New confirmed cases of", 
                               input$disease,
                               "(7-day rolling average) on", 
                               input$date,
                               "by Australian state/territory")) +
-                scale_fill_viridis_c(name = "New cases (7-day avg) (log scale)")
+                scale_fill_viridis_c(name = "New cases (7-day avg) (sqrt scale)",
+                                     trans = "sqrt",
+                                     direction = -1)
             
         } else if (input$plot_type == "New cases per million (7-day average)") {
             
@@ -238,14 +240,16 @@ server <- function(input, output) {
                 group_by(input$state) %>% 
                 filter(Disease == input$disease,
                        Date == input$date) %>% 
-                ggplot(aes(fill = log(Rates_7dayavg))) + 
+                ggplot(aes(fill = Rates_7dayavg)) + 
                 geom_sf() +
                 ggtitle(paste("New confirmed cases of", 
                               input$disease,
                               "per million (7-day rolling average) on", 
                               input$date,
                               "by Australian state/territory")) +
-                scale_fill_viridis_c(name = "New cases per mil (7-day avg) (log scale)")
+                scale_fill_viridis_c(name = "New cases per mil (7-day avg) (sqrt scale)",
+                                     trans = "sqrt",
+                                     direction = -1)
             
         } else if (input$plot_type == "New cases") {
             
@@ -253,14 +257,16 @@ server <- function(input, output) {
                 group_by(input$state) %>% 
                 filter(Disease == input$disease,
                        Date == input$date) %>% 
-                ggplot(aes(fill = log(Cases))) + 
+                ggplot(aes(fill = Cases)) + 
                 geom_sf() +
                 ggtitle(paste("New confirmed cases of", 
                               input$disease,
                               "on", 
                               input$date,
                               "by Australian state/territory")) +
-                scale_fill_viridis_c(name = "New cases (log scale)")
+                scale_fill_viridis_c(name = "New cases (sqrt scale)",
+                                     trans = "sqrt",
+                                     direction = -1)
             
         } else if (input$plot_type == "New cases per million") {
             
@@ -268,14 +274,16 @@ server <- function(input, output) {
                 group_by(input$state) %>% 
                 filter(Disease == input$disease,
                        Date == input$date) %>% 
-                ggplot(aes(fill = log(Rates))) + 
+                ggplot(aes(fill = Rates)) + 
                 geom_sf() +
                 ggtitle(paste("New confirmed cases of", 
                               input$disease,
                               "per million on", 
                               input$date,
                               "by Australian state/territory")) +
-                scale_fill_viridis_c(name = "New cases per mil (log scale)")
+                scale_fill_viridis_c(name = "New cases per mil (sqrt scale)",
+                                     trans = "sqrt",
+                                     direction = -1)
             
         }  
     }) #end of map plot
