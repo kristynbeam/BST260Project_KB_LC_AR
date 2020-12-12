@@ -40,11 +40,11 @@ ui <- fluidPage(
                             selected = "Australian Capital Territory"), # end of state selection
                 selectInput("disease",
                             label = "Select a disease for plot and map:",
-                            choices = aus_total_high$Disease,
+                            choices = levels(factor(aus_total_high$Disease)),
                             selected = "Hepatitis B (unspecified)"), # end of disease selection
                 selectInput("policy", 
                             label = "Select a policy restriction category for plot to display date of policy start:",
-                            choices = pol_dat_aus$type,
+                            choices = levels(factor(pol_dat_aus$type)),
                             selected = "Restrictions of Mass Gatherings"), # end of policy selection
                 selectInput("date", 
                             label = "Select a date for map:",
