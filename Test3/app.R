@@ -8,6 +8,7 @@ library(readr)
 library(directlabels)
 library(zoo)
 library(ozmaps)
+library(ggthemes)
 
 # Define UI for application 
 ui <- fluidPage(
@@ -108,14 +109,19 @@ server <- function(input, output, session) {
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases") +
-                ggtitle(paste("New confirmed cases over time in", 
+                ggtitle(paste("New confirmed cases of COVID-19 and",
+                              input$disease,
+                              "over time in", 
                               input$state)) +
                 scale_x_date(date_breaks = "3 months", 
                              date_labels = "%b %y",
-                             limits = as.Date(c("2018-11-30", "2020-10-31"))) +
+                             limits = as.Date(c("2018-11-30", 
+                                                "2020-10-31"))) +
                 scale_y_continuous(trans = "log10",
-                                   limits = c(1, 32685)) +
-                scale_color_discrete(name = "Disease (log scale):")
+                                   limits = c(1, 
+                                              32685)) +
+                scale_color_discrete(name = "Disease (log scale):") +
+                theme(plot.title = element_text(size=10))
             
             # Rate
             } else if (input$plot_type == "New cases per million") {
@@ -142,14 +148,19 @@ server <- function(input, output, session) {
                 theme_minimal() +
                 labs(x = "Date",
                      y = "New cases per million") +
-                ggtitle(paste("New confirmed cases per million over time in", 
+                ggtitle(paste("New confirmed cases per million of COVID-19 and",
+                              input$disease,
+                              "over time in",
                               input$state)) +
                 scale_x_date(date_breaks = "3 months", 
                              date_labels = "%b %y",
-                             limits = as.Date(c("2018-11-30", "2020-10-31"))) +
+                             limits = as.Date(c("2018-11-30", 
+                                                "2020-10-31"))) +
                 scale_y_continuous(trans = "log10",
-                                   limits = c(0.2, 410)) +
-                scale_color_discrete(name = "Disease (log scale):")
+                                   limits = c(0.2, 
+                                              410)) +
+                scale_color_discrete(name = "Disease (log scale):") +
+                theme(plot.title = element_text(size=10))
             
             }
         
@@ -207,17 +218,17 @@ server <- function(input, output, session) {
                               input$disease,
                               "on", 
                               input$date,
-                              "by Australian state/territory")) +
+                              "by Australian region")) +
                 scale_fill_viridis_c(name = "New cases (log scale)",
                                      trans = "log10",
                                      direction = -1,
-                                     limits = c(1, 32685),
-                                     na.value = "grey50") +
+                                     limits = c(1, 32685)) +
                 geom_sf_label(aes(label = State),
                               nudge_x = 3.5,
                               nudge_y = -0.75) +
                 labs(x = "Latitude",
-                     y = "Longitude")
+                     y = "Longitude") +
+                theme(plot.title = element_text(size=11))
             
             # Rate
             } else if (input$plot_type == "New cases per million") {
@@ -244,17 +255,17 @@ server <- function(input, output, session) {
                                   input$disease,
                                   "per million on", 
                                   input$date,
-                                  "by Australian state/territory")) +
+                                  "by Australian region")) +
                     scale_fill_viridis_c(name = "New cases per mil (log scale)",
                                          trans = "log10",
                                          direction = -1,
-                                         limits = c(0.2, 410),
-                                         na.value = "grey50") +
+                                         limits = c(0.2, 410)) +
                     geom_sf_label(aes(label = State),
                                   nudge_x = 3.5,
                                   nudge_y = -0.75) +
                     labs(x = "Latitude",
-                         y = "Longitude")
+                         y = "Longitude") +
+                    theme(plot.title = element_text(size=11))
             
             }  
         
