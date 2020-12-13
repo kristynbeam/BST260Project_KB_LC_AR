@@ -502,3 +502,15 @@ t.test(aus_total_Pertussis_test$year1,
 ```
 
 ### Final conclusions
+
+We found that several non-pharmaceutical interventions also had an effect on other communicable diseases including influenza, chlamydia, and pertussis. It did not seem that GI illnesses decreased in incidence as much according to NPI implementation. These conclusions were drawn visually from our shiny app. 
+
+We performed t-tests to examine the difference in mean cases of diseases in year 1 (2019) and year 2 (2020). 
+
+Influenza: p = 0.03, statistically significant difference between 2019 and 2020.
+Gonococcal infection: p = 0.25; no difference in infections between 2019 and 2020
+Hepatitis C: p = 0.06, no significant difference in infections between 2019 and 2020
+Rotavirus: p = 0.28, no significant difference in infections between 2019 and 2020
+Pertussis: p = 0.12, no significant difference in infections between 2019 and 2020
+
+Ultimately, we see that although visually there appears to be a difference between infection rates for a variety of disorders with the implementation of NPIs, it does not appear that these differences are statistically significant with the exception of influenza. As stated prior, in Australia, COVID and influenza season have coexisted and they have similar precautions to limit spread of the diseases. The other diseases we investigated include GI illnesses and bloodborne illnesses which perhaps do not respond to NPI interventions as readily.
