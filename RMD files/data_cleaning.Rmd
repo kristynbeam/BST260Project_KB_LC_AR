@@ -1,7 +1,7 @@
 ---
 title: "BST260_Project"
-author: "Kristyn Beam and Alex Rashedi and Luis Castelo Branco"
-date: "11/24/2020"
+author: "Kristyn Beam, Alex Rashedi, and Luis Castelo Branco"
+date: "12/13/2020"
 output: html_document
 ---
 
@@ -15,58 +15,59 @@ library(dplyr)
 library(lubridate)
 library(ggplot2)
 library(readr)
+library(rvest)
+library(ozmaps)
 ```
 
+## Examining the Effects of Policy Interventions on the Incidence of COVID-19 and Other Infectious Diseases in Australia
 
-## Examining Policy Interventions on COVID-19 and Other Infectious Disease Incidence in Australia
+### Overview and motivation
 
-### Overview and Motivation
+COVID-19 has rocked the globe in the year 2020. With it's emergence in Wuhan, China in late 2019, high contagiousness, and lack of available medical treatments and interventions, nonpharmaceutical interventions (NPIs) have been the main defense against its spread. Given this fact, investigation into how NPIs have not only affected the spread of COVID-19, but also other infectious diseases transmitted by physical contact or respiratory droplets, is warranted. 
 
-COVID-19 has rocked the globe in the year 2020. With it's emergence in late 2019, quick spread, and lack of medical treatments and interventions, nonpharmaceutical interventions have been the forefront of limiting spread, disease, and death. Given the fact that non-pharmaceutical interventions (NPIs) have been the main defense against spread of COVID-19, investigation into how NPIs have not only affected the spread of COVID-19, a respiratory disease, but also other infectious diseases spread by contact or respiratory droplets. 
-
-The other main infectious disease tracked annually and globally is influenza which has a typical course of increased incidence in the winter (colder) months and virtually disappears in the summer (warmer) months. COVID emerged in December of 2019, but became particularly prevalent in March of 2020. In the United States, the season for influenza is typically November to March and then influenza typically decreases in incidence until the following Fall. Given the alternating seasons for tracking COVID and influenza in particular in the United States, we wanted to see the effects of NPIs on both COVID incidence and also other respiratory infections. To do this, we needed to investigate rates in a country where the seasons of COVID and influenza would be tracking along similarly, which was the Southern Hemisphere. Australia has a national data collection system for both infectious diseases as well as national policy institution for COVID management lending itself well to analysis of these policies on multiple infectious diseases. 
+Influenza is another infectious disease that is tracked annually and globally, and it has a typical course of increased incidence in the winter (colder) months, virtually disappearing in the summer (warmer) months. COVID-19 emerged in December of 2019 but became particularly prevalent in March of 2020. In the United States (US), "influenza season" is typically November to March, where incidence decreases until the following Fall. Given the non-overlapping seasons for high COVID-19 and influenza incidence in the US, in particular, we decided to conduct the investigation using data from a country in the Southern Hemisphere instead, where the periods of high incidence would track more closely. Australia was selected for study, as it has a national data collection system for infectious disease incidence as well as national- and regional-level policy institution for COVID-19 management, lending itself well to analyses of the effects of these policy changes on the incidence of COVID-19 and other infectious diseases of interest. 
 
 ### Related work
 
-An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0) published recently in Nature examined how policy changes, specifically nonpharamaceutical interventions (NPIs) affected the incidence of COVID globally. 
+An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0) published recently in Nature examined how specific policy changes (i.e., NPIs) have affected the incidence of COVID-19, globally. 
 
 "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
-It appears that these NPIs have variable effects on COVID-19 incidence but may also have affected other infectious disease incidence.
-
+We hypothesize that these NPIs have considerable effects on COVID-19 incidence but may also impact the incidencdes of other infectious diseases.
 
 ### Initial questions
 
-Our questions for this project were whether non-pharmaceutical interventions meant to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are 8 provinces in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs studied through the article cited above including: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools as a few examples. 
+Our questions for this project were whether NPIs instituted to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are eight states/territories in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs discussed in the article cited above, including but not limited to: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools. 
 
-Our initial thought process was to investigate how just influenza and COVID-19 changed over time as new policies were introduced into the difference provinces of Australia. As we explored data sources, we found that there were several infectious diseases that were tracked by Australia, all communicable, allowing us to look at differences between GI vs respiratory vs sexually transmitted diseases. As we explored the data we saw that we would be able to look at the changing incidence of diseases of all sources based on NPI implementation first through graphical representations and then through statistical analysis.
+Our initial intention was to investigate how the incidence of COVID-19 and influenza changed over time as new policy restrictions were introduced in each region of Australia. As we further explored our data sources, we found that there were several infectious diseases tracked by Australia, allowing us to look at changes in multiple gastrointestinal (GI), respiratory, and sexually transmitted infections (STIs) of interest using both graphical representations and statistical analyses.
 
-Our plan for statistical analysis was to look at the mean incidence rate of both COVID and influenza over the few months prior to NPI implemenatation and then look at the mean incidence rate over the months post NPI implementation. 
+Our plan for statistical analysis was to compare the mean incidence rate of both COVID-19 and influenza over the months prior to the specific NPI implemenatation to the mean incidence rate each over the months after NPI implementation. 
 
 ### Data sources
 
-We obtained our data from several data sources for completeness.
+We obtained our data from several sources:
 
 1. Australian Infectious Disease Data, located [here](https://www1.health.gov.au/internet/main/publishing.nsf/Content/cdnareport.htm). 
-2. Australian COVID data, located [here](need a website here).
-3. Non-pharmaceutical policy interventions data. This data came from the [CoronaNet Research Project](https://www.coronanet-project.org/). This project's goal is to: "...compile a database on government responses to the coronavirus. Our main focus is to collect as much information as we can about the various fine-grained actions governments are taking to address the effects of the COVID-19 pandemic. To date, this dataset provides the most comprehensive and granular documentation of such government policies in the world, capturing data for 18 broad policy categories alongside many other dimensions, including the initiator, target and timing of a policy."
 
-We downloaded several of the pre-fabricated .csv files from several websites. Given that the CoronaNet Research Project is updated frequently, we used webscraping to download this data in order to have the most up to date information each time our analysis was done. 
+2. Australian COVID-19 data, located [here](need a website here).
 
-We cleaned all the infectious disease data to display cases, rates, a 7-day rolling average of cases and rates. We also recoded the names of the provinces in each dataframe to be in long-form rather than abbreviations to be consistent and display better in our shiny app. Finally we ensured that all vectors had the appropriate designation: date, factor, character, etc. 
+3. NPI data, located [here](https://www.coronanet-project.org/). This project's goal is to "...compile a database on government responses to the coronavirus. [The] main focus is to collect as much information as we can about the various fine-grained actions governments are taking to address the effects of the COVID-19 pandemic. To date, this dataset provides the most comprehensive and granular documentation of such government policies in the world, capturing data for 18 broad policy categories alongside many other dimensions, including the initiator, target and timing of a policy."
 
-### Exploratory Data Analysis
+We downloaded several of the pre-fabricated .csv files from the listed websites. Given that the CoronaNet Research Project is updated frequently, we used webscraping to download this data in order to utilize the most up-to-date information each time our analysis was updated and/or performed. 
 
-We made exploratory line plots for our data to look at rates of COVID and other infectious diseases based on province to explore baseline rates for various diseases.
+We performed numerous data management tasks with the infectious disease data to prepare both count and rate information for analysis, including recoding, filtering, mutating, merging, and transforming. We engaged in similar tasks for the NPI data. Finally, we ensured that all variables across all datasets had the appropriate variable names and type designations for use in our Shiny app. 
 
-We created a dataframe aus_total_high which only includes communicable diseases with a rate greater than 0.2/100,000. This removed extremely rare diseases, typically mosquito-borne, based on this exploratory analysis. 
+### Exploratory data analysis
 
-We also explored the first dates that policies were introduced in each province and produced some test graphs to explore how a vertical line displaying the start of these policies visually impacted infectious disease incidence.
+We first generated exploratory line plots of our infectious disease data to look at counts and rates of COVID-19 and other infectious diseases across time based on province to explore baseline rates for various diseases.
+
+We created a dataframe aus_total_high which restricted the final dataset to include only those diseases with a rate greater than 0.2 (new confirmed cases per million). This removed extremely rare diseases from inclusion in our analysis, and the diseases that were removed with this method were mostly mosquito-borne. 
+
+Lastly, we limited the NPI dataset to only include observations for the first date that each policy type was introduced within each state/territory. Then, we produced test graphs to explore how a vertical line displaying the date for the start of each of these policies visually mapped onto infectious disease incidence within each region.
 
 ```{r}
-# Read in data on weekly influenza counts by Australian region 
+# Read in weekly influenza count data by Australian region 
 aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
-# aus_dat <- read.csv("../project_data_files/aus_flu_08_17.csv")
 
 # Identify earliest date available: 2017-09-15
 min(aus_dat$week)
@@ -76,15 +77,22 @@ max(aus_dat$week)
 
 aus_dat <- aus_dat %>% 
   # Rename variables
-  rename(week = Week.Ending..Friday., age_group = Age..group, indig = Indigenous.status, flu_type = Type.Subtype, state = State, sex = Sex) %>% 
+  rename(week = Week.Ending..Friday., 
+         age_group = Age..group, 
+         indig = Indigenous.status, 
+         flu_type = Type.Subtype, 
+         state = State, 
+         sex = Sex) %>% 
   # Select variables
-  select(week, state, age_group, sex, indig, flu_type)
+  select(week, 
+         state, 
+         age_group, 
+         sex, 
+         indig, 
+         flu_type)
 
-# Convert variable types
+# Convert variable type
 aus_dat$week <- mdy(aus_dat$week)
-# aus_dat$flu_type <- as.character(aus_dat$flu_type)
-# aus_dat$state <- as.character(aus_dat$state)
-# aus_dat$sex <- as.character(aus_dat$sex)
 
 # View aus_dat
 head(aus_dat)
@@ -93,41 +101,66 @@ head(aus_dat)
 ```{r}
 # Create count data frame using aus_dat
 aus_dat_case <- aus_dat %>% 
-  group_by(week, state, age_group, flu_type, sex) %>% 
+  group_by(week, 
+           state, 
+           age_group, 
+           flu_type, sex) %>% 
   summarize(n_cases = n())
 ```
 
 ```{r}
-# Read in Australian disease data
-#aus_data <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/Australian_data_clean.csv")
+# Read in Australian infectious disease data
 aus_data <- read.csv("../project_data_files/Australian_data_clean.csv")
 
-# removing all NA values
+# Create function to remove NA values
 not_all_na <- function(x) any(!is.na(x))
 
 aus_data <- aus_data %>%
+  # Remove NA values
   select_if(not_all_na) %>%
   # Rename variable
-  rename("Disease"="X")
+  rename("Disease" = "X")
 
+# View aus_data
 head(aus_data)
 
 # Create case data frame and reshape to long format
 aus_data_cases <- aus_data %>% 
   select("Disease":"Aust_n") %>% 
-  rename("ACT"="ACT_n", "NSW"="NSW_n", "NT"="NT_n", "Qld"="Qld_n", "SA"="SA_n", "Tas"= "Tas_n", "Vic"= "Vic_n", "WA"= "WA_n", "Australia"= "Aust_n") %>% 
+  rename("ACT" = "ACT_n", 
+         "NSW" = "NSW_n", 
+         "NT" = "NT_n", 
+         "Qld" = "Qld_n", 
+         "SA" = "SA_n", 
+         "Tas" = "Tas_n", 
+         "Vic" = "Vic_n", 
+         "WA" = "WA_n", 
+         "Australia" = "Aust_n") %>% 
   arrange("Date") %>% 
-  gather(State, Cases, c("ACT":"Australia"))
+  gather(State, 
+         Cases, 
+         c("ACT":"Australia"))
 
 # Create rate data frame and reshape to long format
 aus_data_rates <- aus_data %>% 
   select("Disease"|"Date"|"ACT_rate":"Aust_rate") %>% 
-  rename("ACT"="ACT_rate", "NSW"="NSW_rate", "NT"="NT_rate", "Qld"="Qld_rate", "SA"="SA_rate", "Tas"= "Tas_rate", "Vic"="Vic_rate", "WA"="WA_rate", "Australia"="Aust_rate") %>% 
+  rename("ACT" = "ACT_rate", 
+         "NSW"="NSW_rate", 
+         "NT"="NT_rate", 
+         "Qld"="Qld_rate", 
+         "SA"="SA_rate", 
+         "Tas"= "Tas_rate", 
+         "Vic"="Vic_rate", 
+         "WA"="WA_rate", 
+         "Australia"="Aust_rate") %>% 
   arrange("Date") %>% 
-  gather(State, Rates, c("ACT":"Australia")) 
+  gather(State, 
+         Rates, 
+         c("ACT":"Australia")) 
 
 # Join cases and rates data frames
-aus_total <- left_join(aus_data_cases, aus_data_rates)
+aus_total <- left_join(aus_data_cases, 
+                       aus_data_rates)
 
 # Convert variable types
 aus_total$Date <- mdy(aus_total$Date)
@@ -137,38 +170,39 @@ aus_total$Rates <- as.numeric(aus_total$Rates)
 # View aus_total
 head(aus_total)
 
-# Rename provinces
-aus_total$State <- recode(aus_total$State, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia", "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
+# Rename states/territories
+aus_total$State <- recode(aus_total$State, 
+                          "ACT" = "Australian Capital Territory", 
+                          "NSW" = "New South Wales", 
+                          "NT" = "Northern Territory", 
+                          "Qld" = "Queensland", 
+                          "SA" = "South Australia", 
+                          "Tas" = "Tasmania", 
+                          "Vic" = "Victoria", 
+                          "WA" = "Western Australia")
 
-#Filter aus_total df to only include diseases that have a rate of disease of > 0.2/100,000 
+# Filter aus_total data frame to only include diseases that have rate > 0.2
 aus_total_high <- aus_total %>% 
   filter(Rates >= 0.2,
          State != "Australia")
 
-aus_total_high$Date <- as.Date(aus_total_high$Date)
-
-aus_total_high <- aus_total_high %>% 
-    group_by(State) %>% 
-    arrange(Date) %>% 
-    mutate(Cases_7dayavg = rollmean(Cases, 
-                                    k = 7, 
-                                    fill = NA)) %>% 
-    mutate(Rates_7dayavg = rollmean(Rates, 
-                                    k = 7, 
-                                    fill = NA)) %>% 
-    ungroup()
-
-#How many diseases are we left with in this case? n = 42
+# How many diseases are we left with in this case? n = 42
 aus_total_high %>% 
   group_by(Disease) %>% 
   summarize()
 
+# Explore using ggplot
 aus_total_high %>% 
-  ggplot(aes(Date, Rates, color = Disease)) +
+  ggplot(aes(Date, 
+             Rates, 
+             color = Disease)) +
   geom_line()
 
 # Save aus_total_high so it can be brought into Shiny app
-write.csv(aus_total_high, "aus_total_high.csv")
+write.csv(aus_total_high, 
+          "aus_total_high.csv")
+
+# View aus_total_high
 head(aus_total_high)
 ```
 
@@ -178,21 +212,22 @@ aus_total_covid <- aus_total %>%
   filter(Disease == "COVID-19")
 
 # Save aus_total_covid so it can be brought into Shiny app
-write.csv(aus_total_covid, "aus_total_covid.csv")
+write.csv(aus_total_covid, 
+          "aus_total_covid.csv")
 
 # Create test COVID-19 plots
 p1 <- ggplot(data = aus_total_covid, 
             aes(x = Date, 
                 y = Cases))
+
 p1 + geom_line(aes(color = State)) +
   ggtitle("Covid Cases by Region") +
   ylim(0, 70000)
 
-p1
-
 p2 <- ggplot(data = aus_total_covid, 
              aes(x = Date, 
                  y = Rates))
+
 p2 + geom_line(aes(color = State)) +
   ggtitle("Covid Rates by Region") +
   ylim(0, 450)
@@ -211,6 +246,7 @@ max(aus_total_influenza$Date)
 p3 <- ggplot(data = aus_total_influenza, 
              aes(x = Date, 
                  y = Cases))
+
 p3 + geom_line(aes(color = State)) +
   ggtitle("Influenza Cases by Region") +
   ylim(0, 70500)
@@ -218,6 +254,7 @@ p3 + geom_line(aes(color = State)) +
 p4 <- ggplot(data = aus_total_influenza, 
              aes(x = Date, 
                  y = Rates))
+
 p4 + geom_line(aes(color = State)) +
   ggtitle("Influenza Rate by Region") +
   ylim(0, 450)
@@ -226,7 +263,6 @@ p4 + geom_line(aes(color = State)) +
 ```{r}
 # Read in Australian policy data by pulling most up-to-date version from Github
 pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
-
 
 pol_dat_aus <- pol_dat_aus %>%
   # Group pol_dat_aus by province and policy type
@@ -241,6 +277,7 @@ pol_dat_aus <- pol_dat_aus %>%
   # Filter to keep only policies that target Australia
   filter(target_country == "Australia")
 
+# Transform variable types
 pol_dat_aus$type <- as.factor(pol_dat_aus$type)
 pol_dat_aus$type_sub_cat <- as.factor(pol_dat_aus$type_sub_cat)
 pol_dat_aus$target_who_what <- as.factor(pol_dat_aus$target_who_what)
@@ -257,12 +294,10 @@ write.csv(pol_dat_aus, "pol_dat_aus.csv")
 # https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0
 # "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
-class(aus_total_high$Date)
-
 # Test graph
 aus_total_high %>%
-  filter(State == "New South Wales" & Date >= "2020-01-01" & 
-           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
+  filter(State == "New South Wales" & Date >= "2020-01-01" & Disease %in% c("Influenza (laboratory confirmed)",
+                                                                            "COVID-19")) %>%
   ggplot(aes(x = Date, 
              y = Rates)) +
   geom_line(aes(color = Disease), 
@@ -278,160 +313,197 @@ aus_total_high %>%
                date_labels = "%b")
 ```
 
-```{r}
-#creating 7 day average of cases and rates
-library(zoo)
-aus_total_high<-aus_total_high %>%group_by (State) %>% arrange(Date) %>% 
-mutate (Cases_7dayavg = rollmean(Cases, k = 7, fill = NA))%>% mutate (Rates_7dayavg = rollmean(Rates, k = 7, fill = NA))
-
-# Test graph
-aus_total_high %>%
-  filter(State == "New South Wales" & Date >= "2020-01-01" & 
-           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
-  ggplot(aes(x = Date, 
-             y = Cases_7dayavg)) +
-  geom_line(aes(color = Disease), 
-            alpha = 0.5) +
-  # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
-  geom_vline(alpha = 0.5, 
-             xintercept = as.numeric(as.Date("2020-03-16")), 
-             color = "blue") +
-  labs(x = "Date",
-       y = "Rate") +
-  ggtitle("Covid rates in NSW over time") +
-  scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b")
-
-# Test graph
-aus_total_high %>%
-  filter(State == "New South Wales" & Date >= "2020-01-01" & 
-           Disease %in% c("Influenza (laboratory confirmed)", "COVID-19")) %>%
-  ggplot(aes(x = Date, 
-             y = Rates_7dayavg)) +
-  geom_line(aes(color = Disease), 
-            alpha = 0.5) +
-  # 2020-03-16 is date of first policy restriction in NSW (restriction of mass gatherings)
-  geom_vline(alpha = 0.5, 
-             xintercept = as.numeric(as.Date("2020-03-16")), 
-             color = "blue") +
-  labs(x = "Date",
-       y = "Rate") +
-  ggtitle("Covid rates in NSW over time") +
-  scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b")
-
-```
-
+### Statistical analysis
 
 ```{r}
-# Read in Johns Hopkins UID lookup table
-uid_lookup_table = read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv")
-
-# Filter uid_lookup_table to only include relevant observations
-uid_lookup_table <- uid_lookup_table %>% 
-   filter(`Country_Region` == "Australia" & !is.na(`Province_State`))
-
-# View uid_lookup_table
-head(uid_lookup_table)
-
-```
-
-### Statistical Analysis
-
-```{r}
-#Creating a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) compared to year 2 (Nov19 to Oct/20)
+# Transform variable to date type
 aus_total_influenza$Date <- ymd(aus_total_influenza$Date)
 
+# View aus_total_influenza
 head(aus_total_influenza)
 
-aus_total_influenza_year1<- aus_total_influenza %>% filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=sum(Cases))
-aus_total_influenza_year2<- aus_total_influenza %>% filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=sum(Cases))
-aus_total_influenza_diff<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%mutate(drop=(year1-year2)/year1)
+# Create a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) to year 2 (Nov19 to Oct/20)
+aus_total_influenza_year1 <- aus_total_influenza %>% 
+  filter(Date <= "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year1 = sum(Cases))
 
+aus_total_influenza_year2 <- aus_total_influenza %>% 
+  filter(Date > "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year2 = sum(Cases))
+
+aus_total_influenza_diff <- left_join(aus_total_influenza_year1,
+                                      aus_total_influenza_year2) %>%
+  mutate(drop = (year1 - year2) / year1)
 ```
 
 
 ```{r}
-#web scraping for a dataset that containd the Population and Population density for the provinces
-library(rvest)
+# Perform web scraping for a dataset that containd the population and population density for the provinces
 url <- "https://www.worldatlas.com/articles/which-australian-states-territories-have-the-highest-density-of-population.html"
 h <- read_html(url)
-density<- h %>% html_nodes("table") %>% .[1]
-density <- density %>% html_table %>% .[[1]] 
+density <- h %>% 
+  html_nodes("table") %>%
+  .[1]
+density <- density %>% 
+  html_table %>% 
+  .[[1]] 
 
-density<- density%>%rename("State"= "State / Territory")%>%rename("density"="Density (persons per km2)") %>% mutate(State=recode(State,"Australian Capital Territory"="ACT", "New South Wales"="NSW", "Northern Territory"="NT", "Queensland"="Qld", "South Australia"="SA", "Tasmania"="Tas", "Victoria"="Vic", "Western Australia"="WA"))
+density <- density %>%
+  rename("State" = "State / Territory") %>%
+  rename("density" = "Density (persons per km2)") %>% 
+  mutate(State = recode(State, 
+                        "Australian Capital Territory" = "ACT", 
+                        "New South Wales" = "NSW", 
+                        "Northern Territory" = "NT", 
+                        "Queensland" = "Qld", 
+                        "South Australia" = "SA", 
+                        "Tasmania" = "Tas", 
+                        "Victoria" = "Vic", 
+                        "Western Australia" = "WA"))
 
-density$Population<-as.numeric(gsub(",","",density$Population))
+density$Population <- as.numeric(gsub(",", 
+                                      "", 
+                                      density$Population))
 
-#joining the datasets
-aus_total_influenza_diff<-left_join(aus_total_influenza_diff, density)
+# Join the datasets
+aus_total_influenza_diff <- left_join(aus_total_influenza_diff, 
+                                      density)
 
+# View aus_total_influenza_diff
 head(aus_total_influenza_diff)
-
 ```
 
 ```{r}
 # Create map of Australia
-library(ozmaps)
 x <- ozmap_data()
-ggplot(data = x) + geom_sf()
+ggplot(data = x) + 
+  geom_sf()
 
 # This is an "sf" data structure which can be treated as a df but with an additional column called a geometry. If we want to color the data by Cases or Rates, we would merge this with our df that has the cases and rates information.
 
-# Created a merged dataset between x and aus_total_high
+# Create a merged dataset of x and aus_total_high
 merge_dat <- x %>% 
   rename(State = NAME) %>% 
-  merge(aus_total_high, by = "State")
-
+  merge(aus_total_high, 
+        by = "State")
 ```
 
-
-#### Linear Regressions and T-Tests
+#### Linear regressions and t-tests
 
 ```{r}
-#building statistical tests to see if the mean cases of a disease in the first year (without Covid) was different from the mean of cases in the second year (with Covid)
+# Build statistical tests to see if the mean cases of a disease in the first year (without COVID-19) was different from the mean cases in the second year (with COVID-19)
 
 # Example with Influenza
-aus_total_influenza_year1<- aus_total_high %>% filter(Disease == "Influenza (laboratory confirmed)") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
-aus_total_influenza_year2<- aus_total_high %>% filter(Disease == "Influenza (laboratory confirmed)")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
-aus_total_influenza_test<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%filter (State!="Australia")
+aus_total_influenza_year1 <- aus_total_high %>% 
+  filter(Disease == "Influenza (laboratory confirmed)") %>%
+  filter(Date <= "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year1 = mean(Cases))
 
-t.test(aus_total_influenza_test$year1, aus_total_influenza_test$year2, paired = TRUE, alternative = "two.sided")
-    
-#linearMod_Influenza <- lm(aus_total_influenza_test$year1 ~ aus_total_influenza_test$year2) 
-#confint.lm(linearMod_Influenza)
-#summary(linearMod_Influenza)
+aus_total_influenza_year2 <- aus_total_high %>%
+  filter(Disease == "Influenza (laboratory confirmed)") %>%
+  filter(Date > "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year2 = mean(Cases))
+
+aus_total_influenza_test <- left_join(aus_total_influenza_year1, 
+                                      aus_total_influenza_year2) %>%
+  filter(State != "Australia")
+
+t.test(aus_total_influenza_test$year1, 
+       aus_total_influenza_test$year2, 
+       paired = TRUE, 
+       alternative = "two.sided")
 
 # Example with Gonococcal infection
-aus_total_Gono_year1<- aus_total_high %>% filter(Disease == "Gonococcal infection") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
-aus_total_Gono_year2<- aus_total_high %>% filter(Disease == "Gonococcal infection")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
-aus_total_Gono_test<- left_join(aus_total_Gono_year1, aus_total_Gono_year2)%>%filter (State!="Australia")
+aus_total_Gono_year1 <- aus_total_high %>%
+  filter(Disease == "Gonococcal infection") %>%
+  filter(Date <= "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year1 = mean(Cases))
 
-t.test(aus_total_Gono_test$year1, aus_total_Gono_test$year2, paired = TRUE, alternative = "two.sided")
+aus_total_Gono_year2 <- aus_total_high %>%
+  filter(Disease == "Gonococcal infection") %>%
+  filter(Date > "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year2 = mean(Cases))
 
+aus_total_Gono_test <- left_join(aus_total_Gono_year1, 
+                                 aus_total_Gono_year2) %>%
+  filter(State != "Australia")
+
+t.test(aus_total_Gono_test$year1, 
+       aus_total_Gono_test$year2, 
+       paired = TRUE, 
+       alternative = "two.sided")
 
 # Example with Hepatitis C
-aus_total_HepC_year1<- aus_total_high %>% filter(Disease == "Hepatitis C (unspecified)") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
-aus_total_HepC_year2<- aus_total_high %>% filter(Disease == "Hepatitis C (unspecified)")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
-aus_total_HepC_test<- left_join(aus_total_HepC_year1, aus_total_HepC_year2)%>%filter (State!="Australia")
+aus_total_HepC_year1 <- aus_total_high %>%
+  filter(Disease == "Hepatitis C (unspecified)") %>%
+  filter(Date <= "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year1 = mean(Cases))
 
-t.test(aus_total_HepC_test$year1, aus_total_HepC_test$year2, paired = TRUE, alternative = "two.sided")
+aus_total_HepC_year2 <- aus_total_high %>%
+  filter(Disease == "Hepatitis C (unspecified)") %>%
+  filter(Date > "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year2 = mean(Cases))
+
+aus_total_HepC_test <- left_join(aus_total_HepC_year1, 
+                                 aus_total_HepC_year2) %>%
+  filter(State != "Australia")
+
+t.test(aus_total_HepC_test$year1, 
+       aus_total_HepC_test$year2, 
+       paired = TRUE, 
+       alternative = "two.sided")
   
-
 # Example with Rotavirus
-aus_total_Rota_year1<- aus_total_high %>% filter(Disease == "Rotavirus") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
-aus_total_Rota_year2<- aus_total_high %>% filter(Disease == "Rotavirus")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
-aus_total_Rota_test<- left_join(aus_total_Rota_year1, aus_total_Rota_year2)%>%filter (State!="Australia")
+aus_total_Rota_year1 <- aus_total_high %>% 
+  filter(Disease == "Rotavirus") %>%
+  filter(Date <= "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year1 = mean(Cases))
 
-t.test(aus_total_Rota_test$year1, aus_total_Rota_test$year2, paired = TRUE, alternative = "two.sided")
+aus_total_Rota_year2 <- aus_total_high %>% 
+  filter(Disease == "Rotavirus") %>%
+  filter(Date > "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year2 = mean(Cases))
+
+aus_total_Rota_test <- left_join(aus_total_Rota_year1, 
+                                 aus_total_Rota_year2) %>%
+  filter(State != "Australia")
+
+t.test(aus_total_Rota_test$year1, 
+       aus_total_Rota_test$year2, 
+       paired = TRUE, 
+       alternative = "two.sided")
 
 # Example with Pertussis
-aus_total_Pertussis_year1<- aus_total_high %>% filter(Disease == "Pertussis") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
-aus_total_Pertussis_year2<- aus_total_high %>% filter(Disease == "Pertussis")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
-aus_total_Pertussis_test<- left_join(aus_total_Pertussis_year1, aus_total_Pertussis_year2)%>%filter (State!="Australia")
+aus_total_Pertussis_year1 <- aus_total_high %>% 
+  filter(Disease == "Pertussis") %>%
+  filter(Date <= "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year1 = mean(Cases))
 
-t.test(aus_total_Pertussis_test$year1, aus_total_Pertussis_test$year2, paired = TRUE, alternative = "two.sided")
+aus_total_Pertussis_year2 <- aus_total_high %>% 
+  filter(Disease == "Pertussis") %>%
+  filter(Date > "2019-10-31") %>%
+  group_by(State) %>%
+  summarize(year2 = mean(Cases))
+
+aus_total_Pertussis_test <- left_join(aus_total_Pertussis_year1, 
+                                      aus_total_Pertussis_year2) %>%
+  filter(State != "Australia")
+
+t.test(aus_total_Pertussis_test$year1, 
+       aus_total_Pertussis_test$year2, 
+       paired = TRUE, 
+       alternative = "two.sided")
 ```
 
-
-### Final Conclusions
+### Final conclusions
