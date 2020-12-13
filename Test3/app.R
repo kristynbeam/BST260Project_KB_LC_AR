@@ -120,8 +120,7 @@ server <- function(input, output, session) {
                 scale_y_continuous(trans = "log10",
                                    limits = c(1, 
                                               32685)) +
-                scale_color_discrete(name = "Disease (log scale):") +
-                theme(plot.title = element_text(size=10))
+                scale_color_discrete(name = "Disease (log scale):")
             
             # Rate
             } else if (input$plot_type == "New cases per million") {
@@ -159,8 +158,7 @@ server <- function(input, output, session) {
                 scale_y_continuous(trans = "log10",
                                    limits = c(0.2, 
                                               410)) +
-                scale_color_discrete(name = "Disease (log scale):") +
-                theme(plot.title = element_text(size=10))
+                scale_color_discrete(name = "Disease (log scale):")
             
             }
         
@@ -219,7 +217,7 @@ server <- function(input, output, session) {
                               "on", 
                               input$date,
                               "by Australian region")) +
-                scale_fill_viridis_c(name = "New cases (log scale)",
+                scale_fill_viridis_c(name = "New cases (log scale):",
                                      trans = "log10",
                                      direction = -1,
                                      limits = c(1, 32685)) +
@@ -227,8 +225,7 @@ server <- function(input, output, session) {
                               nudge_x = 3.5,
                               nudge_y = -0.75) +
                 labs(x = "Latitude",
-                     y = "Longitude") +
-                theme(plot.title = element_text(size=11))
+                     y = "Longitude")
             
             # Rate
             } else if (input$plot_type == "New cases per million") {
@@ -256,7 +253,7 @@ server <- function(input, output, session) {
                                   "per million on", 
                                   input$date,
                                   "by Australian region")) +
-                    scale_fill_viridis_c(name = "New cases per mil (log scale)",
+                    scale_fill_viridis_c(name = "New cases per mil (log scale):",
                                          trans = "log10",
                                          direction = -1,
                                          limits = c(0.2, 410)) +
@@ -264,8 +261,7 @@ server <- function(input, output, session) {
                                   nudge_x = 3.5,
                                   nudge_y = -0.75) +
                     labs(x = "Latitude",
-                         y = "Longitude") +
-                    theme(plot.title = element_text(size=11))
+                         y = "Longitude")
             
             }  
         
