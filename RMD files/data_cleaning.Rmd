@@ -170,9 +170,6 @@ aus_total_high %>%
 # Save aus_total_high so it can be brought into Shiny app
 write.csv(aus_total_high, "aus_total_high.csv")
 head(aus_total_high)
-
-# Figure out maximum and minimum values of count and rate for plots in Shiny app
-
 ```
 
 ```{r}
@@ -226,36 +223,6 @@ p4 + geom_line(aes(color = State)) +
   ylim(0, 450)
 ```
 
-
-```{r}
-# #Read in policy data
-# pol_dat <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/coronanet_release.csv")
-# head(pol_dat)
-# 
-# #Filtered policy data to just Australia
-# pol_dat_aus <- pol_dat %>% 
-#   filter(ISO_A2 == "AU" & ISO_A3 == "AUS") %>% 
-#   arrange(date_start)
-# 
-# #Read in uid lookup dataset
-# countries <- read.csv("~/Desktop/Project_repo/BST260Project_KB_LC_AR/project_data_files/UID_ISO_FIPS_LookUp_Table.csv")
-# head(countries)
-# countries <- countries %>% 
-#   rename(ISO_A2 = iso2, ISO_A3 = iso3)
-# 
-# countries %>% 
-#   filter(ISO_A3 == "AUS")
-# 
-# #Filtered australia policy data to include columns of significance
-# pol_dat_aus <- pol_dat_aus %>% 
-#   select(description, date_announced, date_start, date_end, country, ISO_A2, ISO_A3, domestic_policy, province, type, type_sub_cat, type_text, target_country, target_province, target_who_what, index_high_est, index_med_est, index_low_est, index_country_rank, compliance, enforcer) %>% 
-#   group_by(date_announced) %>% 
-#   arrange(province)
-# 
-# #A higher policy activity score indicates more restrictions at an earlier date. 
-
-```
-
 ```{r}
 # Read in Australian policy data by pulling most up-to-date version from Github
 pol_dat_aus = read_csv("https://raw.githubusercontent.com/saudiwin/corona_tscs/master/data/CoronaNet/data_country/coronanet_release/coronanet_release_Australia.csv")
@@ -287,60 +254,10 @@ write.csv(pol_dat_aus, "pol_dat_aus.csv")
 ```
 
 ```{r}
-#   country_names <- recode(pol_dat_aus$province, "ACT" = "Australian Capital Territory", "NSW" = "New South Wales", "NT" = "Northern Territory", "Qld" = "Queensland", "SA" = "South Australia",  "Tas" = "Tasmania", "Vic" = "Victoria", "WA" = "Western Australia")
-
-# pol_dat_aus$province <- country_names
-
-#create smaller DF for each province
-# pol_ACT <- pol_dat_aus %>% 
-#   filter(province == "ACT") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_NSW <- pol_dat_aus %>% 
-#   filter(province == "NSW") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_NT <- pol_dat_aus %>% 
-#   filter(province == "NT") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_Qld <- pol_dat_aus %>% 
-#   filter(province == "Qld") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_SA <- pol_dat_aus %>% 
-#   filter(province == "SA") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_Tas <- pol_dat_aus %>% 
-#   filter(province == "Tas") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_Vic <- pol_dat_aus %>% 
-#   filter(province == "Vic") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-# 
-# pol_WA <- pol_dat_aus %>% 
-#   filter(province == "WA") %>% 
-#   group_by(type) %>% 
-#   select(province, type, date_announced, date_start)
-```
-
-
-
-```{r}
 # https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0
 # "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
 class(aus_total_high$Date)
-
 
 # Test graph
 aus_total_high %>%
@@ -406,7 +323,6 @@ aus_total_high %>%
 ```
 
 
-
 ```{r}
 # Read in Johns Hopkins UID lookup table
 uid_lookup_table = read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv")
@@ -418,10 +334,9 @@ uid_lookup_table <- uid_lookup_table %>%
 # View uid_lookup_table
 head(uid_lookup_table)
 
-# # Merge pol_dat_aus with uid_lookup_table (run this code for producing maps dataset)
-# pol_dat_aus <- pol_dat_aus %>%
-#    left_join(uid_lookup_table, by = c("province" = "Province_State"))
 ```
+
+### Statistical Analysis
 
 ```{r}
 #Creating a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) compared to year 2 (Nov19 to Oct/20)
@@ -453,16 +368,6 @@ aus_total_influenza_diff<-left_join(aus_total_influenza_diff, density)
 
 head(aus_total_influenza_diff)
 
-#linear regressions to see if population or population density were associated with the drop in cases
-
-# linearMod <- lm(drop ~ density , data=aus_total_influenza_diff) 
-# confint.lm(linearMod)
-# summary(linearMod)
-# 
-# linearMod2 <- lm(drop ~ Population , data=aus_total_influenza_diff) 
-# confint.lm(linearMod2)
-# summary(linearMod2)
-
 ```
 
 ```{r}
@@ -473,14 +378,6 @@ ggplot(data = x) + geom_sf()
 
 # This is an "sf" data structure which can be treated as a df but with an additional column called a geometry. If we want to color the data by Cases or Rates, we would merge this with our df that has the cases and rates information.
 
-# Example
-# x <- ozmap_data()
-# y <- data.frame(NAME = x$NAME,
-#                 flu_cases = rpois(nrow(x), 100))
-# merged <- merge(x, y, by = "NAME")
-# ggplot(data = merged, aes(fill = flu_cases)) + geom_sf()
-
-# Do this with our data, Cases and Rates data
 
 # Created a merged dataset between x and aus_total_high
 merge_dat <- x %>% 
@@ -488,15 +385,8 @@ merge_dat <- x %>%
   merge(aus_total_high, by = "State")
 # Need to write the merge file that we end up with to our folder so that it can run in the app
 
-# This is a plot of the rates of influenza by country. I did this on a log scale of rates because just basic rates was all one color.
-# merge_dat %>% 
-#   group_by(State) %>% 
-#   filter(Disease == "Influenza (laboratory confirmed)") %>% 
-#   ggplot(aes(fill = log(Rates))) + geom_sf()
-
 ```
 
-### STatistical Analysis
 
 ```{r}
 aus_total_high_reg <- aus_total_high %>% 
@@ -505,12 +395,14 @@ aus_total_high_reg <- aus_total_high %>%
   mutate(year1 = mean(Cases)) %>% 
   subset(Date >= "2019-10-31") %>%
   group_by(State) %>%
-  mutate(year2 = mean(Cases)) %>%
+  mutate(year2 = mean(Cases))
     
 linearMod <- lm(aus_total_high_reg$year1 ~ aus_total_high_reg$year2) 
 confint.lm(linearMod)
 summary(linearMod)
 ```
+
+#### Linear Regressions and T-Tests
 
 ```{r}
 #building statistical tests to see if the mean cases of a disease in the first year (without Covid) was different from the mean of cases in the second year (with Covid)
@@ -557,3 +449,5 @@ aus_total_Pertussis_test<- left_join(aus_total_Pertussis_year1, aus_total_Pertus
 t.test(aus_total_Pertussis_test$year1, aus_total_Pertussis_test$year2, paired = TRUE, alternative = "two.sided")
 ```
 
+
+### Final Conclusions
