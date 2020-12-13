@@ -251,52 +251,56 @@ aus_total_high %>%
   labs(x = "Date",
        y = "Rate") +
   ggtitle("Covid rates in NSW over time") +
-  scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b")
+  scale_x_date(date_breaks = "3 months", 
+               date_labels = "%b %y")
 ```
 
 
 ### Statistical Analysis
 
 ```{r, warning=FALSE}
-#Creating a variable: drop in influenza cases from year 1 (Nov/18 to Oct/19) compared to year 2 (Nov19 to Oct/20)
-aus_total_influenza$Date <- ymd(aus_total_influenza$Date)
+#building statistical tests to see if the mean cases of a disease in the first year (without Covid) was different from the mean of cases in the second year (with Covid)
 
-head(aus_total_influenza)
+# Example with Influenza
+aus_total_influenza_year1<- aus_total_high %>% filter(Disease == "Influenza (laboratory confirmed)") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_influenza_year2<- aus_total_high %>% filter(Disease == "Influenza (laboratory confirmed)")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_influenza_test<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%filter (State!="Australia")
 
-aus_total_influenza_year1<- aus_total_influenza %>% filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=sum(Cases))
-aus_total_influenza_year2<- aus_total_influenza %>% filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=sum(Cases))
-aus_total_influenza_diff<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%mutate(drop=(year1-year2)/year1)
+t.test(aus_total_influenza_test$year1, aus_total_influenza_test$year2, paired = TRUE, alternative = "two.sided")
+    
+#linearMod_Influenza <- lm(aus_total_influenza_test$year1 ~ aus_total_influenza_test$year2) 
+#confint.lm(linearMod_Influenza)
+#summary(linearMod_Influenza)
 
-```
+# Example with Gonococcal infection
+aus_total_Gono_year1<- aus_total_high %>% filter(Disease == "Gonococcal infection") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_Gono_year2<- aus_total_high %>% filter(Disease == "Gonococcal infection")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_Gono_test<- left_join(aus_total_Gono_year1, aus_total_Gono_year2)%>%filter (State!="Australia")
+
+t.test(aus_total_Gono_test$year1, aus_total_Gono_test$year2, paired = TRUE, alternative = "two.sided")
 
 
-```{r, warning=FALSE}
-#web scraping for a dataset that containd the Population and Population density for the provinces
-library(rvest)
-url <- "https://www.worldatlas.com/articles/which-australian-states-territories-have-the-highest-density-of-population.html"
-h <- read_html(url)
-density<- h %>% html_nodes("table") %>% .[1]
-density <- density %>% html_table %>% .[[1]] 
+# Example with Hepatitis C
+aus_total_HepC_year1<- aus_total_high %>% filter(Disease == "Hepatitis C (unspecified)") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_HepC_year2<- aus_total_high %>% filter(Disease == "Hepatitis C (unspecified)")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_HepC_test<- left_join(aus_total_HepC_year1, aus_total_HepC_year2)%>%filter (State!="Australia")
 
-density<- density%>%rename("State"= "State / Territory")%>%rename("density"="Density (persons per km2)") %>% mutate(State=recode(State,"Australian Capital Territory"="ACT", "New South Wales"="NSW", "Northern Territory"="NT", "Queensland"="Qld", "South Australia"="SA", "Tasmania"="Tas", "Victoria"="Vic", "Western Australia"="WA"))
+t.test(aus_total_HepC_test$year1, aus_total_HepC_test$year2, paired = TRUE, alternative = "two.sided")
+  
 
-density$Population<-as.numeric(gsub(",","",density$Population))
+# Example with Rotavirus
+aus_total_Rota_year1<- aus_total_high %>% filter(Disease == "Rotavirus") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_Rota_year2<- aus_total_high %>% filter(Disease == "Rotavirus")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_Rota_test<- left_join(aus_total_Rota_year1, aus_total_Rota_year2)%>%filter (State!="Australia")
 
-#joining the datasets
-aus_total_influenza_diff<-left_join(aus_total_influenza_diff, density)
+t.test(aus_total_Rota_test$year1, aus_total_Rota_test$year2, paired = TRUE, alternative = "two.sided")
 
-head(aus_total_influenza_diff)
+# Example with Pertussis
+aus_total_Pertussis_year1<- aus_total_high %>% filter(Disease == "Pertussis") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_Pertussis_year2<- aus_total_high %>% filter(Disease == "Pertussis")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_Pertussis_test<- left_join(aus_total_Pertussis_year1, aus_total_Pertussis_year2)%>%filter (State!="Australia")
 
-#linear regressions to see if population or population density were associated with the drop in cases
-
-# linearMod <- lm(drop ~ density , data=aus_total_influenza_diff) 
-# confint.lm(linearMod)
-# summary(linearMod)
-# 
-# linearMod2 <- lm(drop ~ Population , data=aus_total_influenza_diff) 
-# confint.lm(linearMod2)
-# summary(linearMod2)
+t.test(aus_total_Pertussis_test$year1, aus_total_Pertussis_test$year2, paired = TRUE, alternative = "two.sided")
 ```
 
 ### Final Conclusions
