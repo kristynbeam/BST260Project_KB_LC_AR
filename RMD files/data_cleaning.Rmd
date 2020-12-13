@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -17,6 +16,52 @@ library(lubridate)
 library(ggplot2)
 library(readr)
 ```
+
+
+## Examining Policy Interventions on COVID-19 and Other Infectious Disease Incidence in Australia
+
+### Overview and Motivation
+
+COVID-19 has rocked the globe in the year 2020. With it's emergence in late 2019, quick spread, and lack of medical treatments and interventions, nonpharmaceutical interventions have been the forefront of limiting spread, disease, and death. Given the fact that non-pharmaceutical interventions (NPIs) have been the main defense against spread of COVID-19, investigation into how NPIs have not only affected the spread of COVID-19, a respiratory disease, but also other infectious diseases spread by contact or respiratory droplets. 
+
+The other main infectious disease tracked annually and globally is influenza which has a typical course of increased incidence in the winter (colder) months and virtually disappears in the summer (warmer) months. COVID emerged in December of 2019, but became particularly prevalent in March of 2020. In the United States, the season for influenza is typically November to March and then influenza typically decreases in incidence until the following Fall. Given the alternating seasons for tracking COVID and influenza in particular in the United States, we wanted to see the effects of NPIs on both COVID incidence and also other respiratory infections. To do this, we needed to investigate rates in a country where the seasons of COVID and influenza would be tracking along similarly, which was the Southern Hemisphere. Australia has a national data collection system for both infectious diseases as well as national policy institution for COVID management lending itself well to analysis of these policies on multiple infectious diseases. 
+
+### Related work
+
+An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0) published recently in Nature examined how policy changes, specifically nonpharamaceutical interventions (NPIs) affected the incidence of COVID globally. 
+
+"The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
+
+It appears that these NPIs have variable effects on COVID-19 incidence but may also have affected other infectious disease incidence.
+
+
+### Initial questions
+
+Our questions for this project were whether non-pharmaceutical interventions meant to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are 8 provinces in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs studied through the article cited above including: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools as a few examples. 
+
+Our initial thought process was to investigate how just influenza and COVID-19 changed over time as new policies were introduced into the difference provinces of Australia. As we explored data sources, we found that there were several infectious diseases that were tracked by Australia, all communicable, allowing us to look at differences between GI vs respiratory vs sexually transmitted diseases. As we explored the data we saw that we would be able to look at the changing incidence of diseases of all sources based on NPI implementation first through graphical representations and then through statistical analysis.
+
+Our plan for statistical analysis was to look at the mean incidence rate of both COVID and influenza over the few months prior to NPI implemenatation and then look at the mean incidence rate over the months post NPI implementation. 
+
+### Data sources
+
+We obtained our data from several data sources for completeness.
+
+1. Australian Infectious Disease Data, located [here](https://www1.health.gov.au/internet/main/publishing.nsf/Content/cdnareport.htm). 
+2. Australian COVID data, located [here](need a website here).
+3. Non-pharmaceutical policy interventions data. This data came from the [CoronaNet Research Project](https://www.coronanet-project.org/). This project's goal is to: "...compile a database on government responses to the coronavirus. Our main focus is to collect as much information as we can about the various fine-grained actions governments are taking to address the effects of the COVID-19 pandemic. To date, this dataset provides the most comprehensive and granular documentation of such government policies in the world, capturing data for 18 broad policy categories alongside many other dimensions, including the initiator, target and timing of a policy."
+
+We downloaded several of the pre-fabricated .csv files from several websites. Given that the CoronaNet Research Project is updated frequently, we used webscraping to download this data in order to have the most up to date information each time our analysis was done. 
+
+We cleaned all the infectious disease data to display cases, rates, a 7-day rolling average of cases and rates. We also recoded the names of the provinces in each dataframe to be in long-form rather than abbreviations to be consistent and display better in our shiny app. Finally we ensured that all vectors had the appropriate designation: date, factor, character, etc. 
+
+### Exploratory Data Analysis
+
+We made exploratory line plots for our data to look at rates of COVID and other infectious diseases based on province to explore baseline rates for various diseases.
+
+We created a dataframe aus_total_high which only includes communicable diseases with a rate greater than 0.2/100,000. This removed extremely rare diseases, typically mosquito-borne, based on this exploratory analysis. 
+
+We also explored the first dates that policies were introduced in each province and produced some test graphs to explore how a vertical line displaying the start of these policies visually impacted infectious disease incidence.
 
 ```{r}
 # Read in data on weekly influenza counts by Australian region 
@@ -451,6 +496,8 @@ merge_dat <- x %>%
 
 ```
 
+### STatistical Analysis
+
 ```{r}
 aus_total_high_reg <- aus_total_high %>% 
   filter(Disease == "Influenza (laboratory confirmed)") %>%
@@ -463,5 +510,50 @@ aus_total_high_reg <- aus_total_high %>%
 linearMod <- lm(aus_total_high_reg$year1 ~ aus_total_high_reg$year2) 
 confint.lm(linearMod)
 summary(linearMod)
+```
+
+```{r}
+#building statistical tests to see if the mean cases of a disease in the first year (without Covid) was different from the mean of cases in the second year (with Covid)
+
+# Example with Influenza
+aus_total_influenza_year1<- aus_total_high %>% filter(Disease == "Influenza (laboratory confirmed)") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_influenza_year2<- aus_total_high %>% filter(Disease == "Influenza (laboratory confirmed)")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_influenza_test<- left_join(aus_total_influenza_year1, aus_total_influenza_year2)%>%filter (State!="Australia")
+
+t.test(aus_total_influenza_test$year1, aus_total_influenza_test$year2, paired = TRUE, alternative = "two.sided")
+    
+#linearMod_Influenza <- lm(aus_total_influenza_test$year1 ~ aus_total_influenza_test$year2) 
+#confint.lm(linearMod_Influenza)
+#summary(linearMod_Influenza)
+
+# Example with Gonococcal infection
+aus_total_Gono_year1<- aus_total_high %>% filter(Disease == "Gonococcal infection") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_Gono_year2<- aus_total_high %>% filter(Disease == "Gonococcal infection")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_Gono_test<- left_join(aus_total_Gono_year1, aus_total_Gono_year2)%>%filter (State!="Australia")
+
+t.test(aus_total_Gono_test$year1, aus_total_Gono_test$year2, paired = TRUE, alternative = "two.sided")
+
+
+# Example with Hepatitis C
+aus_total_HepC_year1<- aus_total_high %>% filter(Disease == "Hepatitis C (unspecified)") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_HepC_year2<- aus_total_high %>% filter(Disease == "Hepatitis C (unspecified)")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_HepC_test<- left_join(aus_total_HepC_year1, aus_total_HepC_year2)%>%filter (State!="Australia")
+
+t.test(aus_total_HepC_test$year1, aus_total_HepC_test$year2, paired = TRUE, alternative = "two.sided")
+  
+
+# Example with Rotavirus
+aus_total_Rota_year1<- aus_total_high %>% filter(Disease == "Rotavirus") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_Rota_year2<- aus_total_high %>% filter(Disease == "Rotavirus")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_Rota_test<- left_join(aus_total_Rota_year1, aus_total_Rota_year2)%>%filter (State!="Australia")
+
+t.test(aus_total_Rota_test$year1, aus_total_Rota_test$year2, paired = TRUE, alternative = "two.sided")
+
+# Example with Pertussis
+aus_total_Pertussis_year1<- aus_total_high %>% filter(Disease == "Pertussis") %>%filter (Date <="2019-10-31") %>%group_by(State)%>%summarize(year1=mean(Cases))
+aus_total_Pertussis_year2<- aus_total_high %>% filter(Disease == "Pertussis")%>%filter (Date > "2019-10-31") %>%group_by(State)%>%summarize(year2=mean(Cases))
+aus_total_Pertussis_test<- left_join(aus_total_Pertussis_year1, aus_total_Pertussis_year2)%>%filter (State!="Australia")
+
+t.test(aus_total_Pertussis_test$year1, aus_total_Pertussis_test$year2, paired = TRUE, alternative = "two.sided")
 ```
 
