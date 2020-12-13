@@ -66,15 +66,15 @@ ui <- fluidPage(
         ),#end of fluid Row
         
         fluidRow(
-            column(4,tableOutput("regression")    
+            #column(2,tableOutput("regression")),
+            column(3,tableOutput("table")), #end column
                    
-            ),
-            column(8,
+            
+            column(9,
                    plotOutput("mapPlot")
             )#, #end column
             
         ) #end fluidRow
-        
         
     )
 ) # end UI
@@ -144,18 +144,37 @@ server <- function(input, output, session) {
             
         }  
     }) #end of plot
-
-
-    output$regression <- renderPrint({
-        aus_total_high<- aus_total_high %>% filter(Disease== input$disease)%>%subset (Date <="2019-10-31") %>%
-            mutate(year1=mean(Cases)) %>% subset(Date <="2019-10-31") %>%
-            group_by(State)%>%mutate(year2=mean(Cases))
     
-        linearMod <- lm(aus_total_high$year1 ~ aus_total_high$year2) 
-        confint.lm(linearMod)
-        summary(linearMod)
-        
-    })#output of regression analysis
+    # output$regression <- renderPrint({
+    # 
+    #     aus_total_high <- aus_total_high %>%
+    #         filter(Disease == input$disease) %>%
+    #         subset(Date <= "2019-10-31") %>%
+    #         mutate(year1 = mean(Cases)) %>%
+    #         subset(Date >= "2019-10-31") %>%
+    #         group_by(State) %>%
+    #         mutate(year2 = mean(Cases)) %>%
+    # 
+    #         linearMod <- lm(aus_total_high$year1 ~ aus_total_high$year2)
+    #         confint.lm(linearMod)
+    #         summary(linearMod)
+    # 
+    # })#output of regression analysis
+
+    
+    output$table <- renderTable({
+        Abbreviation <- c("ACT", "NSW", "NT", "Qld", "SA", "Tas", "Vic", "WA")
+        Region <- c("Australian Capital Territory",
+                             "New South Wales",
+                             "Northern Territory",
+                             "Queensland",
+                             "Southern Territory",
+                             "Tasmania",
+                             "Victoria",
+                             "Western Australia")
+        table.df <- data.frame(Abbreviation, Region)
+
+    }) #end of table
     
     
     # Map plot
@@ -166,6 +185,17 @@ server <- function(input, output, session) {
         
        if (input$plot_type == "New cases") {
             
+           # Rename states
+           merge_dat$State <- recode(merge_dat$State, 
+                                     "Australian Capital Territory" = "ACT", 
+                                     "New South Wales" = "NSW", 
+                                     "Northern Territory" = "NT", 
+                                     "Queensland" = "Qld", 
+                                     "South Australia" = "SA", 
+                                     "Tasmania" = "Tas", 
+                                     "Victoria" = "Vic", 
+                                     "Western Australia" = "WA")
+           
             merge_dat %>% 
                 group_by(input$state) %>% 
                 filter(Disease == input$disease,
@@ -179,9 +209,25 @@ server <- function(input, output, session) {
                               "by Australian state/territory")) +
                 scale_fill_viridis_c(name = "New cases (sqrt scale)",
                                      trans = "sqrt",
-                                     direction = -1)
+                                     direction = -1) +
+               geom_sf_label(aes(label = State),
+                             nudge_x = 3.5,
+                             nudge_y = -0.75) +
+                labs(x = "Latitude",
+                     y = "Longitude")
             
         } else if (input$plot_type == "New cases per million") {
+            
+            # Rename states
+            merge_dat$State <- recode(merge_dat$State, 
+                                      "Australian Capital Territory" = "ACT", 
+                                      "New South Wales" = "NSW", 
+                                      "Northern Territory" = "NT", 
+                                      "Queensland" = "Qld", 
+                                      "South Australia" = "SA", 
+                                      "Tasmania" = "Tas", 
+                                      "Victoria" = "Vic", 
+                                      "Western Australia" = "WA")
             
             merge_dat %>% 
                 group_by(input$state) %>% 
@@ -196,7 +242,12 @@ server <- function(input, output, session) {
                               "by Australian state/territory")) +
                 scale_fill_viridis_c(name = "New cases per mil (sqrt scale)",
                                      trans = "sqrt",
-                                     direction = -1)
+                                     direction = -1) +
+                geom_sf_label(aes(label = State),
+                              nudge_x = 3.5,
+                              nudge_y = -0.75) +
+                labs(x = "Latitude",
+                     y = "Longitude")
             
         }  
     }) #end of map plot

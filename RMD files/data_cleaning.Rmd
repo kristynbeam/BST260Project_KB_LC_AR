@@ -448,3 +448,17 @@ merge_dat <- x %>%
 
 ```
 
+```{r}
+aus_total_high_reg <- aus_total_high %>% 
+  filter(Disease == "Influenza (laboratory confirmed)") %>%
+  subset(Date <= "2019-10-31") %>%
+  mutate(year1 = mean(Cases)) %>% 
+  subset(Date >= "2019-10-31") %>%
+  group_by(State) %>%
+  mutate(year2 = mean(Cases)) %>%
+    
+linearMod <- lm(aus_total_high_reg$year1 ~ aus_total_high_reg$year2) 
+confint.lm(linearMod)
+summary(linearMod)
+```
+
