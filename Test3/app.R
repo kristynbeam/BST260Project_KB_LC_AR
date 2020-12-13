@@ -55,7 +55,7 @@ ui <- fluidPage(
                              label="Select a variable for plot and map:",
                              choices=c("New cases", 
                                        "New cases per million"),
-                             selected = "New cases"), # end of y-axis selection
+                             selected = "New cases") # end of y-axis selection
                 
             ), #end sidebarPanel
             
@@ -66,7 +66,7 @@ ui <- fluidPage(
         ),#end of fluid Row
         
         fluidRow(
-            column(4,
+            column(4,tableOutput("regression")    
                    
             ),
             column(8,
@@ -80,7 +80,9 @@ ui <- fluidPage(
 ) # end UI
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
+    
+    updateSelectizeInput(session, 'Country_list', choices = aus_total_high$Disease, server = TRUE)
     
     output$linePlot <- renderPlot({
         
@@ -142,15 +144,18 @@ server <- function(input, output) {
             
         }  
     }) #end of plot
+
+
+    output$regression <- renderPrint({
+        aus_total_high<- aus_total_high %>% filter(Disease== input$disease)%>%subset (Date <="2019-10-31") %>%
+            mutate(year1=mean(Cases)) %>% subset(Date <="2019-10-31") %>%
+            group_by(State)%>%mutate(year2=mean(Cases))
     
-    
-    
-    
-    #output$regression <- renderTable({
-    
-    #}) #output of regression analysis
-    
-    
+        linearMod <- lm(aus_total_high$year1 ~ aus_total_high$year2) 
+        confint.lm(linearMod)
+        summary(linearMod)
+        
+    })#output of regression analysis
     
     
     # Map plot
