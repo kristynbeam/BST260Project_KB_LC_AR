@@ -221,7 +221,7 @@ p1 <- ggplot(data = aus_total_covid,
                 y = Cases))
 
 p1 + geom_line(aes(color = State)) +
-  ggtitle("Covid Cases by Region") +
+  ggtitle("COVID-19 Cases by Region") +
   ylim(0, 70000)
 
 p2 <- ggplot(data = aus_total_covid, 
@@ -229,7 +229,7 @@ p2 <- ggplot(data = aus_total_covid,
                  y = Rates))
 
 p2 + geom_line(aes(color = State)) +
-  ggtitle("Covid Rates by Region") +
+  ggtitle("Covid-19 Rates by Region") +
   ylim(0, 450)
 
 # Create influenza data frame (monthly counts and rates by Australian region)
@@ -256,7 +256,7 @@ p4 <- ggplot(data = aus_total_influenza,
                  y = Rates))
 
 p4 + geom_line(aes(color = State)) +
-  ggtitle("Influenza Rate by Region") +
+  ggtitle("Influenza Rates by Region") +
   ylim(0, 450)
 ```
 
