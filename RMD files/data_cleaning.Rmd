@@ -1,15 +1,15 @@
 ---
-title: "BST260_Project"
+title: "BST260 Final Project"
 author: "Kristyn Beam, Alex Rashedi, and Luis Castelo Branco"
 date: "12/13/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
-```{r}
+```{r, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(dplyr)
 library(lubridate)
@@ -19,13 +19,13 @@ library(rvest)
 library(ozmaps)
 ```
 
-## Examining the Effects of Policy Interventions on the Incidence of COVID-19 and Other Infectious Diseases in Australia
+## Examining the Effects of Nonpharmaceutical Interventions on the Incidence of COVID-19 and Other Infectious Diseases in Australia
 
 ### Overview and motivation
 
 COVID-19 has rocked the globe in the year 2020. With it's emergence in Wuhan, China in late 2019, high contagiousness, and lack of available medical treatments and interventions, nonpharmaceutical interventions (NPIs) have been the main defense against its spread. Given this fact, investigation into how NPIs have not only affected the spread of COVID-19, but also other infectious diseases transmitted by physical contact or respiratory droplets, is warranted. 
 
-Influenza is another infectious disease that is tracked annually and globally, and it has a typical course of increased incidence in the winter (colder) months, virtually disappearing in the summer (warmer) months. COVID-19 emerged in December of 2019 but became particularly prevalent in March of 2020. In the United States (US), "influenza season" is typically November to March, where incidence decreases until the following Fall. Given the non-overlapping seasons for high COVID-19 and influenza incidence in the US, in particular, we decided to conduct the investigation using data from a country in the Southern Hemisphere instead, where the periods of high incidence would track more closely. Australia was selected for study, as it has a national data collection system for infectious disease incidence as well as national- and regional-level policy institution for COVID-19 management, lending itself well to analyses of the effects of these policy changes on the incidence of COVID-19 and other infectious diseases of interest. 
+Influenza is another infectious disease that is tracked annually and globally, and it has a typical course of increased incidence in the winter (colder) months, virtually disappearing in the summer (warmer) months. COVID-19 emerged in December of 2019 but became particularly prevalent in March of 2020. In the United States (US), "influenza season" is typically November to March, where incidence decreases until the following Fall. Given the non-overlapping seasons for high COVID-19 and influenza incidence in the US, in particular, we decided to conduct the investigation using data from a country in the Southern Hemisphere, instead, where the periods of high incidence would track more closely. Australia was selected for study, as it has a national data collection system for infectious disease incidence as well as national- and regional-level policy institution for COVID-19 management, lending itself well to analyses of the effects of these policy changes on the incidences of COVID-19 and other infectious diseases of interest. 
 
 ### Related work
 
@@ -33,21 +33,21 @@ An [article](https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-02
 
 "The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions."
 
-We hypothesize that these NPIs have considerable effects on COVID-19 incidence but may also impact the incidencdes of other infectious diseases.
+We hypothesize that these NPIs have considerable effects on COVID-19 incidence but may also impact the incidences of other infectious diseases.
 
 ### Initial questions
 
-Our questions for this project were whether NPIs instituted to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are eight states/territories in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs discussed in the article cited above, including but not limited to: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools. 
+Our questions for this project were whether NPIs instituted to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are eight states/territories in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs discussed in the article cited above, including, but not limited to: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools. 
 
 Our initial intention was to investigate how the incidence of COVID-19 and influenza changed over time as new policy restrictions were introduced in each region of Australia. As we further explored our data sources, we found that there were several infectious diseases tracked by Australia, allowing us to look at changes in multiple gastrointestinal (GI), respiratory, and sexually transmitted infections (STIs) of interest using both graphical representations and statistical analyses.
 
-Our plan for statistical analysis was to compare the mean incidence rate of both COVID-19 and influenza over the months prior to the specific NPI implemenatation to the mean incidence rate each over the months after NPI implementation. 
+Our plan for statistical analysis was to compare the mean incidence rates of both COVID-19 and influenza over the months prior to the specific NPI implemenatation to the mean incidence rates for each over the months after NPI implementation. 
 
 ### Data sources
 
 We obtained our data from several sources:
 
-1. Australian Infectious Disease Data, located [here](https://www1.health.gov.au/internet/main/publishing.nsf/Content/cdnareport.htm). 
+1. Australian infectious disease data, located [here](https://www1.health.gov.au/internet/main/publishing.nsf/Content/cdnareport.htm). 
 
 2. Australian COVID-19 data, located [here](need a website here).
 
@@ -55,25 +55,19 @@ We obtained our data from several sources:
 
 We downloaded several of the pre-fabricated .csv files from the listed websites. Given that the CoronaNet Research Project is updated frequently, we used webscraping to download this data in order to utilize the most up-to-date information each time our analysis was updated and/or performed. 
 
-We performed numerous data management tasks with the infectious disease data to prepare both count and rate information for analysis, including recoding, filtering, mutating, merging, and transforming. We engaged in similar tasks for the NPI data. Finally, we ensured that all variables across all datasets had the appropriate variable names and type designations for use in our Shiny app. 
+We performed numerous data management tasks with the infectious disease data to prepare both count and rate information for analyses, including recoding, filtering, mutating, merging, and transforming. We engaged in similar tasks for the NPI data. Finally, we ensured that all variables across all datasets had the appropriate variable names and type designations for use in our Shiny app. 
 
-### Exploratory data analysis
+### Exploratory data analyses
 
-We first generated exploratory line plots of our infectious disease data to look at counts and rates of COVID-19 and other infectious diseases across time based on province to explore baseline rates for various diseases.
+We first generated exploratory line plots of our infectious disease data to look at counts and rates of COVID-19 and other infectious diseases across time based on state/territory to explore baseline rates for various diseases.
 
 We created a dataframe aus_total_high which restricted the final dataset to include only those diseases with a rate greater than 0.2 (new confirmed cases per million). This removed extremely rare diseases from inclusion in our analysis, and the diseases that were removed with this method were mostly mosquito-borne. 
 
-Lastly, we limited the NPI dataset to only include observations for the first date that each policy type was introduced within each state/territory. Then, we produced test graphs to explore how a vertical line displaying the date for the start of each of these policies visually mapped onto infectious disease incidence within each region.
+Lastly, we limited the NPI dataset to only include observations for the first date that each policy type was introduced within each state/territory. Then, we produced a test graph to explore how a vertical line displaying the date for the start of each of these policies visually mapped onto infectious disease incidence within each region.
 
 ```{r}
 # Read in weekly influenza count data by Australian region 
 aus_dat <- read.csv("https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv")
-
-# Identify earliest date available: 2017-09-15
-min(aus_dat$week)
-
-# Identify latest date available: 2018-01-05
-max(aus_dat$week)
 
 aus_dat <- aus_dat %>% 
   # Rename variables
@@ -164,6 +158,7 @@ aus_total <- left_join(aus_data_cases,
 
 # Convert variable types
 aus_total$Date <- mdy(aus_total$Date)
+aus_total$Date <- as.Date(aus_total$Date)
 aus_total$Cases <- as.numeric(aus_total$Cases)
 aus_total$Rates <- as.numeric(aus_total$Rates)
 
@@ -221,7 +216,7 @@ p1 <- ggplot(data = aus_total_covid,
                 y = Cases))
 
 p1 + geom_line(aes(color = State)) +
-  ggtitle("COVID-19 Cases by Region") +
+  ggtitle("COVID-19 cases by region") +
   ylim(0, 70000)
 
 p2 <- ggplot(data = aus_total_covid, 
@@ -229,7 +224,7 @@ p2 <- ggplot(data = aus_total_covid,
                  y = Rates))
 
 p2 + geom_line(aes(color = State)) +
-  ggtitle("Covid-19 Rates by Region") +
+  ggtitle("COVID-19 rates by region") +
   ylim(0, 450)
 
 # Create influenza data frame (monthly counts and rates by Australian region)
@@ -248,7 +243,7 @@ p3 <- ggplot(data = aus_total_influenza,
                  y = Cases))
 
 p3 + geom_line(aes(color = State)) +
-  ggtitle("Influenza Cases by Region") +
+  ggtitle("Influenza cases by region") +
   ylim(0, 70500)
 
 p4 <- ggplot(data = aus_total_influenza, 
@@ -256,7 +251,7 @@ p4 <- ggplot(data = aus_total_influenza,
                  y = Rates))
 
 p4 + geom_line(aes(color = State)) +
-  ggtitle("Influenza Rates by Region") +
+  ggtitle("Influenza rates by region") +
   ylim(0, 450)
 ```
 
@@ -313,7 +308,7 @@ aus_total_high %>%
                date_labels = "%b")
 ```
 
-### Statistical analysis
+### Statistical analyses
 
 ```{r}
 # Transform variable to date type
@@ -390,7 +385,7 @@ merge_dat <- x %>%
         by = "State")
 ```
 
-#### Linear regressions and t-tests
+#### T-tests
 
 ```{r}
 # Build statistical tests to see if the mean cases of a disease in the first year (without COVID-19) was different from the mean cases in the second year (with COVID-19)

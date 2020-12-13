@@ -17,7 +17,7 @@ ui <- fluidPage(
     theme = shinythemes::shinytheme("darkly"),
     
     # Application title
-    titlePanel("Trends in COVID-19 and Other Infectious Diseases in Australian States/Territories from the end of 2018 to 2020"),
+    titlePanel("Trends in COVID-19 and Other Infectious Diseases in Australian States/Territories from November 2018 to October 2020"),
     
     fluidRow(
         
@@ -42,7 +42,7 @@ ui <- fluidPage(
                 
                 selectInput("date", 
                             label = "Select a date for plot (green line) and map:",
-                            choices = as.Date(aus_total_high$Date),
+                            choices = unique(as.Date(aus_total_high$Date)),
                             selected = "2019-07-31"), # end of date selection
                 
                 radioButtons(inputId="plot_type", 
