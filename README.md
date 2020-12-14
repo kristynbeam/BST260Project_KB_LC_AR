@@ -1,6 +1,6 @@
 # BST260Project_KB_LC_AR
 
-# Project Name: Examining Policy Interventions on COVID-19 and Other Infectious Disease Incidence in Australia 
+# Project Name: Examining the Effects of Nonpharmaceutical Interventions (NPIs) on the Incidence of COVID-19 and Other Infectious Diseases in Australia
 ## Team members: Kristyn Beam, Luis Castelo Branco, Alex Rashedi
 
 _Goal of the project_
