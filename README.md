@@ -27,4 +27,4 @@ Data files for our shiny app are written into the folder "RMD files":
 _Final project products_
 
 1. Our website can be found [here](https://sites.google.com/view/kblcar-bst260-final-project/home)
-2. Link to screencast can be found [here](www.here.com)  
+2. Link to screencast can be found [here](https://www.youtube.com/watch?v=8N28tK1WNt8&feature=youtu.be)  
