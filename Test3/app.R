@@ -28,7 +28,7 @@ ui <- fluidPage(
                 selectInput("state",
                             label = "Select a state/territory for plot:",
                             choices = unique(aus_total_high$State),
-                            selected = "New South Wales"), # end of state/territory selection
+                            selected = "South Australia"), # end of state/territory selection
                 
                 selectInput("disease",
                             label = "Select a disease for plot and map:",
@@ -43,7 +43,7 @@ ui <- fluidPage(
                 selectInput("date", 
                             label = "Select a date for plot (green line) and map:",
                             choices = unique(as.Date(aus_total_high$Date)),
-                            selected = "2019-07-31"), # end of date selection
+                            selected = "2019-05-31"), # end of date selection
                 
                 radioButtons(inputId="plot_type", 
                              label="Select a variable for plot and map:",
