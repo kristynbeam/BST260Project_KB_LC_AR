@@ -12,7 +12,7 @@ We used several data sources to plot the COVID rates, as well as other infectiou
 _How to navigate our files in the repo_
 
 Instructions:
-1. First look at the .RMD and HTML files: `data_cleaning.Rmd` or `data_cleaning.html`. These files give an overview of the project as well as show our data analysis including the exploratory analysis. 
+1. First look at the .RMD and HTML files in the folde "RMD files": `data_cleaning.Rmd` or `data_cleaning.html`. These files give an overview of the project as well as show our data analysis including the exploratory analysis. 
 2. Run the .rmd file to ensure that the policy data is up to date and the merge_dat file is available for the shiny app.
 3. In the folder: "Test3", our shiny app is located to run `app.R`. All of our data files are located in the RMD files folder, which our shiny app should point to. Running the app should allow the shiny app to work.
 4. Our final statistical analysis is at the bottom of our .rmd file. This includes a t-test of the means of cases of several diseases.
@@ -27,4 +27,4 @@ Data files for our shiny app are written into the folder "RMD files":
 _Final project products_
 
 1. Our website can be found [here](https://sites.google.com/view/kblcar-bst260-final-project/home)
-2. Link to screencast can be found [here](www.here.com)  
+2. Link to screencast can be found [here](https://www.youtube.com/watch?v=8N28tK1WNt8&feature=youtu.be)  
