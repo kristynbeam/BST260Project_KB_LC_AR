@@ -21,11 +21,11 @@ library(rvest)
 library(ozmaps)
 ```
 
-## Examining the Effects of Nonpharmaceutical Interventions (NPIs) on the Incidence of COVID-19 and Other Infectious Diseases in Australia
+## Examining the Effects of Non-pharmaceutical Interventions (NPIs) on the Incidence of COVID-19 and Other Infectious Diseases in Australia
 
 ### Overview and Motivation
 
-COVID-19 has rocked the globe in the year 2020. With it's emergence in Wuhan, China in late 2019, high contagiousness, and lack of available medical treatments and interventions, nonpharmaceutical interventions (NPIs) have been the main defense against its spread. Given this fact, investigation into how NPIs have not only affected the spread of COVID-19, but also other infectious diseases transmitted by physical contact or respiratory droplets, is warranted. 
+COVID-19 has rocked the globe in the year 2020. With its emergence in Wuhan, China in late 2019, high contagiousness, and lack of available medical treatments and interventions, non-pharmaceutical interventions (NPIs) have been the main defense against its spread. Given this fact, investigation into how NPIs have not only affected the spread of COVID-19, but also other infectious diseases transmitted by physical contact or respiratory droplets, is warranted. 
 
 Influenza is another infectious disease that is tracked annually and globally, and it has a typical course of increased incidence in the winter (colder) months, virtually disappearing in the summer (warmer) months. COVID-19 emerged in December of 2019 but became particularly prevalent in March of 2020. In the United States (US), "influenza season" is typically November to March, where incidence decreases until the following Fall. Given the non-overlapping seasons for high COVID-19 and influenza incidence in the US, in particular, we decided to conduct the investigation using data from a country in the Southern Hemisphere, instead, where the periods of high incidence would track more closely. Australia was selected for study, as it has a national data collection system for infectious disease incidence as well as national- and regional-level policy institution for COVID-19 management, lending itself well to analyses of the effects of these policy changes on the incidence of COVID-19 and other infectious diseases of interest. 
 
@@ -43,7 +43,7 @@ Our questions for this project were whether NPIs instituted to limit the spread 
 
 Our initial intention was to investigate how the incidence of COVID-19 and influenza changed over time as new policy restrictions were introduced in each region of Australia. As we further explored our data sources, we found that there were several infectious diseases tracked by Australia, allowing us to look at changes in multiple gastrointestinal (GI), respiratory, and sexually transmitted infections (STIs) of interest using both graphical representations and statistical analyses.
 
-Our plan for statistical analysis was to compare the mean incidence rates of both COVID-19 and influenza over the months prior to the specific NPI implemenatation to the mean incidence rates over the months after NPI implementation. 
+Our plan for statistical analysis was to compare the mean incidence rates of both COVID-19 and influenza over the months prior to the specific NPI implementation to the mean incidence rates over the months after NPI implementation. 
 
 ### Data
 
@@ -543,6 +543,6 @@ Pertussis: $p = 0.13$, no statistically significant difference in infections bet
 
 Chlamydial infection: $p = 0.20$, no statistically significant difference in infections between 2019 and 2020
 
-Though, visually, there appears to be a difference between years 1 and 2 for infection rates of a variety of infectious diseases with the implementation of NPIs, few of these differences are statistically significant (with the exception of influenza and a borderline result for Hepatitis C). As stated previously, in Australia, COVID-19 and influenza are both predicted to be impacted by NPIs which limit human contact due to their common mode of transmission. Some of the other diseases we investigated include GI and bloodborne illnesses, which perhaps would not be as impacted by NPI interventions, given that many of the policies we considered are unlikely to greatly alter the human behaviors which would affect transmission of these types of illnesses.
+Though, visually, there appears to be a difference between years 1 and 2 for infection rates of a variety of infectious diseases with the implementation of NPIs, few of these differences are statistically significant (with the exception of influenza and a borderline result for Hepatitis C). As stated previously, in Australia, COVID-19 and influenza are both predicted to be impacted by NPIs which limit human contact due to their common mode of transmission. Some of the other diseases we investigated include GI and blood borne illnesses, which perhaps would not be as impacted by NPI interventions, given that many of the policies we considered are unlikely to greatly alter the human behaviors which would affect transmission of these types of illnesses.
 
 Future studies may examine the (unintended) economic and human health impacts of the implementation of these NPIs in 2020 on the incidence of illnesses other than COVID-19 in Australia and in countries across the globe.
