@@ -370,39 +370,39 @@ summary {
 </div>
 
 
-<div id="examining-the-effects-of-nonpharmaceutical-interventions-on-the-incidence-of-covid-19-and-other-infectious-diseases-in-australia" class="section level2">
-<h2>Examining the Effects of Nonpharmaceutical Interventions on the Incidence of COVID-19 and Other Infectious Diseases in Australia</h2>
+<div id="examining-the-effects-of-nonpharmaceutical-interventions-npis-on-the-incidence-of-covid-19-and-other-infectious-diseases-in-australia" class="section level2">
+<h2>Examining the Effects of Nonpharmaceutical Interventions (NPIs) on the Incidence of COVID-19 and Other Infectious Diseases in Australia</h2>
 <div id="overview-and-motivation" class="section level3">
 <h3>Overview and Motivation</h3>
 <p>COVID-19 has rocked the globe in the year 2020. With it’s emergence in Wuhan, China in late 2019, high contagiousness, and lack of available medical treatments and interventions, nonpharmaceutical interventions (NPIs) have been the main defense against its spread. Given this fact, investigation into how NPIs have not only affected the spread of COVID-19, but also other infectious diseases transmitted by physical contact or respiratory droplets, is warranted.</p>
-<p>Influenza is another infectious disease that is tracked annually and globally, and it has a typical course of increased incidence in the winter (colder) months, virtually disappearing in the summer (warmer) months. COVID-19 emerged in December of 2019 but became particularly prevalent in March of 2020. In the United States (US), “influenza season” is typically November to March, where incidence decreases until the following Fall. Given the non-overlapping seasons for high COVID-19 and influenza incidence in the US, in particular, we decided to conduct the investigation using data from a country in the Southern Hemisphere, instead, where the periods of high incidence would track more closely. Australia was selected for study, as it has a national data collection system for infectious disease incidence as well as national- and regional-level policy institution for COVID-19 management, lending itself well to analyses of the effects of these policy changes on the incidences of COVID-19 and other infectious diseases of interest.</p>
+<p>Influenza is another infectious disease that is tracked annually and globally, and it has a typical course of increased incidence in the winter (colder) months, virtually disappearing in the summer (warmer) months. COVID-19 emerged in December of 2019 but became particularly prevalent in March of 2020. In the United States (US), “influenza season” is typically November to March, where incidence decreases until the following Fall. Given the non-overlapping seasons for high COVID-19 and influenza incidence in the US, in particular, we decided to conduct the investigation using data from a country in the Southern Hemisphere, instead, where the periods of high incidence would track more closely. Australia was selected for study, as it has a national data collection system for infectious disease incidence as well as national- and regional-level policy institution for COVID-19 management, lending itself well to analyses of the effects of these policy changes on the incidence of COVID-19 and other infectious diseases of interest.</p>
 </div>
 <div id="related-work" class="section level3">
 <h3>Related Work</h3>
 <p>An <a href="https://www-nature-com.ezp-prod1.hul.harvard.edu/articles/s41562-020-01009-0">article</a> published recently in Nature examined how specific policy changes (i.e., NPIs) have affected the incidence of COVID-19, globally.</p>
 <p>“The most effective NPIs include curfews, lockdowns and closing and restricting places where people gather in smaller or large numbers for an extended period of time. This includes small gathering cancellations (closures of shops, restaurants, gatherings of 50 persons or fewer, mandatory home working and so on) and closure of educational institutions.”</p>
-<p>We hypothesize that these NPIs have considerable effects on COVID-19 incidence but may also impact the incidences of other infectious diseases.</p>
+<p>We hypothesized that these NPIs have considerable effects on COVID-19 incidence but may also impact the incidences of other infectious diseases, particularly those which similarly spread via physical contact and respiratory droplets.</p>
 </div>
 <div id="initial-questions" class="section level3">
 <h3>Initial Questions</h3>
 <p>Our questions for this project were whether NPIs instituted to limit the spread of COVID-19 also had an effect on other infectious diseases, with a focus on influenza. There are eight states/territories in Australia: New South Wales, Australian Capital Territory, Queensland, Victoria, Tasmania, Southern Australia, Western Australia, and the Northern Territory. We examined several NPIs discussed in the article cited above, including, but not limited to: Lockdown, Public Awareness, Health Monitoring, Health Resources, Social Distancing, Restriction of Mass Gatherings, and Closure of Schools.</p>
 <p>Our initial intention was to investigate how the incidence of COVID-19 and influenza changed over time as new policy restrictions were introduced in each region of Australia. As we further explored our data sources, we found that there were several infectious diseases tracked by Australia, allowing us to look at changes in multiple gastrointestinal (GI), respiratory, and sexually transmitted infections (STIs) of interest using both graphical representations and statistical analyses.</p>
-<p>Our plan for statistical analysis was to compare the mean incidence rates of both COVID-19 and influenza over the months prior to the specific NPI implemenatation to the mean incidence rates for each over the months after NPI implementation.</p>
+<p>Our plan for statistical analysis was to compare the mean incidence rates of both COVID-19 and influenza over the months prior to the specific NPI implemenatation to the mean incidence rates over the months after NPI implementation.</p>
 </div>
 <div id="data" class="section level3">
 <h3>Data</h3>
-<p>We obtained our data:</p>
+<p>We obtained our data from the following sources:</p>
 <ol style="list-style-type: decimal">
 <li><p>Australian infectious disease data, located <a href="https://www1.health.gov.au/internet/main/publishing.nsf/Content/cdnareport.htm">here</a>.</p></li>
 <li><p>NPI data, located <a href="https://www.coronanet-project.org/">here</a>. This project’s goal is to “…compile a database on government responses to the coronavirus. [The] main focus is to collect as much information as we can about the various fine-grained actions governments are taking to address the effects of the COVID-19 pandemic. To date, this dataset provides the most comprehensive and granular documentation of such government policies in the world, capturing data for 18 broad policy categories alongside many other dimensions, including the initiator, target and timing of a policy.”</p></li>
 </ol>
 <p>We downloaded several of the pre-fabricated .csv files from the listed websites. Given that the CoronaNet Research Project is updated frequently, we used webscraping to download this data in order to utilize the most up-to-date information each time our analysis was updated and/or performed.</p>
-<p>We performed numerous data management tasks with the infectious disease data to prepare both count and rate information for analyses, including recoding, filtering, mutating, merging, and transforming. We engaged in similar tasks for the NPI data. Finally, we ensured that all variables across all datasets had the appropriate variable names and type designations for use in our Shiny app.</p>
+<p>We performed numerous data management tasks with the infectious disease data to prepare both count and rate information for analyses, including recoding, filtering, mutating, merging, and transforming. We engaged in similar tasks for the NPI data. Finally, we ensured that all variables across the datasets had the appropriate variable names and type designations for use in our Shiny app.</p>
 </div>
 <div id="exploratory-analysis" class="section level3">
 <h3>Exploratory Analysis</h3>
-<p>We first generated exploratory line plots of our infectious disease data to look at counts and rates of COVID-19 and other infectious diseases across time based on state/territory to explore baseline rates for various diseases.</p>
-<p>We created a dataframe aus_total_high which restricted the final dataset to include only those diseases with a rate greater than 0.2 (new confirmed cases per million). This removed extremely rare diseases from inclusion in our analysis, and the diseases that were removed with this method were mostly mosquito-borne.</p>
+<p>We first generated exploratory line plots of our infectious disease data to look at counts and rates of COVID-19 and other infectious diseases across time based on state/territory to explore initial visualizations.</p>
+<p>We created a dataframe aus_total_high which restricted the final dataset to include only those diseases with a rate greater than 0.2 (new confirmed cases per million). This removed extremely rare diseases from inclusion in our analysis, and the diseases that were removed with this method were mostly mosquito-borne are hypothesized to be largely unaffected by the NPIs under study.</p>
 <p>Lastly, we limited the NPI dataset to only include observations for the first date that each policy type was introduced within each state/territory. Then, we produced a test graph to explore how a vertical line displaying the date for the start of each of these policies visually mapped onto infectious disease incidence within each region.</p>
 <pre class="r"><code># Read in weekly influenza count data by Australian region 
 aus_dat &lt;- read.csv(&quot;https://raw.githubusercontent.com/kristynbeam/BST260Project_KB_LC_AR/main/project_data_files/aus_flu_08_17.csv&quot;)
@@ -1002,7 +1002,7 @@ t.test(aus_total_Chlamydia_test$year1,
 </div>
 <div id="conclusion" class="section level5">
 <h5>Conclusion</h5>
-<p>We observed that several NPIs seemed to have an effect on a number of infectious diseases besides COVID-19, including influenza, chlamydia, and pertussis. It did not seem that GI illnesses were greatly affected by NPI implementation. These conclusions were drawn visually from our Shiny app.</p>
+<p>Using our Shiny app visualizations, we noted that several NPIs seemed to have an effect on the incidence trajectories of a number of infectious diseases besides COVID-19, including influenza, chlamydia, and pertussis. It did not seem that GI illnesses were greatly affected by NPI implementation.</p>
 <p>We performed t-tests to examine the statistical significance of some of these visually noted differences in mean cases of selected infectious diseases from year 1 (2019) to year 2 (2020).</p>
 <p><span class="math inline">\((\alpha = 0.05)\)</span></p>
 <p>Influenza (laboratory confirmed): <span class="math inline">\(p = 0.03\)</span>, statistically significant difference in infections between 2019 and 2020</p>
@@ -1011,7 +1011,8 @@ t.test(aus_total_Chlamydia_test$year1,
 <p>Rotavirus: <span class="math inline">\(p = 0.28\)</span>, no statistically significant difference in infections between 2019 and 2020</p>
 <p>Pertussis: <span class="math inline">\(p = 0.13\)</span>, no statistically significant difference in infections between 2019 and 2020</p>
 <p>Chlamydial infection: <span class="math inline">\(p = 0.20\)</span>, no statistically significant difference in infections between 2019 and 2020</p>
-<p>Though, visually, there appears to be a difference between years 1 and 2 for infection rates of a variety of infectious diseases with the implementation of NPIs, few of these differences are statistically significant (with the exception of influenza and a borderline result for Hepatitis C). As stated previously, in Australia, COVID-19 and influenza are both predicted to be impacted by NPIs which limit human contact due to their common mode of transmission. The other diseases we investigated include GI and bloodborne illnesses, which perhaps would not be as impacted by NPI interventions, given that many of these policies are unlikely to greatly alter the behaviors necessary for transmission of these types of illnesses.</p>
+<p>Though, visually, there appears to be a difference between years 1 and 2 for infection rates of a variety of infectious diseases with the implementation of NPIs, few of these differences are statistically significant (with the exception of influenza and a borderline result for Hepatitis C). As stated previously, in Australia, COVID-19 and influenza are both predicted to be impacted by NPIs which limit human contact due to their common mode of transmission. Some of the other diseases we investigated include GI and bloodborne illnesses, which perhaps would not be as impacted by NPI interventions, given that many of the policies we considered are unlikely to greatly alter the human behaviors which would affect transmission of these types of illnesses.</p>
+<p>Future studies may examine the (unintended) economic and human health impacts of the implementation of these NPIs in 2020 on the incidence of illnesses other than COVID-19 in Australia and in countries across the globe.</p>
 </div>
 </div>
 </div>
